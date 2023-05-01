@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+    --neural-color-1: #F2F2F2;
+    --neural-color-2: #2D2D2D;
+    --accent-color: #21B372;
+    --primary-color: #1B2C4D;
+    --secondary-color: #304877;
+    --background-contrast: #506EA0;
+    --selected-color: #204FAA;
+    --topbar-height: 33px;
+    --closed-sibar-width: 10vw;
+}
+
+.topbar {
+    background-color: var(--neural-color-2);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    height: var(--topbar-height);
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    align-items: center;
+}
+
+.body, .body_lg {
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: auto;
+    color: var(--neural-color-1);
+}
+
+.body {
+    font-size: 24px;
+}
+
+.body_lg {
+    font-size: 30px;
+}
+
+.subtitle, .subtitle_sm {
+    line-height: 101%;
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 32px;
+    letter-spacing: 10%;
+    color: var(--neural-color-1);
+}
+
+.subtitle_sm {
+    font-size: 24px;
+    letter-spacing: 16%;
+}
+
+h1, h2, h3, h4 {
+    letter-spacing: 2%;
+}
+
+h1, h2, h3, h4 {
+    font-weight: 700;
+    line-height: 101%;
+    color: var(--neural-color-1);
+}
+
+h1 {
+    font-size: 120px;
+    line-height: 132%;
+}
+
+h2 {
+    font-size: 73px;
+}
+
+h3 {
+    font-size: 46px;
+}
+
+h4 {
+    font-size: 37.5px;
+}
+
+h1, h2, h3, h4, .subtitle, .subtitle_sm, .body, .body_lg, p, body, html {
+    font-family: 'Roboto', sans-serif;
+}
+
+.window_name {
+    position: absolute;
+    left: 2vw;
+}
+
+.sidebar {
+    position: fixed;
+    top: var(--topbar-height);
+    left: 0;
+    width: var(--closed-sibar-width);
+    height: calc(100vh - var(--topbar-height));
+    background-color: var(--secondary-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#root {
+  margin: auto;
+height: calc(100vh - var(--topbar-height));
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+width: calc(100vw - var(--closed-sibar-width));
+position: fixed;
+top: calc(var(--topbar-height));
+right: 0;}
+
+#root > * + * {
+  margin: 20px 0 0 0;
+}
+
+/* 100vh on safari does not include the bottom bar. */
+@supports (-webkit-overflow-scrolling: touch) {
+  #root {
+    height: 85vh;
+  }
+}
+
+#message-log {
+  width: 100%;
+  flex-grow: 1;
+  overflow: auto;
+}
+
+#message-log p:first-child {
+  margin: 0;
+}
+
+#message-log > * + * {
+  margin: 10px 0 0 0;
+}
+
+#publish-form-container {
+  width: 100%;
+}
+
+#publish-form {
+  width: 100%;
+  height: 40px;
+  position: relative;
+}
+
+#publish-form > * + * {
+  margin: 0 0 0 10px;
+}
+
+#publish-form input[type="text"] {
+  flex-grow: 1;
+  border: none !important; 
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  word-break: normal;
+  background-color: var(--secondary-color);
+  position: absolute;
+  bottom: 0;
+  width: calc(100vw - var(--closed-sibar-width) - 3px);
+  right: 0;
+}
+
+#publish-form input[type="submit"] {
+  color: white;
+  background-color: black;
+  border-radius: 5px;
+  padding: 5px 10px;
+  border: none !important; 
+}
+
+#publish-form input[type="submit"]:hover {
+  background-color: red;
+}
+
+#publish-form input[type="submit"]:active {
+  background-color: red;
+}
+
+.person {
+    background-color: var(--secondary-color);
+  width: calc(100vw - var(--closed-sibar-width) - 3px);
+  right: 0;
+  display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    height: 66px;
+}
+
+.person_wrapper {
+    margin-left: 2vw;
+}
