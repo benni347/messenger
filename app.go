@@ -136,6 +136,14 @@ func (a *AllConfig) Connect() error {
 		a.WebRTCConfig.localMessage = string(msg.Data)
 	})
 
+	a.WebRTCConfig.remoteConnection.OnDataChannel(func(channel *webrtc.DataChannel) {
+		m.PrintInfo("Remote DataChannel created")
+		channel.OnMessage(func(msg webrtc.DataChannelMessage) {
+			m.PrintInfo("Remote DataChannel message received: " + string(msg.Data))
+			a.WebRTCConfig.remoteMessage = string(msg.Data)
+		})
+	})
+
 	return nil
 }
 
