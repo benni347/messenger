@@ -171,6 +171,7 @@ func (a *AllConfig) Connect() error {
 		utils.PrintError("During the remote answer an error ocured", err)
 		return err
 	}
+	m.PrintInfo("Got a remote answer " + remoteAnswer.SDP)
 	return nil
 }
 
