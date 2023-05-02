@@ -69,7 +69,7 @@ func (a *AllConfig) Connect() {
 
 	m.PrintInfo("Connecting...")
 	dataChannelParameters := webrtc.DataChannelParameters{
-		Label:    "data",
+		Label:    "Text",
 		Ordered:  true,
 		Protocol: "tcp",
 	}
