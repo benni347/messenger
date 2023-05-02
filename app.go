@@ -144,6 +144,11 @@ func (a *AllConfig) Connect() error {
 		})
 	})
 
+	localOffer, err := a.WebRTCConfig.localConnection.CreateOffer(nil)
+	if err != nil {
+		utils.PrintError("During the local offer an error ocured", err)
+		return err
+	}
 	return nil
 }
 
