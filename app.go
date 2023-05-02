@@ -86,7 +86,6 @@ func (a *AllConfig) Connect() {
 		utils.PrintError("During the PeerConnection for remote an error ocured", err)
 		panic(err)
 	}
-
 	a.WebRTCConfig.remoteConnection = remoteConnection
 }
 
