@@ -100,6 +100,17 @@ func (a *AllConfig) Connect() error {
 	}
 	a.WebRTCConfig.remoteConnection = remoteConnection
 
+	a.WebRTCConfig.remoteConnection.OnICECandidate(func(candidate *webrtc.ICECandidate) {
+		if candidate == nil {
+			return
+		}
+
+		m.PrintInfo("Remote ICE Candidate: " + candidate.String())
+		err := a.WebRTCConfig.localConnection.AddICECandidate(candidate.ToJSON())
+		if err != nil {
+			utils.PrintError("adding ice candidate", err)
+		}
+	})
 	return nil
 }
 
