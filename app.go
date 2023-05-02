@@ -28,9 +28,12 @@ type Config struct {
 }
 
 type WebRTCConfig struct {
-	connected     *bool
-	localMessage  *string
-	remoteMessage *string
+	connected        *bool
+	localMessage     *string
+	remoteMessage    *string
+	localConnection  *webrtc.PeerConnection
+	remoteConnection *webrtc.PeerConnection
+	localChannel     *webrtc.DataChannel
 }
 
 type AllConfig struct {
@@ -50,9 +53,10 @@ func (a *App) CreatePeerConnection() *webrtc.PeerConnection {
 	return peerConnection
 }
 
-func (a *App) Disconnect() {
+func (w *WebRTCConfig) Disconnect() {
 	// Close the connection
-	a.ctx.Done()
+	w.localConnection.Close()
+	w.remoteConnection.Close()
 }
 
 func (w *WebRTCConfig) Constructor() {
