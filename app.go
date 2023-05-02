@@ -120,6 +120,11 @@ func (a *AllConfig) Connect() error {
 		return err
 	}
 	a.WebRTCConfig.localChannel = localChannel
+
+	a.WebRTCConfig.localChannel.OnOpen(func() {
+		m.PrintInfo("Local DataChannel opened")
+		a.WebRTCConfig.connected = true
+	})
 	return nil
 }
 
