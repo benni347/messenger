@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"time"
 
 	utils "github.com/benni347/messengerutils"
 	webrtc "github.com/pion/webrtc/v3"
@@ -162,6 +163,9 @@ func (a *AllConfig) Connect() error {
 		utils.PrintError("During the local offer an error ocured", err)
 		return err
 	}
+
+	time.Sleep(2 * time.Second)
+
 	return nil
 }
 
