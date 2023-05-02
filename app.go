@@ -59,12 +59,6 @@ func (w *WebRTCConfig) Disconnect() {
 	w.remoteConnection.Close()
 }
 
-func (w *WebRTCConfig) Constructor() {
-	w.connected = new(bool)
-	w.localMessage = new(string)
-	w.remoteMessage = new(string)
-}
-
 func (a *AllConfig) Connect() {
 	a.Config.verbose = true
 	m := &utils.MessengerUtils{
@@ -77,4 +71,19 @@ func (a *AllConfig) Connect() {
 		Ordered:  true,
 		Protocol: "tcp",
 	}
+
+	localConnection, err := webrtc.NewPeerConnection(webrtc.Configuration{})
+	if err != nil {
+		utils.PrintError("During the PeerConnection for local an error ocured", err)
+		panic(err)
+	}
+	a.WebRTCConfig.localConnection = localConnection
+
+	remoteConnection, err := webrtc.NewPeerConnection(webrtc.Configuration{})
+	if err != nil {
+		utils.PrintError("During the PeerConnection for remote an error ocured", err)
+		panic(err)
+	}
+
+	a.WebRTCConfig.remoteConnection = remoteConnection
 }
