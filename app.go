@@ -125,6 +125,12 @@ func (a *AllConfig) Connect() error {
 		m.PrintInfo("Local DataChannel opened")
 		a.WebRTCConfig.connected = true
 	})
+
+	a.WebRTCConfig.localChannel.OnClose(func() {
+		m.PrintInfo("Local DataChannel closed")
+		a.WebRTCConfig.connected = false
+	})
+
 	return nil
 }
 
