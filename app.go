@@ -131,6 +131,11 @@ func (a *AllConfig) Connect() error {
 		a.WebRTCConfig.connected = false
 	})
 
+	a.WebRTCConfig.localChannel.OnMessage(func(msg webrtc.DataChannelMessage) {
+		m.PrintInfo("Local DataChannel message received: " + string(msg.Data))
+		a.WebRTCConfig.localMessage = string(msg.Data)
+	})
+
 	return nil
 }
 
