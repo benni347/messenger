@@ -184,6 +184,7 @@ func (a *AllConfig) Connect() error {
 		utils.PrintError("During the remote answer an error ocured", err)
 		return err
 	}
+
 	return nil
 }
 
