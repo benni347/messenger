@@ -150,6 +150,12 @@ func (a *AllConfig) Connect() error {
 		return err
 	}
 	m.PrintInfo("Got a local offer " + localOffer.SDP)
+
+	err = a.WebRTCConfig.localConnection.SetLocalDescription(localOffer)
+	if err != nil {
+		utils.PrintError("During the local offer an error ocured", err)
+		return err
+	}
 	return nil
 }
 
