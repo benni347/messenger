@@ -102,3 +102,11 @@ func (a *AllConfig) ReceiveLocalMessage() string {
 	m.PrintInfo(fmt.Sprintf("Recived: %s", a.WebRTCConfig.localMessage))
 	return a.WebRTCConfig.localMessage
 }
+
+func (a *AllConfig) ReceiveRemoteMessage() string {
+	m := &utils.MessengerUtils{
+		Verbose: a.Config.verbose,
+	}
+	m.PrintInfo(fmt.Sprintf("Recived: %s", a.WebRTCConfig.remoteMessage))
+	return a.WebRTCConfig.remoteMessage
+}
