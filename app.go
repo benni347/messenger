@@ -115,6 +115,10 @@ func (a *AllConfig) Connect() error {
 		"text",
 		&dataChannelParameters,
 	)
+	if err != nil {
+		utils.PrintError("During the DataChannel for local an error ocured", err)
+		return err
+	}
 	return nil
 }
 
