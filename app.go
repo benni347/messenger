@@ -156,6 +156,12 @@ func (a *AllConfig) Connect() error {
 		utils.PrintError("During the local offer an error ocured", err)
 		return err
 	}
+
+	err = a.WebRTCConfig.remoteConnection.SetRemoteDescription(localOffer)
+	if err != nil {
+		utils.PrintError("During the local offer an error ocured", err)
+		return err
+	}
 	return nil
 }
 
