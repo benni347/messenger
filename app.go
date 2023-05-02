@@ -119,6 +119,7 @@ func (a *AllConfig) Connect() error {
 		utils.PrintError("During the DataChannel for local an error ocured", err)
 		return err
 	}
+	a.WebRTCConfig.localChannel = localChannel
 	return nil
 }
 
