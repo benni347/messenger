@@ -166,6 +166,11 @@ func (a *AllConfig) Connect() error {
 
 	time.Sleep(2 * time.Second)
 
+	remoteAnswer, err := a.WebRTCConfig.remoteConnection.CreateAnswer(nil)
+	if err != nil {
+		utils.PrintError("During the remote answer an error ocured", err)
+		return err
+	}
 	return nil
 }
 
