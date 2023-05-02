@@ -68,9 +68,9 @@ func (a *AllConfig) Connect() error {
 	}
 
 	m.PrintInfo("Connecting...")
-	dataChannelParameters := webrtc.DataChannelParameters{
-		Ordered:  true,
-		Protocol: "tcp",
+	orderedFlow := true
+	dataChannelParameters := webrtc.DataChannelInit{
+		Ordered: &orderedFlow,
 	}
 
 	localConnection, err := webrtc.NewPeerConnection(webrtc.Configuration{})
