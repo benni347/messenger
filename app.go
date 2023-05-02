@@ -61,7 +61,7 @@ func (w *WebRTCConfig) Disconnect() {
 	w.remoteConnection.Close()
 }
 
-func (a *AllConfig) Connect() {
+func (a *AllConfig) Connect() error {
 	a.Config.verbose = true
 	m := &utils.MessengerUtils{
 		Verbose: a.Config.verbose,
@@ -87,6 +87,8 @@ func (a *AllConfig) Connect() {
 		panic(err)
 	}
 	a.WebRTCConfig.remoteConnection = remoteConnection
+
+	return nil
 }
 
 func (w *WebRTCConfig) Send(message string) {
