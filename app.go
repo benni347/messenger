@@ -149,6 +149,7 @@ func (a *AllConfig) Connect() error {
 		utils.PrintError("During the local offer an error ocured", err)
 		return err
 	}
+	m.PrintInfo("Got a local offer " + localOffer.SDP)
 	return nil
 }
 
