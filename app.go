@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	utils "github.com/benni347/messengerutils"
 	webrtc "github.com/pion/webrtc/v3"
@@ -28,9 +29,9 @@ type Config struct {
 }
 
 type WebRTCConfig struct {
-	connected        *bool
-	localMessage     *string
-	remoteMessage    *string
+	connected        bool
+	localMessage     string
+	remoteMessage    string
 	localConnection  *webrtc.PeerConnection
 	remoteConnection *webrtc.PeerConnection
 	localChannel     *webrtc.DataChannel
@@ -92,4 +93,12 @@ func (a *AllConfig) Connect() {
 func (w *WebRTCConfig) Send(message string) {
 	w.localChannel.SendText(message)
 	w.remoteChannel.SendText(message)
+}
+
+func (a *AllConfig) Receive() string {
+	m := &utils.MessengerUtils{
+		Verbose: a.Config.verbose,
+	}
+	m.PrintInfo(fmt.Sprintf("Recived: %s", a.WebRTCConfig.localMessage))
+	return a.WebRTCConfig.localMessage
 }
