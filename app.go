@@ -178,6 +178,12 @@ func (a *AllConfig) Connect() error {
 		utils.PrintError("During the remote answer an error ocured", err)
 		return err
 	}
+
+	err = a.WebRTCConfig.localConnection.SetRemoteDescription(remoteAnswer)
+	if err != nil {
+		utils.PrintError("During the remote answer an error ocured", err)
+		return err
+	}
 	return nil
 }
 
