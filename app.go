@@ -95,7 +95,7 @@ func (w *WebRTCConfig) Send(message string) {
 	w.remoteChannel.SendText(message)
 }
 
-func (a *AllConfig) Receive() string {
+func (a *AllConfig) ReceiveLocalMessage() string {
 	m := &utils.MessengerUtils{
 		Verbose: a.Config.verbose,
 	}
