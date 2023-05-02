@@ -172,6 +172,12 @@ func (a *AllConfig) Connect() error {
 		return err
 	}
 	m.PrintInfo("Got a remote answer " + remoteAnswer.SDP)
+
+	err = a.WebRTCConfig.remoteConnection.SetLocalDescription(remoteAnswer)
+	if err != nil {
+		utils.PrintError("During the remote answer an error ocured", err)
+		return err
+	}
 	return nil
 }
 
