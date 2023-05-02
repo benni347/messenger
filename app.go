@@ -69,7 +69,6 @@ func (a *AllConfig) Connect() error {
 
 	m.PrintInfo("Connecting...")
 	dataChannelParameters := webrtc.DataChannelParameters{
-		Label:    "Text",
 		Ordered:  true,
 		Protocol: "tcp",
 	}
@@ -111,6 +110,7 @@ func (a *AllConfig) Connect() error {
 			utils.PrintError("adding ice candidate", err)
 		}
 	})
+
 	return nil
 }
 
