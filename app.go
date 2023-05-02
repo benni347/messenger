@@ -111,6 +111,10 @@ func (a *AllConfig) Connect() error {
 		}
 	})
 
+	localChannel, err := a.WebRTCConfig.localConnection.CreateDataChannel(
+		"text",
+		&dataChannelParameters,
+	)
 	return nil
 }
 
