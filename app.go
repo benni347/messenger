@@ -81,6 +81,18 @@ func (a *AllConfig) Connect() error {
 	}
 	a.WebRTCConfig.localConnection = localConnection
 
+	a.WebRTCConfig.localConnection.OnICECandidate(func(candidate *webrtc.ICECandidate) {
+		if candidate == nil {
+			return
+		}
+
+		m.PrintInfo("Local ICE Candidate: " + candidate.String())
+		err := a.WebRTCConfig.remoteConnection.AddICECandidate(candidate.ToJSON())
+		if err != nil {
+			utils.PrintError("adding ice candidate", err)
+		}
+	})
+
 	remoteConnection, err := webrtc.NewPeerConnection(webrtc.Configuration{})
 	if err != nil {
 		utils.PrintError("During the PeerConnection for remote an error ocured", err)
