@@ -34,6 +34,7 @@ type WebRTCConfig struct {
 	localConnection  *webrtc.PeerConnection
 	remoteConnection *webrtc.PeerConnection
 	localChannel     *webrtc.DataChannel
+	remoteChannel    *webrtc.DataChannel
 }
 
 type AllConfig struct {
@@ -86,4 +87,9 @@ func (a *AllConfig) Connect() {
 	}
 
 	a.WebRTCConfig.remoteConnection = remoteConnection
+}
+
+func (w *WebRTCConfig) Send(message string) {
+	w.localChannel.SendText(message)
+	w.remoteChannel.SendText(message)
 }
