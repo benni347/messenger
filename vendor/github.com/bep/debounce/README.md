@@ -32,4 +32,3 @@ func ExampleNew() {
 	// Output: Counter is 3
 }
 ```
-

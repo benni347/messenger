@@ -1,4 +1,3 @@
-
 <p align="center" style="text-align: center">
    <img src="logo.png"><br/>
 </p>
@@ -14,16 +13,17 @@
 Go ANSI Parser converts strings with [ANSI escape codes](https://en.wikipedia.org/wiki/ANSI_escape_code)
 into a slice of structs that represent styled text. Features:
 
-  * Can parse ANSI 16, 256 and TrueColor
-  * Supports all styles: Regular, Bold, Faint, Italic, Blinking, Inversed, Invisible, Underlined, Strikethrough
-  * Provides RGB, Hex, HSL, ANSI ID and Name for parsed colours
-  * Truncation - works with emojis and grapheme clusters 
-  * Length - works with emojis and grapheme clusters
-  * Cleanse - removes the ansi escape codes
-  * Configurable colour map for customisation
-  * 100% Test Coverage
+- Can parse ANSI 16, 256 and TrueColor
+- Supports all styles: Regular, Bold, Faint, Italic, Blinking, Inversed, Invisible, Underlined, Strikethrough
+- Provides RGB, Hex, HSL, ANSI ID and Name for parsed colours
+- Truncation - works with emojis and grapheme clusters
+- Length - works with emojis and grapheme clusters
+- Cleanse - removes the ansi escape codes
+- Configurable colour map for customisation
+- 100% Test Coverage
 
 # Installation
+
 ```shell
 go get github.com/leaanthony/go-ansi-parser
 ```
@@ -31,6 +31,7 @@ go get github.com/leaanthony/go-ansi-parser
 ## Usage
 
 ### Parse
+
 ```go
 text, err := ansi.Parse("\u001b[1;31;40mHello World\033[0m")
 
@@ -57,7 +58,9 @@ text := []*ansi.StyledText{
     },
 }
 ```
+
 ### Truncating
+
 ```go
 shorter, err := ansi.Truncate("\u001b[1;31;40mHello\033[0m \u001b[0;30mWorld!\033[0m", 8)
 
@@ -65,7 +68,9 @@ shorter, err := ansi.Truncate("\u001b[1;31;40mHello\033[0m \u001b[0;30mWorld!\03
 
 shorter := "\u001b[1;31;40mHello\033[0m \u001b[0;30mWo\033[0m"
 ```
+
 ### Cleanse
+
 ```go
 cleaner, err := ansi.Cleanse("\u001b[1;31;40mHello\033[0m \u001b[0;30mWorld!\033[0m")
 
@@ -73,7 +78,9 @@ cleaner, err := ansi.Cleanse("\u001b[1;31;40mHello\033[0m \u001b[0;30mWorld!\033
 
 cleaner := "Hello World!"
 ```
+
 ### Length
+
 ```go
 length, err := ansi.Length("\u001b[1;31;40mHello\033[0m \u001b[0;30mWorld!\033[0m")
 

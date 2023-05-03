@@ -1,5 +1,3 @@
-
-
 ## FAQ
 
 Q: Will pion/turn also act as a STUN server?

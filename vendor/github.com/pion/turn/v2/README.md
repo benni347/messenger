@@ -20,15 +20,16 @@
 
 Pion TURN is a Go toolkit for building TURN servers and clients. We wrote it to solve problems we had when building RTC projects.
 
-* **Deployable** - Use modern tooling of the Go ecosystem. Stop generating config files.
-* **Embeddable** - Include `pion/turn` in your existing applications. No need to manage another service.
-* **Extendable** - TURN as an API so you can easily integrate with your existing monitoring and metrics.
-* **Maintainable** - `pion/turn` is simple and well documented. Designed for learning and easy debugging.
-* **Portable** - Quickly deploy to multiple architectures/platforms just by setting an environment variable.
-* **Safe** - Stability and safety is important for network services. Go provides everything we need.
-* **Scalable** - Create allocations and mutate state at runtime. Designed to make scaling easy.
+- **Deployable** - Use modern tooling of the Go ecosystem. Stop generating config files.
+- **Embeddable** - Include `pion/turn` in your existing applications. No need to manage another service.
+- **Extendable** - TURN as an API so you can easily integrate with your existing monitoring and metrics.
+- **Maintainable** - `pion/turn` is simple and well documented. Designed for learning and easy debugging.
+- **Portable** - Quickly deploy to multiple architectures/platforms just by setting an environment variable.
+- **Safe** - Stability and safety is important for network services. Go provides everything we need.
+- **Scalable** - Create allocations and mutate state at runtime. Designed to make scaling easy.
 
 # Using
+
 `pion/turn` is an API for building STUN/TURN clients and servers, not a binary you deploy then configure. It may require copying our examples and
 making minor modifications to fit your need, no knowledge of Go is required however. You may be able to download the pre-made binaries of our examples
 if you wish to get started quickly.
@@ -38,6 +39,7 @@ After you instantiate an instance of a Pion TURN server or client you interact w
 [examples](examples) or [GoDoc](https://godoc.org/github.com/pion/turn)
 
 # Examples
+
 We try to cover most common use cases in [examples](examples). If more examples could be helpful please file an issue, we are always looking
 to expand and improve `pion/turn` to make it easier for developers.
 
@@ -49,21 +51,27 @@ You can also see `pion/turn` usage in [pion/ice](https://github.com/pion/ice)
 # [FAQ](https://github.com/pion/webrtc/wiki/FAQ)
 
 ### RFCs
+
 #### Implemented
-* [RFC 5389: Session Traversal Utilities for NAT (STUN)](https://tools.ietf.org/html/rfc5389)
-* [RFC 5766: Traversal Using Relays around NAT (TURN)](https://tools.ietf.org/html/rfc5766)
+
+- [RFC 5389: Session Traversal Utilities for NAT (STUN)](https://tools.ietf.org/html/rfc5389)
+- [RFC 5766: Traversal Using Relays around NAT (TURN)](https://tools.ietf.org/html/rfc5766)
 
 #### Planned
-* [RFC 6062: Traversal Using Relays around NAT (TURN) Extensions for TCP Allocations](https://tools.ietf.org/html/rfc6062)
-* [RFC 6156: Traversal Using Relays around NAT (TURN) Extension for IPv6](https://tools.ietf.org/html/rfc6156)
+
+- [RFC 6062: Traversal Using Relays around NAT (TURN) Extensions for TCP Allocations](https://tools.ietf.org/html/rfc6062)
+- [RFC 6156: Traversal Using Relays around NAT (TURN) Extension for IPv6](https://tools.ietf.org/html/rfc6156)
 
 ### Community
+
 Pion has an active community on the [Golang Slack](https://pion.ly/slack). Sign up and join the **#pion** channel for discussions and support.
 
 We are always looking to support **your projects**. Please reach out if you have something to build!
 
 ### Contributing
+
 Check out the **[contributing wiki](https://github.com/pion/webrtc/wiki/Contributing)** to join the group of amazing people making this project possible.
 
 ### License
+
 MIT License - see [LICENSE.md](LICENSE.md) for full text

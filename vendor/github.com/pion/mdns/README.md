@@ -19,33 +19,40 @@
 Go mDNS implementation. The original user is Pion WebRTC, but we would love to see it work for everyone.
 
 ### Running Server
+
 For a mDNS server that responds to queries for `pion-test.local`
+
 ```sh
 go run examples/server/main.go
 ```
 
-
 ### Running Client
+
 To query using Pion you can run the `query` example
+
 ```sh
 go run examples/query/main.go
 ```
 
 You can use the macOS client
+
 ```
 dns-sd -q pion-test.local
 ```
 
 Or the avahi client
+
 ```
 avahi-resolve -a pion-test.local
 ```
 
 ### References
+
 https://tools.ietf.org/html/rfc6762
 https://tools.ietf.org/id/draft-ietf-rtcweb-mdns-ice-candidates-02.html
 
 ### Community
+
 Pion has an active community on the [Golang Slack](https://invite.slack.golangbridge.org/). Sign up and join the **#pion** channel for discussions and support. You can also use [Pion mailing list](https://groups.google.com/forum/#!forum/pion).
 
 We are always looking to support **your projects**. Please reach out if you have something to build!
@@ -53,7 +60,9 @@ We are always looking to support **your projects**. Please reach out if you have
 If you need commercial support or don't want to use public methods you can contact us at [team@pion.ly](mailto:team@pion.ly)
 
 ### Contributing
+
 Check out the **[contributing wiki](https://github.com/pion/webrtc/wiki/Contributing)** to join the group of amazing people making this project possible:
 
 ### License
+
 MIT License - see [LICENSE](LICENSE) for full text

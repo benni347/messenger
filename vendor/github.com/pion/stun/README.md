@@ -19,9 +19,11 @@
 <br>
 
 ### Roadmap
+
 The library is used as a part of our WebRTC implementation. Please refer to that [roadmap](https://github.com/pion/webrtc/issues/9) to track our major milestones.
 
 ### Community
+
 Pion has an active community on the [Golang Slack](https://invite.slack.golangbridge.org/). Sign up and join the **#pion** channel for discussions and support. You can also use [Pion mailing list](https://groups.google.com/forum/#!forum/pion).
 
 We are always looking to support **your projects**. Please reach out if you have something to build!
@@ -29,18 +31,22 @@ We are always looking to support **your projects**. Please reach out if you have
 If you need commercial support or don't want to use public methods you can contact us at [team@pion.ly](mailto:team@pion.ly)
 
 ### Contributing
+
 Check out the **[contributing wiki](https://github.com/pion/webrtc/wiki/Contributing)** to join the group of amazing people making this project possible:
 
 - See [AUTHORS.txt](AUTHORS.txt)
 
 # STUN
+
 Package stun implements Session Traversal Utilities for NAT (STUN) [[RFC5389](https://tools.ietf.org/html/rfc5389)]
 protocol and [client](https://pkg.go.dev/github.com/pion/stun#Client) with no external dependencies and zero allocations in hot paths.
 Client [supports](https://pkg.go.dev/github.com/pion/stun#WithRTO) automatic request retransmissions.
 
 # Example
+
 You can get your current IP address from any STUN server by sending
 binding request. See more idiomatic example at `cmd/stun-client`.
+
 ```go
 package main
 
@@ -76,6 +82,7 @@ func main() {
 ```
 
 ## Supported RFCs
+
 - [x] [RFC 5389](https://tools.ietf.org/html/rfc5389) — Session Traversal Utilities for NAT
 - [x] [RFC 5769](https://tools.ietf.org/html/rfc5769) — Test Vectors for STUN
 - [x] [RFC 6062](https://tools.ietf.org/html/rfc6062) — TURN extensions for TCP allocations
@@ -85,6 +92,7 @@ func main() {
 - [x] [RFC 5780](https://tools.ietf.org/html/rfc5780) — NAT Behavior Discovery Using STUN via [cmd/stun-nat-behaviour](cmd/stun-nat-behaviour)
 
 # Stability
+
 Package is currently stable, no backward incompatible changes are expected
 with exception of critical bugs or security fixes.
 
@@ -92,19 +100,23 @@ Additional attributes are unlikely to be implemented in scope of stun package,
 the only exception is constants for attribute or message types.
 
 # RFC 3489 notes
+
 RFC 5389 obsoletes RFC 3489, so implementation was ignored by purpose, however,
 RFC 3489 can be easily implemented as separate package.
 
 # Requirements
+
 Go 1.12 is currently supported and tested in CI.
 
 # Testing
+
 Client behavior is tested and verified in many ways:
-  * End-To-End with long-term credentials
-    * **coturn**: The coturn [server](https://github.com/coturn/coturn/wiki/turnserver) (linux)
-  * Bunch of code static checkers (linters)
-  * Standard unit-tests with coverage reporting (linux {amd64, **arm**64}, windows and darwin)
-  * Explicit API backward compatibility [check](https://github.com/gortc/api), see `api` directory
+
+- End-To-End with long-term credentials
+  - **coturn**: The coturn [server](https://github.com/coturn/coturn/wiki/turnserver) (linux)
+- Bunch of code static checkers (linters)
+- Standard unit-tests with coverage reporting (linux {amd64, **arm**64}, windows and darwin)
+- Explicit API backward compatibility [check](https://github.com/gortc/api), see `api` directory
 
 See [TeamCity project](https://tc.gortc.io/project.html?projectId=stun&guest=1) and `e2e` directory
 for more information. Also the Wireshark `.pcap` files are available for e2e test in
@@ -169,4 +181,5 @@ ok      github.com/pion/stun   60.973s
 ```
 
 ### License
+
 MIT License - see [LICENSE](LICENSE) for full text

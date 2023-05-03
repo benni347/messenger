@@ -31,6 +31,7 @@ color.Println(color.Cyan("cyan"))
 color.Println(color.White("white"))
 color.Println(color.Grey("grey"))
 ```
+
 ![Colored Text](http://i.imgur.com/8RtY1QR.png)
 
 ### Colored background
@@ -45,6 +46,7 @@ color.Println(color.MagentaBg("magenta background"))
 color.Println(color.CyanBg("cyan background"))
 color.Println(color.WhiteBg("white background"))
 ```
+
 ![Colored Background](http://i.imgur.com/SrrS6lw.png)
 
 ### Emphasis
@@ -58,6 +60,7 @@ color.Println(color.Inverse("inverse"))
 color.Println(color.Hidden("hidden"))
 color.Println(color.Strikeout("strikeout"))
 ```
+
 ![Emphasis](http://i.imgur.com/3RSJBbc.png)
 
 ### Mix and match
@@ -69,6 +72,7 @@ color.Println(color.Yellow("dim yellow", color.D))
 color.Println(color.Cyan("inverse cyan", color.In))
 color.Println(color.Blue("bold underline dim blue", color.B, color.U, color.D))
 ```
+
 ![Mix and match](http://i.imgur.com/jWGq9Ca.png)
 
 ### Enable/Disable the package

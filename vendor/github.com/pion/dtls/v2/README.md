@@ -24,17 +24,19 @@ A long term goal is a professional security review, and maybe an inclusion in st
 [rfc6347]: https://tools.ietf.org/html/rfc6347
 
 ### Goals/Progress
+
 This will only be targeting DTLS 1.2, and the most modern/common cipher suites.
 We would love contributions that fall under the 'Planned Features' and any bug fixes!
 
 #### Current features
-* DTLS 1.2 Client/Server
-* Key Exchange via ECDHE(curve25519, nistp256, nistp384) and PSK
-* Packet loss and re-ordering is handled during handshaking
-* Key export ([RFC 5705][rfc5705])
-* Serialization and Resumption of sessions
-* Extended Master Secret extension ([RFC 7627][rfc7627])
-* ALPN extension ([RFC 7301][rfc7301])
+
+- DTLS 1.2 Client/Server
+- Key Exchange via ECDHE(curve25519, nistp256, nistp384) and PSK
+- Packet loss and re-ordering is handled during handshaking
+- Key export ([RFC 5705][rfc5705])
+- Serialization and Resumption of sessions
+- Extended Master Secret extension ([RFC 7627][rfc7627])
+- ALPN extension ([RFC 7301][rfc7301])
 
 [rfc5705]: https://tools.ietf.org/html/rfc5705
 [rfc7627]: https://tools.ietf.org/html/rfc7627
@@ -44,26 +46,26 @@ We would love contributions that fall under the 'Planned Features' and any bug f
 
 ##### ECDHE
 
-* TLS_ECDHE_ECDSA_WITH_AES_128_CCM ([RFC 6655][rfc6655])
-* TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8 ([RFC 6655][rfc6655])
-* TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 ([RFC 5289][rfc5289])
-* TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 ([RFC 5289][rfc5289])
-* TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 ([RFC 5289][rfc5289])
-* TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 ([RFC 5289][rfc5289])
-* TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA ([RFC 8422][rfc8422])
-* TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA ([RFC 8422][rfc8422])
+- TLS_ECDHE_ECDSA_WITH_AES_128_CCM ([RFC 6655][rfc6655])
+- TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8 ([RFC 6655][rfc6655])
+- TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 ([RFC 5289][rfc5289])
+- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 ([RFC 5289][rfc5289])
+- TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 ([RFC 5289][rfc5289])
+- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 ([RFC 5289][rfc5289])
+- TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA ([RFC 8422][rfc8422])
+- TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA ([RFC 8422][rfc8422])
 
 ##### PSK
 
-* TLS_PSK_WITH_AES_128_CCM ([RFC 6655][rfc6655])
-* TLS_PSK_WITH_AES_128_CCM_8 ([RFC 6655][rfc6655])
-* TLS_PSK_WITH_AES_256_CCM_8 ([RFC 6655][rfc6655])
-* TLS_PSK_WITH_AES_128_GCM_SHA256 ([RFC 5487][rfc5487])
-* TLS_PSK_WITH_AES_128_CBC_SHA256 ([RFC 5487][rfc5487])
+- TLS_PSK_WITH_AES_128_CCM ([RFC 6655][rfc6655])
+- TLS_PSK_WITH_AES_128_CCM_8 ([RFC 6655][rfc6655])
+- TLS_PSK_WITH_AES_256_CCM_8 ([RFC 6655][rfc6655])
+- TLS_PSK_WITH_AES_128_GCM_SHA256 ([RFC 5487][rfc5487])
+- TLS_PSK_WITH_AES_128_CBC_SHA256 ([RFC 5487][rfc5487])
 
 ##### ECDHE & PSK
 
-* TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA256 ([RFC 5489][rfc5489])
+- TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA256 ([RFC 5489][rfc5489])
 
 [rfc5289]: https://tools.ietf.org/html/rfc5289
 [rfc8422]: https://tools.ietf.org/html/rfc8422
@@ -72,12 +74,14 @@ We would love contributions that fall under the 'Planned Features' and any bug f
 [rfc5489]: https://tools.ietf.org/html/rfc5489
 
 #### Planned Features
-* Chacha20Poly1305
+
+- Chacha20Poly1305
 
 #### Excluded Features
-* DTLS 1.0
-* Renegotiation
-* Compression
+
+- DTLS 1.0
+- Renegotiation
+- Compression
 
 ### Using
 
@@ -85,18 +89,23 @@ This library needs at least Go 1.13, and you should have [Go modules
 enabled](https://github.com/golang/go/wiki/Modules).
 
 #### Pion DTLS
+
 For a DTLS 1.2 Server that listens on 127.0.0.1:4444
+
 ```sh
 go run examples/listen/selfsign/main.go
 ```
 
 For a DTLS 1.2 Client that connects to 127.0.0.1:4444
+
 ```sh
 go run examples/dial/selfsign/main.go
 ```
 
 #### OpenSSL
+
 Pion DTLS can connect to itself and OpenSSL.
+
 ```
   // Generate a certificate
   openssl ecparam -out key.pem -name prime256v1 -genkey
@@ -111,10 +120,11 @@ Pion DTLS can connect to itself and OpenSSL.
 ```
 
 ### Using with PSK
+
 Pion DTLS also comes with examples that do key exchange via PSK
 
-
 #### Pion DTLS
+
 ```sh
 go run examples/listen/psk/main.go
 ```
@@ -124,6 +134,7 @@ go run examples/dial/psk/main.go
 ```
 
 #### OpenSSL
+
 ```
   // Use with examples/dial/psk/main.go
   openssl s_server -dtls1_2 -accept 4444 -nocert -psk abc123 -cipher PSK-AES128-CCM8
@@ -133,7 +144,9 @@ go run examples/dial/psk/main.go
 ```
 
 ### Contributing
+
 Check out the **[contributing wiki](https://github.com/pion/webrtc/wiki/Contributing)** to join the group of amazing people making this project possible:
 
 ### License
+
 MIT License - see [LICENSE](LICENSE) for full text

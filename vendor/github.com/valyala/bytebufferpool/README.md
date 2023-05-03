@@ -11,11 +11,12 @@ This amount equals to the maximum total size of the byte buffers
 in concurrent use.
 
 # Benchmark results
+
 Currently bytebufferpool is fastest and most effective buffer pool written in Go.
 
 You can find results [here](https://omgnull.github.io/go-benchmark/buffer/).
 
 # bytebufferpool users
 
-* [fasthttp](https://github.com/valyala/fasthttp)
-* [quicktemplate](https://github.com/valyala/quicktemplate)
+- [fasthttp](https://github.com/valyala/fasthttp)
+- [quicktemplate](https://github.com/valyala/quicktemplate)

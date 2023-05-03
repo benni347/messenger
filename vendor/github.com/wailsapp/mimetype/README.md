@@ -28,6 +28,7 @@
 </p>
 
 ## Features
+
 - fast and precise MIME type and file extension detection
 - long list of [supported MIME types](supported_mimes.md)
 - posibility to [extend](https://pkg.go.dev/github.com/wailsapp/mimetype#example-package-Extend) with other file formats
@@ -36,11 +37,13 @@
 - safe for concurrent usage
 
 ## Install
+
 ```bash
 go get github.com/wailsapp/mimetype
 ```
 
 ## Usage
+
 ```go
 mtype := mimetype.Detect([]byte)
 // OR
@@ -49,31 +52,37 @@ mtype, err := mimetype.DetectReader(io.Reader)
 mtype, err := mimetype.DetectFile("/path/to/file")
 fmt.Println(mtype.String(), mtype.Extension())
 ```
+
 See the [runnable Go Playground examples](https://pkg.go.dev/github.com/wailsapp/mimetype#pkg-overview).
 
 ## Usage'
+
 Only use libraries like **mimetype** as a last resort. Content type detection
 using magic numbers is slow, inaccurate, and non-standard. Most of the times
 protocols have methods for specifying such metadata; e.g., `Content-Type` header
 in HTTP and SMTP.
 
 ## FAQ
+
 Q: My file is in the list of [supported MIME types](supported_mimes.md) but
 it is not correctly detected. What should I do?
 
 A: Some file formats (often Microsoft Office documents) keep their signatures
 towards the end of the file. Try increasing the number of bytes used for detection
 with:
+
 ```go
 mimetype.SetLimit(1024*1024) // Set limit to 1MB.
 // or
 mimetype.SetLimit(0) // No limit, whole file content used.
 mimetype.DetectFile("file.doc")
 ```
+
 If increasing the limit does not help, please
 [open an issue](https://github.com/wailsapp/mimetype/issues/new?assignees=&labels=&template=mismatched-mime-type-detected.md&title=).
 
 ## Structure
+
 **mimetype** uses a hierarchical structure to keep the MIME type detection logic.
 This reduces the number of calls needed for detecting the file type. The reason
 behind this choice is that there are file formats used as containers for other
@@ -86,11 +95,13 @@ To prevent loading entire files into memory, when detecting from a
 [reader](https://pkg.go.dev/github.com/wailsapp/mimetype#DetectReader)
 or from a [file](https://pkg.go.dev/github.com/wailsapp/mimetype#DetectFile)
 **mimetype** limits itself to reading only the header of the input.
+
 <div align="center">
   <img alt="structure" src="https://github.com/wailsapp/mimetype/blob/420a05228c6a6efbb6e6f080168a25663414ff36/mimetype.gif?raw=true" width="88%">
 </div>
 
 ## Performance
+
 Thanks to the hierarchical structure, searching for common formats first,
 and limiting itself to file headers, **mimetype** matches the performance of
 stdlib `http.DetectContentType` while outperforming the alternative package.
@@ -105,4 +116,5 @@ BenchmarkMatchPng-24       165 ns/op         221 ns/op           1176 ns/op
 ```
 
 ## Contributing
+
 See [CONTRIBUTING.md](CONTRIBUTING.md).

@@ -1,16 +1,15 @@
-fasttemplate
-============
+# fasttemplate
 
 Simple and fast template engine for Go.
 
 Fasttemplate performs only a single task - it substitutes template placeholders
 with user-defined values. At high speed :)
 
-Take a look at [quicktemplate](https://github.com/valyala/quicktemplate) if you  need fast yet powerful html template engine.
+Take a look at [quicktemplate](https://github.com/valyala/quicktemplate) if you need fast yet powerful html template engine.
 
-*Please note that fasttemplate doesn't do any escaping on template values
+_Please note that fasttemplate doesn't do any escaping on template values
 unlike [html/template](http://golang.org/pkg/html/template/) do. So values
-must be properly escaped before passing them to fasttemplate.*
+must be properly escaped before passing them to fasttemplate._
 
 Fasttemplate is faster than [text/template](http://golang.org/pkg/text/template/),
 [strings.Replace](http://golang.org/pkg/strings/#Replace),
@@ -34,15 +33,11 @@ BenchmarkFastTemplateExecuteString-4    	 3000000	       572 ns/op	     144 B/op
 BenchmarkFastTemplateExecuteTagFunc-4   	 2000000	       743 ns/op	     144 B/op	       3 allocs/op
 ```
 
-
-Docs
-====
+# Docs
 
 See http://godoc.org/github.com/valyala/fasttemplate .
 
-
-Usage
-=====
+# Usage
 
 ```go
 	template := "http://{{host}}/?q={{query}}&foo={{bar}}{{bar}}"
@@ -58,9 +53,7 @@ Usage
 	// http://google.com/?q=hello%3Dworld&foo=foobarfoobar
 ```
 
-
-Advanced usage
-==============
+# Advanced usage
 
 ```go
 	template := "Hello, [user]! You won [prize]!!! [foobar]"

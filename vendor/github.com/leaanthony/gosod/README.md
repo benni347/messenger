@@ -12,22 +12,22 @@
    <a href="https://app.fossa.io/projects/git%2Bgithub.com%2Fleaanthony%2Fgosod?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.io/api/projects/git%2Bgithub.com%2Fleaanthony%2Fgosod.svg?type=shield"/></a>
 </p>
 
-
 Features:
-  - Scaffold out project directories from templates
-  - Uses Go's native templating engine
-  - Uses `fs.FS` for input, so it works well with `go:embed` and [debme](https://github.com/leaanthony/debme)
-  - Go alternative to [cookiecutter](https://github.com/cookiecutter/cookiecutter)
 
-## Installation 
+- Scaffold out project directories from templates
+- Uses Go's native templating engine
+- Uses `fs.FS` for input, so it works well with `go:embed` and [debme](https://github.com/leaanthony/debme)
+- Go alternative to [cookiecutter](https://github.com/cookiecutter/cookiecutter)
+
+## Installation
 
 `go get github.com/leaanthony/gosod`
 
 ## Usage
 
-  1. Define a template directory
-  2. Define some data
-  3. Extract to a target directory
+1. Define a template directory
+2. Define some data
+3. Extract to a target directory
 
 ```go
 package main
@@ -65,10 +65,10 @@ func main() {
 	myConfig := &config{
 		Name: "Mat",
 	}
-		
+
 	// Ignore files
 	basic.IgnoreFile("ignored.txt")
-	
+
 	// Custom template filters
 	basic.SetTemplateFilters([]string{ ".filtername", ".tmpl" })
 
@@ -77,7 +77,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	// Ouput FS:
 	// generated/
 	// ├── custom.txt
@@ -92,10 +92,10 @@ func main() {
 
 A template directory is simply a directory structure contianing files you wish to copy. The algorithm for copying is:
 
-  * Categorise all files into one of: directory, standard file and template files
-	* Create the directory structure
-	* Copy standard files
-	* Copy template files, assembled using the given data
+- Categorise all files into one of: directory, standard file and template files
+  - Create the directory structure
+  - Copy standard files
+  - Copy template files, assembled using the given data
 
 Template files, by default, are any file with ".tmpl" in their filename. To change this, use `SetTemplateFilters([]string)`. This allows you to set any number of filters.
 

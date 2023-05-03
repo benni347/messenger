@@ -1,15 +1,9 @@
-
 <div style="text-align:center; width:400px">
   <img src="logo.png"/>
   Utility class for handling slices.
 </div>
 
-
-[![Go Report Card](https://goreportcard.com/badge/github.com/leaanthony/slicer)](https://goreportcard.com/report/github.com/leaanthony/slicer)  [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/leaanthony/slicer) [![CodeFactor](https://www.codefactor.io/repository/github/leaanthony/slicer/badge)](https://www.codefactor.io/repository/github/leaanthony/slicer) [![codecov](https://codecov.io/gh/leaanthony/slicer/branch/master/graph/badge.svg)](https://codecov.io/gh/leaanthony/slicer) [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)  
-
-
-
-
+[![Go Report Card](https://goreportcard.com/badge/github.com/leaanthony/slicer)](https://goreportcard.com/report/github.com/leaanthony/slicer) [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/leaanthony/slicer) [![CodeFactor](https://www.codefactor.io/repository/github/leaanthony/slicer/badge)](https://www.codefactor.io/repository/github/leaanthony/slicer) [![codecov](https://codecov.io/gh/leaanthony/slicer/branch/master/graph/badge.svg)](https://codecov.io/gh/leaanthony/slicer) [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
 ## Install
 
@@ -26,7 +20,7 @@
     s.Add("two")
     s.AddSlice([]string{"three","four"})
     fmt.Printf("My slice = %+v\n", s.AsSlice())
-    
+
     t := slicer.String()
     t.Add("zero")
     t.AddSlicer(s)
@@ -40,7 +34,7 @@
 - Int8
 - Int16
 - Int32
-- Int64  
+- Int64
 - UInt
 - UInt8
 - UInt16
@@ -51,22 +45,23 @@
 - String
 - Bool
 - Interface
-  
+
 ## API
 
 ### Construction
 
 Create new Slicers by calling one of the following functions:
-  - Int()
-  - Int8()
-  - Int16()
-  - Int32()
-  - Int64()
-  - Float32()
-  - Float64()
-  - String()
-  - Bool()
-  - Interface()
+
+- Int()
+- Int8()
+- Int16()
+- Int32()
+- Int64()
+- Float32()
+- Float64()
+- String()
+- Bool()
+- Interface()
 
 ```
   s := slicer.String()
@@ -79,7 +74,7 @@ If you wish to convert an existing slice to a Slicer, you may pass it in during 
   s := slicer.String(values)
 ```
 
-### Add 
+### Add
 
 Adds a value to the slice.
 
@@ -99,6 +94,7 @@ Adds a value to the slice if it doesn't already contain it.
   result := s.Join(",")
   // result is "one,two,three"
 ```
+
 ### AddSlice
 
 Adds an existing slice of values to a slicer
@@ -139,10 +135,10 @@ Filter the values of a slicer based on the result of calling the given function 
     return v > 5
   })
   // result is []int{7,9,9}
-  
+
 ```
 
-### Each 
+### Each
 
 Each iterates over all the values of a slicer, passing them in as paramter to a function
 
@@ -174,6 +170,7 @@ Returns a string with the slicer elements separated by the given separator
   result := a.Join(",")
   // result is "one,two,three"
 ```
+
 ### Length
 
 Returns the length of the slice

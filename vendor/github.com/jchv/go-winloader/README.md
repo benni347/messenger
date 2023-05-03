@@ -31,94 +31,94 @@ log.Printf("1 + 2 = %d", result)
 
 ## TODO
 
-* WinSXS support
+- WinSXS support
 
-    * Some binaries have manifests requesting a specific version of a library.
-      There is an undocumented library at sxs.dll. Since it's undocumented,
-      it might be difficult to work out how to use it.
-    
-    * It'd be nice to have a reimplementation of the whole SXS algorithm, just
-      for completeness sake. (It might even be useful to Wine.)
+  - Some binaries have manifests requesting a specific version of a library.
+    There is an undocumented library at sxs.dll. Since it's undocumented,
+    it might be difficult to work out how to use it.
 
-* Additional compatibility hacks
+  - It'd be nice to have a reimplementation of the whole SXS algorithm, just
+    for completeness sake. (It might even be useful to Wine.)
 
-    * Because we are not Windows loader, Windows loader's internal structures
-      do not update when we load binaries into the address space.
+- Additional compatibility hacks
 
-        * Because of this, our HINSTANCE value may not always work properly.
+  - Because we are not Windows loader, Windows loader's internal structures
+    do not update when we load binaries into the address space.
 
-        * There's a hack that sends the process HINSTANCE instead.
+    - Because of this, our HINSTANCE value may not always work properly.
 
-        * There's a stub for a hack that would inject the library into the PEB
-        loader data linked lists.
+    - There's a hack that sends the process HINSTANCE instead.
 
-            * This might fail catastrophically or have worse consequences, but it
-            would be interesting to explore.
+    - There's a stub for a hack that would inject the library into the PEB
+      loader data linked lists.
 
-        * Another useful hack would be one that can override calls to important
-        Windows functions and implement their functionality for cases when our
-        own false HINSTANCE is used. This could be done on a process-wide level
-        (for best compatibility) or directly on the import table (usually enough,
-        but tricky modules will bypass this.)
+          * This might fail catastrophically or have worse consequences, but it
+          would be interesting to explore.
 
-* Better support for loading executable images.
+    - Another useful hack would be one that can override calls to important
+      Windows functions and implement their functionality for cases when our
+      own false HINSTANCE is used. This could be done on a process-wide level
+      (for best compatibility) or directly on the import table (usually enough,
+      but tricky modules will bypass this.)
 
-    * Right now, if you attempt to load an executable, it executes the
-      entrypoint eagerly when it tries to send the DLL attach message.
+- Better support for loading executable images.
 
-* Threading support.
+  - Right now, if you attempt to load an executable, it executes the
+    entrypoint eagerly when it tries to send the DLL attach message.
 
-    * Perhaps have a helper function that can run a function in a new thread,
-      automatically calling `DLL_THREAD_ATTACH`/`DLL_THREAD_DETACH` as needed
-      on memory loaded modules.
-    
-    * While it may not be necessary for all libraries, it is likely necessary
-      for libraries that have statically linked the MSVC runtime, and for
-      libraries that use thread-local storage. Otherwise, calling functions on
-      threads other than the initial one is likely to crash.
+- Threading support.
 
-    * Even better: if we can find a place to hook new threads, this would be a
-      nice hack to support.
+  - Perhaps have a helper function that can run a function in a new thread,
+    automatically calling `DLL_THREAD_ATTACH`/`DLL_THREAD_DETACH` as needed
+    on memory loaded modules.
 
-* Versatility
+  - While it may not be necessary for all libraries, it is likely necessary
+    for libraries that have statically linked the MSVC runtime, and for
+    libraries that use thread-local storage. Otherwise, calling functions on
+    threads other than the initial one is likely to crash.
 
-    * Operating systems other than Windows:
+  - Even better: if we can find a place to hook new threads, this would be a
+    nice hack to support.
 
-        * Need to figure out how to make MSABI calls. Maybe CGo with msabi
-          function pointers, or maybe we need to write out the asm by hand.
+- Versatility
 
-        * Emulator would need the ability to generate stub addresses that call
-          back into Go code, so we can use them to handle imports and whatnot.
-        
-        * Would need a custom loader that lets you emulate calls to other
-          libraries.
+  - Operating systems other than Windows:
 
-    * CPU emulation
+    - Need to figure out how to make MSABI calls. Maybe CGo with msabi
+      function pointers, or maybe we need to write out the asm by hand.
 
-        * Should be possible implement virtual machines with emulated CPUs.
+    - Emulator would need the ability to generate stub addresses that call
+      back into Go code, so we can use them to handle imports and whatnot.
 
-        * Similar to the outside Windows case, we need a custom loader to
-          emulate library calls. Although we *can* use the host system's
-          libraries, we need to translate API calls so that they work
-          correctly, like translating addresses and marshaling/unmarshaling
-          data as necessary, and of course calling conventions are entirely
-          different.
+    - Would need a custom loader that lets you emulate calls to other
+      libraries.
 
-        * We should provide shims at least for running 32-bit binaries in
-          64-bit processes using emulation. How much of the API to emulate
-          would be hard to guage, but at least for documented APIs it should
-          be relatively straightforward work.
+  - CPU emulation
 
-    * Legacy formats
+    - Should be possible implement virtual machines with emulated CPUs.
 
-        * Currently go-winloader only supports loading PE32 or PE64 binaries.
+    - Similar to the outside Windows case, we need a custom loader to
+      emulate library calls. Although we _can_ use the host system's
+      libraries, we need to translate API calls so that they work
+      correctly, like translating addresses and marshaling/unmarshaling
+      data as necessary, and of course calling conventions are entirely
+      different.
 
-        * It might be useful to someone to implement loading very old legacy
-        binaries, like NE or LX.
+    - We should provide shims at least for running 32-bit binaries in
+      64-bit processes using emulation. How much of the API to emulate
+      would be hard to guage, but at least for documented APIs it should
+      be relatively straightforward work.
 
-    * Expose lower level APIs
+  - Legacy formats
 
-        * In order to allow this library to be useful while it is still in
-          heavy flux, a very small surface area is exposed today. As it
-          matures, more of these internal libraries should be exposed as
-          public API.
+    - Currently go-winloader only supports loading PE32 or PE64 binaries.
+
+    - It might be useful to someone to implement loading very old legacy
+      binaries, like NE or LX.
+
+  - Expose lower level APIs
+
+    - In order to allow this library to be useful while it is still in
+      heavy flux, a very small surface area is exposed today. As it
+      matures, more of these internal libraries should be exposed as
+      public API.

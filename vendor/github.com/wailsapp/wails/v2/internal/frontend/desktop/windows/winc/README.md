@@ -1,7 +1,7 @@
 # winc
 
 ** This is a fork of [tadvi/winc](https://github.com/tadvi/winc) for the sole purpose of integration
-with [Wails](https://github.com/wailsapp/wails). This repository comes with ***no support*** **
+with [Wails](https://github.com/wailsapp/wails). This repository comes with \***no support**\* **
 
 Common library for Go GUI apps on Windows. It is for Windows OS only. This makes library smaller than some other UI
 libraries for Go.
@@ -16,7 +16,7 @@ No other dependencies except Go standard library.
 
 If you want to package icon files and other resources into binary **rsrc** tool is recommended:
 
-	rsrc -manifest app.manifest -ico=app.ico,application_edit.ico,application_error.ico -o rsrc.syso
+    rsrc -manifest app.manifest -ico=app.ico,application_edit.ico,application_error.ico -o rsrc.syso
 
 Here app.manifest is XML file in format:
 
@@ -35,7 +35,7 @@ Here app.manifest is XML file in format:
 Most Windows applications do not display command prompt. Build your Go project with flag to indicate that it is Windows
 GUI binary:
 
-	go build -ldflags="-H windowsgui"
+    go build -ldflags="-H windowsgui"
 
 ## Samples
 
@@ -160,7 +160,7 @@ usually due to string UTF8 and UTF16 conversions. But there are other types of c
 
 When developing your own controls you might also need to:
 
-	import "github.com/wailsapp/wails/v2/internal/frontend/desktop/windows/winc/w32"
+    import "github.com/wailsapp/wails/v2/internal/frontend/desktop/windows/winc/w32"
 
 w32 has Win32 API low level constants and functions.
 
@@ -177,5 +177,3 @@ This library is built on
 [AllenDang/gform Windows GUI framework for Go](https://github.com/AllenDang/gform)
 
 **winc** takes most design decisions from **gform** and adds many more controls and code samples to it.
-
-

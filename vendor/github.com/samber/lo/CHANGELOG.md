@@ -5,71 +5,87 @@
 ## 1.38.1 (2023-03-20)
 
 Improvement:
+
 - Async and AsyncX: now returns `<-chan T` instead of `chan T`
 
 ## 1.38.0 (2023-03-20)
 
 Adding:
+
 - lo.ValueOr
 - lo.DebounceBy
 - lo.EmptyableToPtr
 
 Improvement:
+
 - Substring: add support for non-english chars
 
 Fix:
+
 - Async: Fix goroutine leak
 
 ## 1.37.0 (2022-12-15)
 
 Adding:
+
 - lo.PartialX
 - lo.Transaction
 
 Improvement:
+
 - lo.Associate / lo.SliceToMap: faster memory allocation
 
 Chore:
-- Remove *_test.go files from releases, in order to cleanup dev dependencies
+
+- Remove \*\_test.go files from releases, in order to cleanup dev dependencies
 
 ## 1.36.0 (2022-11-28)
 
 Adding:
+
 - lo.AttemptWhile
 - lo.AttemptWhileWithDelay
 
 ## 1.35.0 (2022-11-15)
 
 Adding:
+
 - lo.RandomString
 - lo.BufferWithTimeout (alias to lo.BatchWithTimeout)
 - lo.Buffer (alias to lo.Batch)
 
 Change:
+
 - lo.Slice: avoid panic caused by out-of-bounds
 
 Deprecation:
+
 - lo.BatchWithTimeout
 - lo.Batch
 
 ## 1.34.0 (2022-11-12)
 
 Improving:
+
 - lo.Union: faster and can receive more than 2 lists
 
 Adding:
+
 - lo.FanIn (alias to lo.ChannelMerge)
 - lo.FanOut
 
 Deprecation:
+
 - lo.ChannelMerge
 
 ## 1.33.0 (2022-10-14)
 
 Adding:
+
 - lo.ChannelMerge
 
 Improving:
+
 - helpers with callbacks/predicates/iteratee now have named arguments, for easier autocompletion
 
 ## 1.32.0 (2022-10-10)
@@ -214,6 +230,7 @@ Adding:
 - lo.SumBy
 
 Change:
+
 - Removed generic type definition for lo.Try0: `lo.Try0[T]()` -> `lo.Try0()`
 
 ## 1.19.0 (2022-04-30)
@@ -372,7 +389,7 @@ Adding `i int` param to `lo.Map()`, `lo.Filter()`, `lo.ForEach()` and `lo.Reduce
 
 ## 1.0.0 (2022-03-02)
 
-*Initial release*
+_Initial release_
 
 Supported helpers for slices:
 
