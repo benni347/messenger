@@ -1,14 +1,18 @@
 version = 1
 
+execulde_patterns = ["vendor/**"]
+
+
 [[analyzers]]
 name = "go"
 
-  [analyzers.meta]
-  import_root = "github.com/benni347/messenger"
-  dependencies_vendored = true
+[analyzers.meta]
+import_root = "github.com/benni347/messenger"
+dependencies_vendored = true
 
 [[transformers]]
 name = "gofmt"
 
 [[transformers]]
 name = "gofumpt"
+
