@@ -188,8 +188,12 @@ func (a *AllConfig) Connect() error {
 	return nil
 }
 
-func (w *WebRTCConfig) Send(message string) {
-	w.localChannel.SendText(message)
+func (w *WebRTCConfig) Send(message string) error {
+	err := w.localChannel.SendText(message)
+	if err != nil {
+		utils.PrintError("During the sending message an error ocured", err)
+		return err
+	}
 	w.remoteChannel.SendText(message)
 }
 
