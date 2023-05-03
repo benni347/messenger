@@ -12,6 +12,8 @@ import (
 // App struct
 type App struct {
 	ctx context.Context
+	Config
+	WebRTCConfig
 }
 
 // NewApp creates a new App application struct
@@ -39,12 +41,6 @@ type WebRTCConfig struct {
 	remoteChannel    *webrtc.DataChannel
 }
 
-type AllConfig struct {
-	Config
-	WebRTCConfig
-	App
-}
-
 func (a *App) CreatePeerConnection() *webrtc.PeerConnection {
 	// Create a new RTCPeerConnection
 	peerConnection, err := webrtc.NewPeerConnection(webrtc.Configuration{})
@@ -62,7 +58,7 @@ func (w *WebRTCConfig) Disconnect() {
 	w.remoteConnection.Close()
 }
 
-func (a *AllConfig) Connect() error {
+func (a *App) Connect() error {
 	a.Config.verbose = true
 	m := &utils.MessengerUtils{
 		Verbose: a.Config.verbose,
@@ -203,7 +199,7 @@ func (w *WebRTCConfig) Send(message string) error {
 	return nil
 }
 
-func (a *AllConfig) ReceiveLocalMessage() string {
+func (a *App) ReceiveLocalMessage() string {
 	m := &utils.MessengerUtils{
 		Verbose: a.Config.verbose,
 	}
@@ -211,7 +207,7 @@ func (a *AllConfig) ReceiveLocalMessage() string {
 	return a.WebRTCConfig.localMessage
 }
 
-func (a *AllConfig) ReceiveRemoteMessage() string {
+func (a *App) ReceiveRemoteMessage() string {
 	m := &utils.MessengerUtils{
 		Verbose: a.Config.verbose,
 	}
