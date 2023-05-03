@@ -194,11 +194,13 @@ func (w *WebRTCConfig) Send(message string) error {
 		utils.PrintError("During the sending to the local channel an error ocured", err)
 		return err
 	}
-	err := w.remoteChannel.SendText(message)
+	err = w.remoteChannel.SendText(message)
 	if err != nil {
 		utils.PrintError("During the sending to the remote channel an error ocured", err)
 		return err
 	}
+
+	return nil
 }
 
 func (a *AllConfig) ReceiveLocalMessage() string {
