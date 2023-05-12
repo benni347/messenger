@@ -2,6 +2,7 @@ package main
 
 import (
 	"image/color"
+	"math/rand"
 
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
@@ -42,6 +43,7 @@ func Gui() {
 			m.PrintInfo("Message:", msg)
 		},
 	}
+	chatId := chatId()
 
 	// content := container.NewWithoutLayout(text1, text2)
 	// msgContent := container.New(layout.NewMaxLayout(), msgForm)
@@ -50,4 +52,12 @@ func Gui() {
 
 	myWindow.SetContent(content)
 	myWindow.ShowAndRun()
+}
+
+func chatId() uint64 {
+	rand.Seed(time.Now().UnixNano())
+
+	r := rand.Uint64()
+
+	return r
 }
