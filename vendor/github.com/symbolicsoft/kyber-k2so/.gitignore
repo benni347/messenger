@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: © 2020-2021 Nadim Kobeissi <nadim@symbolic.software>
+# SPDX-License-Identifier: CC0-1.0
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.upx
+*.test
+
+# macOS
+.DS_Store
+
+# Visual Studio Code
+.vscode
