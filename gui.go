@@ -3,6 +3,7 @@ package main
 import (
 	"image/color"
 	"math/rand"
+	"time"
 
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
@@ -41,13 +42,21 @@ func Gui() {
 			}
 			msgEntry.SetText("")
 			m.PrintInfo("Message:", msg)
+			chatId := chatId()
+			m.PrintInfo("ChatId:", chatId)
+			database(msg, chatId)
 		},
 	}
-	chatId := chatId()
 
 	// content := container.NewWithoutLayout(text1, text2)
 	// msgContent := container.New(layout.NewMaxLayout(), msgForm)
-	content := container.NewBorder(container.NewAdaptiveGrid(2, text1, text2), nil, nil, nil, msgForm)
+	content := container.NewBorder(
+		container.NewAdaptiveGrid(2, text1, text2),
+		nil,
+		nil,
+		nil,
+		msgForm,
+	)
 	// content := container.New(layout.NewGridLayout(2), text1, text2, msgContent)
 
 	myWindow.SetContent(content)
