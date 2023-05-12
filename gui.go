@@ -7,7 +7,6 @@ import (
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 	"github.com/benni347/encryption"
 	utils "github.com/benni347/messengerutils"
@@ -34,7 +33,7 @@ func Gui() {
 
 	msgForm := &widget.Form{
 		Items: []*widget.FormItem{
-			{Text: "Message", Widget: msgEntry},
+			{Widget: msgEntry},
 		},
 		OnSubmit: func() {
 			msg := msgEntry.Text
@@ -47,8 +46,9 @@ func Gui() {
 	}
 
 	// content := container.NewWithoutLayout(text1, text2)
-	msgContent := container.New(layout.NewMaxLayout(), msgForm)
-	content := container.New(layout.NewGridLayout(2), text1, text2, msgContent)
+	//msgContent := container.New(layout.NewMaxLayout(), msgForm)
+	content := container.NewBorder(container.NewAdaptiveGrid(2, text1, text2), nil, nil, nil, msgForm)
+	//content := container.New(layout.NewGridLayout(2), text1, text2, msgContent)
 
 	myWindow.SetContent(content)
 	myWindow.ShowAndRun()
