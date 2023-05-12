@@ -31,7 +31,6 @@ func Gui() {
 		msgs := retrieve(&chat, 1)
 		for _, msg := range msgs {
 			m.PrintInfo("msg:", msg.Msg, "date:", msg.Date, "sender:", msg.Sender)
-
 		}
 	})
 	t := "There"
@@ -56,7 +55,6 @@ func Gui() {
 			chatId := chatId()
 			m.PrintInfo("ChatId:", chatId)
 			store(&chat, 1, msg) // TODO: chatId instead of 1, only for dev purposes
-
 		},
 	}
 
