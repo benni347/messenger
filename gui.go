@@ -47,7 +47,7 @@ func Gui() {
 			m.PrintInfo("Message:", msg)
 			chatId := chatId()
 			m.PrintInfo("ChatId:", chatId)
-			store(&chat, chatId, msg)
+			store(&chat, 1, msg) // TODO: chatId instead of 1, only for dev purposes
 		},
 	}
 
