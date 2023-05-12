@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+
 	"github.com/benni347/encryption"
 	utils "github.com/benni347/messengerutils"
 	_ "github.com/go-sql-driver/mysql"
