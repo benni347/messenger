@@ -46,9 +46,9 @@ func Gui() {
 	}
 
 	// content := container.NewWithoutLayout(text1, text2)
-	//msgContent := container.New(layout.NewMaxLayout(), msgForm)
+	// msgContent := container.New(layout.NewMaxLayout(), msgForm)
 	content := container.NewBorder(container.NewAdaptiveGrid(2, text1, text2), nil, nil, nil, msgForm)
-	//content := container.New(layout.NewGridLayout(2), text1, text2, msgContent)
+	// content := container.New(layout.NewGridLayout(2), text1, text2, msgContent)
 
 	myWindow.SetContent(content)
 	myWindow.ShowAndRun()
