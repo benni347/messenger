@@ -4,8 +4,9 @@ go 1.18
 
 require (
 	fyne.io/fyne/v2 v2.3.4
-	github.com/benni347/encryption v1.0.6
+	github.com/benni347/encryption v1.1.0
 	github.com/benni347/messengerutils v0.1.0
+	github.com/go-sql-driver/mysql v1.7.1
 	github.com/pion/webrtc/v3 v3.2.1
 )
 
