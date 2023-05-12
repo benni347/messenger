@@ -1,31 +1,53 @@
 package main
 
 import (
-	"database/sql"
-
-	"github.com/benni347/encryption"
-	utils "github.com/benni347/messengerutils"
-	_ "github.com/go-sql-driver/mysql"
+	"time"
 )
 
-func database(msg string, chatId uint64) {
-	m := &utils.MessengerUtils{
-		Verbose: true,
-	}
-	db, err := sql.Open("mysql", "root:password")
-	if err != nil {
-		utils.PrintError("During the opening of the sql databse an error ocurerd:", err)
-	}
-	defer db.Close()
+type Message struct {
+	Msg    string    `json:"msg"`
+	Date   time.Time `json:"date"`
+	Sender string    `json:"sender"`
+}
 
-	// Conect and print the version.
-	var version string
-	err = db.QueryRow("SELECT VERSION()").Scan(&version)
-	if err != nil {
-		utils.PrintError("During the query of the version an error occured:", err)
-	}
-	m.PrintInfo("Version:", version)
+type Chat struct {
+	ChatID uint64    `json:"chatid"`
+	Msgs   []Message `json:"msgs"`
+}
 
-	hash := encryption.CalculateHash([]byte(msg))
-	m.PrintInfo("Hash:", hash)
+type Chats struct {
+	AllChats []Chat `json:"chats"`
+}
+
+func (c *Chat) AddMessage(msg Message) {
+	c.Msgs = append(c.Msgs, msg)
+}
+
+func (cs *Chats) AddChat(chat Chat) {
+	cs.AllChats = append(cs.AllChats, chat)
+}
+
+func (cs *Chats) FindChat(chatID uint64) *Chat {
+	for i, chat := range cs.AllChats {
+		if chat.ChatID == chatID {
+			return &cs.AllChats[i]
+		}
+	}
+	return nil
+}
+
+func store(cs *Chats, chatID uint64, msg string) {
+	chat := cs.FindChat(chatID)
+	if chat == nil {
+		chat = &Chat{
+			ChatID: chatID,
+		}
+		cs.AddChat(*chat)
+	}
+	message := Message{
+		Msg:    msg,
+		Date:   time.Now(),
+		Sender: "you",
+	}
+	chat.AddMessage(message)
 }

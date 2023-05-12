@@ -17,6 +17,9 @@ func Gui() {
 	m := &utils.MessengerUtils{
 		Verbose: true,
 	}
+
+	chat := Chats{}
+
 	myApp := app.New()
 	myWindow := myApp.NewWindow("Container")
 	green := color.NRGBA{R: 0, G: 180, B: 0, A: 255}
@@ -44,7 +47,7 @@ func Gui() {
 			m.PrintInfo("Message:", msg)
 			chatId := chatId()
 			m.PrintInfo("ChatId:", chatId)
-			database(msg, chatId)
+			store(&chat, chatId, msg)
 		},
 	}
 
