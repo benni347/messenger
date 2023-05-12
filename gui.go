@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"image/color"
 
 	"fyne.io/fyne/v2/app"
@@ -26,7 +25,6 @@ func Gui() {
 	tB := []byte(t)
 	hash := encryption.CalculateHash(tB)
 	m.PrintInfo("Hash:", hash)
-	fmt.Printf("Hash, fmt: %s", hash)
 
 	msgEntry := widget.NewEntry()
 	msgEntry.SetPlaceHolder("Enter your message here")
