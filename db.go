@@ -51,3 +51,11 @@ func store(cs *Chats, chatID uint64, msg string) {
 	}
 	chat.AddMessage(message)
 }
+
+func retrieve(cs *Chats, chatID uint64) []Message {
+	chat := cs.FindChat(chatID)
+	if chat != nil {
+		return chat.Msgs
+	}
+	return nil
+}

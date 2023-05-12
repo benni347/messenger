@@ -25,7 +25,15 @@ func Gui() {
 	green := color.NRGBA{R: 0, G: 180, B: 0, A: 255}
 
 	text1 := canvas.NewText("Hello", green)
-	text2 := canvas.NewText("There", green)
+
+	// HINT: Hide it in production, only for dev purposes
+	btn1 := widget.NewButton("Retrieve Messages", func() {
+		msgs := retrieve(&chat, 1)
+		for _, msg := range msgs {
+			m.PrintInfo("msg:", msg.Msg, "date:", msg.Date, "sender:", msg.Sender)
+
+		}
+	})
 	t := "There"
 	tB := []byte(t)
 	hash := encryption.CalculateHash(tB)
@@ -48,13 +56,14 @@ func Gui() {
 			chatId := chatId()
 			m.PrintInfo("ChatId:", chatId)
 			store(&chat, 1, msg) // TODO: chatId instead of 1, only for dev purposes
+
 		},
 	}
 
 	// content := container.NewWithoutLayout(text1, text2)
 	// msgContent := container.New(layout.NewMaxLayout(), msgForm)
 	content := container.NewBorder(
-		container.NewAdaptiveGrid(2, text1, text2),
+		container.NewAdaptiveGrid(2, text1, btn1),
 		nil,
 		nil,
 		nil,
