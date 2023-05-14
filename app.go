@@ -10,7 +10,9 @@ import (
 
 // App struct
 type App struct {
-	ctx context.Context
+	ctx     context.Context
+	verbose bool
+	config  Config
 }
 
 // NewApp creates a new App application struct
@@ -25,11 +27,10 @@ func (a *App) startup(ctx context.Context) {
 }
 
 type Config struct {
-	verbose   bool
-	appId     string
-	appSecret string
-	appKey    string
-	clusterId string
+	AppId     string `json:"appId"`
+	AppSecret string `json:"appSecret"`
+	AppKey    string `json:"appKey"`
+	ClusterId string `json:"clusterId"`
 }
 
 // RetrieveEnvValues retrieves the values from the .env file
@@ -37,19 +38,23 @@ type Config struct {
 // Returns the values of the .env file
 // in the following order:
 // app_id, app_secret, app_key, cluster_id
-func (c *Config) RetrieveEnvValues() (string, string, string, string) {
+func (a *App) RetrieveEnvValues() Config {
 	m := &utils.MessengerUtils{
-		Verbose: c.verbose,
+		Verbose: a.verbose,
 	}
+	m.PrintInfo("Loading .env file")
 	err := godotenv.Load()
 	if err != nil {
 		utils.PrintError("Error loading .env file", err)
-		return "", "", "", ""
+		return Config{}
 	}
-	c.appId = os.Getenv("APP_ID")
-	c.appSecret = os.Getenv("APP_SECRET")
-	c.appKey = os.Getenv("APP_KEY")
-	c.clusterId = os.Getenv("CLUSTER")
-	m.PrintInfo("The app_id is: "+c.appId, "The app_secret is: "+c.appSecret, "The app_key is: "+c.appKey, "The cluster_id is: "+c.clusterId)
-	return c.appId, c.appSecret, c.appKey, c.clusterId
+	a.config.AppId = os.Getenv("APP_ID")
+	a.config.AppSecret = os.Getenv("SECRET")
+	a.config.AppKey = os.Getenv("KEY")
+	a.config.ClusterId = os.Getenv("CLUSTER")
+	m.PrintInfo("The app_id is: "+a.config.AppId,
+		"The app_secret is: "+a.config.AppSecret,
+		"The app_key is: "+a.config.AppKey,
+		"The cluster_id is: "+a.config.ClusterId)
+	return a.config
 }
