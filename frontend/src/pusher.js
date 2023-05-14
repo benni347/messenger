@@ -30,7 +30,7 @@ function PusherClient() {
   });
 
   const channel = pusher.subscribe(channelName);
-  channel.bind("my-event", function(data) {
+  channel.bind("my-event", function (data) {
     console.info(`Pusher data: ${JSON.stringify(data)}`);
     messageLog.append(`${JSON.stringify(data)}\n`);
     alert(JSON.stringify(data));
