@@ -16,7 +16,7 @@
     LogPrint: () => LogPrint,
     LogTrace: () => LogTrace,
     LogWarning: () => LogWarning,
-    SetLogLevel: () => SetLogLevel
+    SetLogLevel: () => SetLogLevel,
   });
   function sendLogMessage(level, message) {
     window.WailsInvoke("L" + level + message);
@@ -50,7 +50,7 @@
     DEBUG: 2,
     INFO: 3,
     WARNING: 4,
-    ERROR: 5
+    ERROR: 5,
   };
 
   // desktop/events.js
@@ -85,7 +85,11 @@
     let eventName = eventData.name;
     if (eventListeners[eventName]) {
       const newEventListenerList = eventListeners[eventName].slice();
-      for (let count = 0; count < eventListeners[eventName].length; count += 1) {
+      for (
+        let count = 0;
+        count < eventListeners[eventName].length;
+        count += 1
+      ) {
         const listener = eventListeners[eventName][count];
         let data = eventData.data;
         const destroy = listener.Callback(data);
@@ -113,7 +117,7 @@
   function EventsEmit(eventName) {
     const payload = {
       name: eventName,
-      data: [].slice.apply(arguments).slice(1)
+      data: [].slice.apply(arguments).slice(1),
     };
     notifyListeners(payload);
     window.WailsInvoke("EE" + JSON.stringify(payload));
@@ -132,7 +136,9 @@
   }
   function listenerOff(listener) {
     const eventName = listener.eventName;
-    eventListeners[eventName] = eventListeners[eventName].filter((l) => l !== listener);
+    eventListeners[eventName] = eventListeners[eventName].filter(
+      (l) => l !== listener
+    );
     if (eventListeners[eventName].length === 0) {
       removeListener(eventName);
     }
@@ -157,27 +163,29 @@
     if (timeout == null) {
       timeout = 0;
     }
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       var callbackID;
       do {
         callbackID = name + "-" + randomFunc();
       } while (callbacks[callbackID]);
       var timeoutHandle;
       if (timeout > 0) {
-        timeoutHandle = setTimeout(function() {
-          reject(Error("Call to " + name + " timed out. Request ID: " + callbackID));
+        timeoutHandle = setTimeout(function () {
+          reject(
+            Error("Call to " + name + " timed out. Request ID: " + callbackID)
+          );
         }, timeout);
       }
       callbacks[callbackID] = {
         timeoutHandle,
         reject,
-        resolve
+        resolve,
       };
       try {
         const payload = {
           name,
           args,
-          callbackID
+          callbackID,
         };
         window.WailsInvoke("C" + JSON.stringify(payload));
       } catch (e) {
@@ -189,27 +197,31 @@
     if (timeout == null) {
       timeout = 0;
     }
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       var callbackID;
       do {
         callbackID = id + "-" + randomFunc();
       } while (callbacks[callbackID]);
       var timeoutHandle;
       if (timeout > 0) {
-        timeoutHandle = setTimeout(function() {
-          reject(Error("Call to method " + id + " timed out. Request ID: " + callbackID));
+        timeoutHandle = setTimeout(function () {
+          reject(
+            Error(
+              "Call to method " + id + " timed out. Request ID: " + callbackID
+            )
+          );
         }, timeout);
       }
       callbacks[callbackID] = {
         timeoutHandle,
         reject,
-        resolve
+        resolve,
       };
       try {
         const payload = {
           id,
           args,
-          callbackID
+          callbackID,
         };
         window.WailsInvoke("c" + JSON.stringify(payload));
       } catch (e) {
@@ -254,23 +266,30 @@
     Object.keys(bindingsMap).forEach((packageName) => {
       window.go[packageName] = window.go[packageName] || {};
       Object.keys(bindingsMap[packageName]).forEach((structName) => {
-        window.go[packageName][structName] = window.go[packageName][structName] || {};
-        Object.keys(bindingsMap[packageName][structName]).forEach((methodName) => {
-          window.go[packageName][structName][methodName] = function() {
-            let timeout = 0;
-            function dynamic() {
-              const args = [].slice.call(arguments);
-              return Call([packageName, structName, methodName].join("."), args, timeout);
-            }
-            dynamic.setTimeout = function(newTimeout) {
-              timeout = newTimeout;
-            };
-            dynamic.getTimeout = function() {
-              return timeout;
-            };
-            return dynamic;
-          }();
-        });
+        window.go[packageName][structName] =
+          window.go[packageName][structName] || {};
+        Object.keys(bindingsMap[packageName][structName]).forEach(
+          (methodName) => {
+            window.go[packageName][structName][methodName] = (function () {
+              let timeout = 0;
+              function dynamic() {
+                const args = [].slice.call(arguments);
+                return Call(
+                  [packageName, structName, methodName].join("."),
+                  args,
+                  timeout
+                );
+              }
+              dynamic.setTimeout = function (newTimeout) {
+                timeout = newTimeout;
+              };
+              dynamic.getTimeout = function () {
+                return timeout;
+              };
+              return dynamic;
+            })();
+          }
+        );
       });
     });
   }
@@ -305,7 +324,7 @@
     WindowToggleMaximise: () => WindowToggleMaximise,
     WindowUnfullscreen: () => WindowUnfullscreen,
     WindowUnmaximise: () => WindowUnmaximise,
-    WindowUnminimise: () => WindowUnminimise
+    WindowUnminimise: () => WindowUnminimise,
   });
   function WindowReload() {
     window.location.reload();
@@ -396,7 +415,7 @@
   // desktop/screen.js
   var screen_exports = {};
   __export(screen_exports, {
-    ScreenGetAll: () => ScreenGetAll
+    ScreenGetAll: () => ScreenGetAll,
   });
   function ScreenGetAll() {
     return Call(":wails:ScreenGetAll");
@@ -405,7 +424,7 @@
   // desktop/browser.js
   var browser_exports = {};
   __export(browser_exports, {
-    BrowserOpenURL: () => BrowserOpenURL
+    BrowserOpenURL: () => BrowserOpenURL,
   });
   function BrowserOpenURL(url) {
     window.WailsInvoke("BO:" + url);
@@ -415,7 +434,7 @@
   var clipboard_exports = {};
   __export(clipboard_exports, {
     ClipboardGetText: () => ClipboardGetText,
-    ClipboardSetText: () => ClipboardSetText
+    ClipboardSetText: () => ClipboardSetText,
   });
   function ClipboardSetText(text) {
     return Call(":wails:ClipboardSetText", [text]);
@@ -451,7 +470,7 @@
     Environment,
     Show,
     Hide,
-    Quit
+    Quit,
   };
   window.wails = {
     Callback,
@@ -468,8 +487,8 @@
       shouldDrag: false,
       deferDragToMouseMove: false,
       cssDragProperty: "--wails-draggable",
-      cssDragValue: "drag"
-    }
+      cssDragValue: "drag",
+    },
   };
   if (window.wailsbindings) {
     window.wails.SetBindings(window.wailsbindings);
@@ -478,8 +497,10 @@
   if (false) {
     delete window.wailsbindings;
   }
-  var dragTest = function(e) {
-    var val = window.getComputedStyle(e.target).getPropertyValue(window.wails.flags.cssDragProperty);
+  var dragTest = function (e) {
+    var val = window
+      .getComputedStyle(e.target)
+      .getPropertyValue(window.wails.flags.cssDragProperty);
     if (val) {
       val = val.trim();
     }
@@ -494,7 +515,7 @@
     }
     return true;
   };
-  window.wails.setCSSDragProperties = function(property, value) {
+  window.wails.setCSSDragProperties = function (property, value) {
     window.wails.flags.cssDragProperty = property;
     window.wails.flags.cssDragValue = value;
   };
@@ -506,7 +527,10 @@
     }
     if (dragTest(e)) {
       if (window.wails.flags.disableScrollbarDrag) {
-        if (e.offsetX > e.target.clientWidth || e.offsetY > e.target.clientHeight) {
+        if (
+          e.offsetX > e.target.clientWidth ||
+          e.offsetY > e.target.clientHeight
+        ) {
           return;
         }
       }
@@ -525,10 +549,11 @@
     window.wails.flags.shouldDrag = false;
   });
   function setResize(cursor) {
-    document.documentElement.style.cursor = cursor || window.wails.flags.defaultCursor;
+    document.documentElement.style.cursor =
+      cursor || window.wails.flags.defaultCursor;
     window.wails.flags.resizeEdge = cursor;
   }
-  window.addEventListener("mousemove", function(e) {
+  window.addEventListener("mousemove", function (e) {
     if (window.wails.flags.shouldDrag) {
       let mousePressed = e.buttons !== void 0 ? e.buttons : e.which;
       if (mousePressed <= 0) {
@@ -544,33 +569,36 @@
     if (window.wails.flags.defaultCursor == null) {
       window.wails.flags.defaultCursor = document.documentElement.style.cursor;
     }
-    if (window.outerWidth - e.clientX < window.wails.flags.borderThickness && window.outerHeight - e.clientY < window.wails.flags.borderThickness) {
+    if (
+      window.outerWidth - e.clientX < window.wails.flags.borderThickness &&
+      window.outerHeight - e.clientY < window.wails.flags.borderThickness
+    ) {
       document.documentElement.style.cursor = "se-resize";
     }
-    let rightBorder = window.outerWidth - e.clientX < window.wails.flags.borderThickness;
+    let rightBorder =
+      window.outerWidth - e.clientX < window.wails.flags.borderThickness;
     let leftBorder = e.clientX < window.wails.flags.borderThickness;
     let topBorder = e.clientY < window.wails.flags.borderThickness;
-    let bottomBorder = window.outerHeight - e.clientY < window.wails.flags.borderThickness;
-    if (!leftBorder && !rightBorder && !topBorder && !bottomBorder && window.wails.flags.resizeEdge !== void 0) {
+    let bottomBorder =
+      window.outerHeight - e.clientY < window.wails.flags.borderThickness;
+    if (
+      !leftBorder &&
+      !rightBorder &&
+      !topBorder &&
+      !bottomBorder &&
+      window.wails.flags.resizeEdge !== void 0
+    ) {
       setResize();
-    } else if (rightBorder && bottomBorder)
-      setResize("se-resize");
-    else if (leftBorder && bottomBorder)
-      setResize("sw-resize");
-    else if (leftBorder && topBorder)
-      setResize("nw-resize");
-    else if (topBorder && rightBorder)
-      setResize("ne-resize");
-    else if (leftBorder)
-      setResize("w-resize");
-    else if (topBorder)
-      setResize("n-resize");
-    else if (bottomBorder)
-      setResize("s-resize");
-    else if (rightBorder)
-      setResize("e-resize");
+    } else if (rightBorder && bottomBorder) setResize("se-resize");
+    else if (leftBorder && bottomBorder) setResize("sw-resize");
+    else if (leftBorder && topBorder) setResize("nw-resize");
+    else if (topBorder && rightBorder) setResize("ne-resize");
+    else if (leftBorder) setResize("w-resize");
+    else if (topBorder) setResize("n-resize");
+    else if (bottomBorder) setResize("s-resize");
+    else if (rightBorder) setResize("e-resize");
   });
-  window.addEventListener("contextmenu", function(e) {
+  window.addEventListener("contextmenu", function (e) {
     if (window.wails.flags.disableWailsDefaultContextMenu) {
       e.preventDefault();
     }
