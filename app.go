@@ -2,9 +2,10 @@ package main
 
 import (
 	"context"
+	"os"
 
 	utils "github.com/benni347/messengerutils"
-	webrtc "github.com/pion/webrtc/v3"
+	"github.com/joho/godotenv"
 )
 
 // App struct
@@ -24,74 +25,31 @@ func (a *App) startup(ctx context.Context) {
 }
 
 type Config struct {
-	verbose bool
+	verbose   bool
+	appId     string
+	appSecret string
+	appKey    string
+	clusterId string
 }
 
-type WebRTCConfig struct {
-	connected     *bool
-	localMessage  *string
-	remoteMessage *string
-}
-
-type AllConfig struct {
-	Config
-	WebRTCConfig
-	App
-}
-
-func (a *App) CreatePeerConnection() *webrtc.PeerConnection {
-	// Create a new RTCPeerConnection
-	peerConnection, err := webrtc.NewPeerConnection(webrtc.Configuration{})
-	if err != nil {
-		utils.PrintError("During the PeerConnection an error ocured", err)
-		panic(err)
-	}
-
-	return peerConnection
-}
-
-func (a *AllConfig) TransmitDataText(peerConnection *webrtc.PeerConnection, data string) {
-	a.Config.verbose = true // Atleast for now for testing and developing the things, maybe later we can make it a flag, when we release it.
+// RetrieveEnvValues retrieves the values from the .env file
+// and saves them in the config struct
+// Returns the values of the .env file
+// in the following order:
+// app_id, app_secret, app_key, cluster_id
+func (c *Config) RetrieveEnvValues() (string, string, string, string) {
 	m := &utils.MessengerUtils{
-		Verbose: a.Config.verbose,
+		Verbose: c.verbose,
 	}
-	m.PrintInfo("Started the connection process")
-
-	protcol := "tcp"
-	order := true
-	var maxReTransmission uint16 = 5000
-
-	dataChannelInit := webrtc.DataChannelInit{
-		Ordered:        &order,
-		MaxRetransmits: &maxReTransmission,
-		Protocol:       &protcol,
-	}
-	// Create a datachannel with label 'data'
-	dataChannel, err := peerConnection.CreateDataChannel("text", &dataChannelInit)
+	err := godotenv.Load()
 	if err != nil {
-		utils.PrintError("During the creation of the data channel an error ocured", err)
-		panic(err)
+		utils.PrintError("Error loading .env file", err)
+		return "", "", "", ""
 	}
-
-	// Register channel opening handling
-	dataChannel.OnOpen(func() {
-		// Send the data
-		dataChannel.SendText(data)
-	})
-
-	// Register text message handling
-	dataChannel.OnMessage(func(msg webrtc.DataChannelMessage) {
-		println("Received message: " + string(msg.Data))
-	})
-}
-
-func (a *App) Disconnect() {
-	// Close the connection
-	a.ctx.Done()
-}
-
-func (w *WebRTCConfig) Constructor() {
-	w.connected = new(bool)
-	w.localMessage = new(string)
-	w.remoteMessage = new(string)
+	c.appId = os.Getenv("APP_ID")
+	c.appSecret = os.Getenv("APP_SECRET")
+	c.appKey = os.Getenv("APP_KEY")
+	c.clusterId = os.Getenv("CLUSTER")
+	m.PrintInfo("The app_id is: "+c.appId, "The app_secret is: "+c.appSecret, "The app_key is: "+c.appKey, "The cluster_id is: "+c.clusterId)
+	return c.appId, c.appSecret, c.appKey, c.clusterId
 }
