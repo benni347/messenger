@@ -62,13 +62,9 @@ func (d *DevWebServer) Run(ctx context.Context) error {
 		return err
 	}
 
-	var myLogger assetserver.Logger
-	if _logger := ctx.Value("logger"); _logger != nil {
-		myLogger = _logger.(*logger.Logger)
-	}
-
 	var assetHandler http.Handler
 	var wsHandler http.Handler
+	var myLogger *logger.Logger
 
 	_fronendDevServerURL, _ := ctx.Value("frontenddevserverurl").(string)
 	if _fronendDevServerURL == "" {
@@ -77,6 +73,9 @@ func (d *DevWebServer) Run(ctx context.Context) error {
 			return c.String(http.StatusOK, assetdir)
 		})
 
+		if _logger := ctx.Value("logger"); _logger != nil {
+			myLogger = _logger.(*logger.Logger)
+		}
 		var err error
 		assetHandler, err = assetserver.NewAssetHandler(assetServerConfig, myLogger)
 		if err != nil {
