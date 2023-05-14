@@ -28,9 +28,13 @@ function PusherClient() {
   const pusher = new Pusher(appKey, {
     cluster: clusterId,
   });
-
+  // TODO: Add authentication, see https://pusher.com/docs/channels/using_channels/authentication
+  // TODO: ADD the ability to send messages to the channel
+  // TODO: add Private channels
+  // TODO: Store the msg in a database
+  // TODO: Add ability to send messages to a specific user
   const channel = pusher.subscribe(channelName);
-  channel.bind("my-event", function (data) {
+  channel.bind("my-event", function(data) {
     console.info(`Pusher data: ${JSON.stringify(data)}`);
     messageLog.append(`${JSON.stringify(data)}\n`);
     alert(JSON.stringify(data));
