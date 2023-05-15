@@ -4,14 +4,13 @@
 package windows
 
 import (
-	"path/filepath"
-	"strings"
-	"syscall"
-
 	"github.com/wailsapp/wails/v2/internal/frontend"
 	"github.com/wailsapp/wails/v2/internal/frontend/desktop/windows/winc/w32"
 	"github.com/wailsapp/wails/v2/internal/go-common-file-dialog/cfd"
 	"golang.org/x/sys/windows"
+	"path/filepath"
+	"strings"
+	"syscall"
 )
 
 func (f *Frontend) getHandleForDialog() w32.HWND {
@@ -41,20 +40,27 @@ func (f *Frontend) OpenDirectoryDialog(options frontend.OpenDialogOptions) (stri
 		Role:   "PickFolder",
 		Folder: defaultFolder,
 	}
-
-	result, err := f.showCfdDialog(
-		func() (cfd.Dialog, error) {
-			return cfd.NewSelectFolderDialog(config)
-		}, false)
-
+	thisDialog, err := cfd.NewSelectFolderDialog(config)
+	if err != nil {
+		return "", err
+	}
+	thisDialog.SetParentWindowHandle(f.getHandleForDialog())
+	defer func(thisDialog cfd.SelectFolderDialog) {
+		err := thisDialog.Release()
+		if err != nil {
+			println("ERROR: Unable to release dialog:", err.Error())
+		}
+	}(thisDialog)
+	result, err := thisDialog.ShowAndGetResult()
 	if err != nil && err != cfd.ErrorCancelled {
 		return "", err
 	}
-	return result.(string), nil
+	return result, nil
 }
 
 // OpenFileDialog prompts the user to select a file
 func (f *Frontend) OpenFileDialog(options frontend.OpenDialogOptions) (string, error) {
+
 	defaultFolder, err := getDefaultFolder(options.DefaultDirectory)
 	if err != nil {
 		return "", err
@@ -66,16 +72,22 @@ func (f *Frontend) OpenFileDialog(options frontend.OpenDialogOptions) (string, e
 		FileName:    options.DefaultFilename,
 		Title:       options.Title,
 	}
-
-	result, err := f.showCfdDialog(
-		func() (cfd.Dialog, error) {
-			return cfd.NewOpenFileDialog(config)
-		}, false)
-
+	thisdialog, err := cfd.NewOpenFileDialog(config)
+	if err != nil {
+		return "", err
+	}
+	thisdialog.SetParentWindowHandle(f.getHandleForDialog())
+	defer func(thisdialog cfd.OpenFileDialog) {
+		err := thisdialog.Release()
+		if err != nil {
+			println("ERROR: Unable to release dialog:", err.Error())
+		}
+	}(thisdialog)
+	result, err := thisdialog.ShowAndGetResult()
 	if err != nil && err != cfd.ErrorCancelled {
 		return "", err
 	}
-	return result.(string), nil
+	return result, nil
 }
 
 // OpenMultipleFilesDialog prompts the user to select a file
@@ -93,16 +105,22 @@ func (f *Frontend) OpenMultipleFilesDialog(options frontend.OpenDialogOptions) (
 		FileName:    options.DefaultFilename,
 		Folder:      defaultFolder,
 	}
-
-	result, err := f.showCfdDialog(
-		func() (cfd.Dialog, error) {
-			return cfd.NewOpenMultipleFilesDialog(config)
-		}, true)
-
+	thisdialog, err := cfd.NewOpenMultipleFilesDialog(config)
+	if err != nil {
+		return nil, err
+	}
+	thisdialog.SetParentWindowHandle(f.getHandleForDialog())
+	defer func(thisdialog cfd.OpenMultipleFilesDialog) {
+		err := thisdialog.Release()
+		if err != nil {
+			println("ERROR: Unable to release dialog:", err.Error())
+		}
+	}(thisdialog)
+	result, err := thisdialog.ShowAndGetResults()
 	if err != nil && err != cfd.ErrorCancelled {
 		return nil, err
 	}
-	return result.([]string), nil
+	return result, nil
 }
 
 // SaveFileDialog prompts the user to select a file
@@ -113,44 +131,26 @@ func (f *Frontend) SaveFileDialog(options frontend.SaveDialogOptions) (string, e
 		return "", err
 	}
 
-	config := cfd.DialogConfig{
+	saveDialog, err := cfd.NewSaveFileDialog(cfd.DialogConfig{
 		Title:       options.Title,
 		Role:        "SaveFile",
 		FileFilters: convertFilters(options.Filters),
 		FileName:    options.DefaultFilename,
 		Folder:      defaultFolder,
+	})
+	if err != nil {
+		return "", err
 	}
-
-	result, err := f.showCfdDialog(
-		func() (cfd.Dialog, error) {
-			return cfd.NewSaveFileDialog(config)
-		}, false)
-
+	saveDialog.SetParentWindowHandle(f.getHandleForDialog())
+	err = saveDialog.Show()
+	if err != nil {
+		return "", err
+	}
+	result, err := saveDialog.GetResult()
 	if err != nil && err != cfd.ErrorCancelled {
 		return "", err
 	}
-	return result.(string), nil
-}
-
-func (f *Frontend) showCfdDialog(newDlg func() (cfd.Dialog, error), isMultiSelect bool) (any, error) {
-	return invokeSync(f.mainWindow, func() (any, error) {
-		dlg, err := newDlg()
-		if err != nil {
-			return nil, err
-		}
-		defer func() {
-			err := dlg.Release()
-			if err != nil {
-				println("ERROR: Unable to release dialog:", err.Error())
-			}
-		}()
-
-		dlg.SetParentWindowHandle(f.getHandleForDialog())
-		if multi, _ := dlg.(cfd.OpenMultipleFilesDialog); multi != nil && isMultiSelect {
-			return multi.ShowAndGetResults()
-		}
-		return dlg.ShowAndGetResult()
-	})
+	return result, nil
 }
 
 func calculateMessageDialogFlags(options frontend.MessageDialogOptions) uint32 {

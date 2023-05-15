@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/benni347/messengerutils v0.1.1
 	github.com/joho/godotenv v1.5.1
-	github.com/wailsapp/wails/v2 v2.5.0
+	github.com/wailsapp/wails/v2 v2.4.1
 )
 
 require (

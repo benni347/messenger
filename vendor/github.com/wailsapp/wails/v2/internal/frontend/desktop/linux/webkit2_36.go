@@ -1,6 +1,6 @@
-//go:build linux && (webkit2_36 || webkit2_40)
+//go:build linux && webkit2_36
 
-package webview
+package linux
 
 /*
 #cgo linux pkg-config: gtk+-3.0 webkit2gtk-4.0 libsoup-2.4
@@ -15,7 +15,11 @@ import (
 	"net/http"
 	"strings"
 	"unsafe"
+
+	"github.com/wailsapp/wails/v2/pkg/assetserver"
 )
+
+const webkit2MinMinorVersion = 36
 
 func webkit_uri_scheme_request_get_http_method(req *C.WebKitURISchemeRequest) string {
 	method := C.GoString(C.webkit_uri_scheme_request_get_http_method(req))
@@ -47,7 +51,7 @@ func webkit_uri_scheme_request_finish(req *C.WebKitURISchemeRequest, code int, h
 	C.webkit_uri_scheme_response_set_status(resp, C.guint(code), cReason)
 	C.free(unsafe.Pointer(cReason))
 
-	cMimeType := C.CString(header.Get(HeaderContentType))
+	cMimeType := C.CString(header.Get(assetserver.HeaderContentType))
 	C.webkit_uri_scheme_response_set_content_type(resp, cMimeType)
 	C.free(unsafe.Pointer(cMimeType))
 

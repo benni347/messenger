@@ -287,9 +287,6 @@ func (w *Window) Run(url string) {
 	_url := C.CString(url)
 	C.LoadIndex(w.webview, _url)
 	defer C.free(unsafe.Pointer(_url))
-	if w.appoptions.StartHidden {
-		w.Hide()
-	}
 	C.gtk_widget_show_all(w.asGTKWidget())
 	w.Center()
 	switch w.appoptions.WindowStartState {
@@ -300,6 +297,7 @@ func (w *Window) Run(url string) {
 	case options.Maximised:
 		w.Maximise()
 	}
+
 }
 
 func (w *Window) SetKeepAbove(top bool) {

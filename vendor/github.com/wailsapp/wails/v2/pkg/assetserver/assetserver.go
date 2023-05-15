@@ -2,11 +2,8 @@ package assetserver
 
 import (
 	"bytes"
-	"fmt"
-	"math/rand"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 
 	"golang.org/x/net/html"
 
@@ -44,9 +41,6 @@ type AssetServer struct {
 
 	// Use http based runtime
 	runtimeHandler RuntimeHandler
-
-	// plugin scripts
-	pluginScripts map[string]string
 
 	assetServerWebView
 }
@@ -93,16 +87,6 @@ func NewAssetServerWithHandler(handler http.Handler, bindingsJSON string, servin
 
 func (d *AssetServer) UseRuntimeHandler(handler RuntimeHandler) {
 	d.runtimeHandler = handler
-}
-
-func (d *AssetServer) AddPluginScript(pluginName string, script string) {
-	if d.pluginScripts == nil {
-		d.pluginScripts = make(map[string]string)
-	}
-	pluginName = strings.ReplaceAll(pluginName, "/", "_")
-	pluginName = html.EscapeString(pluginName)
-	pluginScriptName := fmt.Sprintf("/plugin_%s_%d.js", pluginName, rand.Intn(100000))
-	d.pluginScripts[pluginScriptName] = script
 }
 
 func (d *AssetServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
@@ -165,11 +149,6 @@ func (d *AssetServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		d.writeBlob(rw, path, content)
 
 	default:
-		// Check if this is a plugin script
-		if script, ok := d.pluginScripts[path]; ok {
-			d.writeBlob(rw, path, []byte(script))
-			return
-		}
 		d.handler.ServeHTTP(rw, req)
 	}
 }
@@ -193,13 +172,6 @@ func (d *AssetServer) processIndexHTML(indexHTML []byte) ([]byte, error) {
 
 	if err := insertScriptInHead(htmlNode, ipcJSPath); err != nil {
 		return nil, err
-	}
-
-	// Inject plugins
-	for scriptName := range d.pluginScripts {
-		if err := insertScriptInHead(htmlNode, scriptName); err != nil {
-			return nil, err
-		}
 	}
 
 	var buffer bytes.Buffer

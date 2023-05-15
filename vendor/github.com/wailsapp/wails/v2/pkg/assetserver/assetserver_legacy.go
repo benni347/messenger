@@ -56,7 +56,13 @@ func (r legacyRequest) Response() webview.ResponseWriter {
 	return &legacyRequestNoOpCloserResponseWriter{r.rw}
 }
 
-func (r legacyRequest) Close() error { return nil }
+func (r legacyRequest) AddRef() error {
+	return nil
+}
+
+func (r legacyRequest) Release() error {
+	return nil
+}
 
 func (r *legacyRequest) request() (*http.Request, error) {
 	if r.req != nil {
@@ -75,4 +81,6 @@ type legacyRequestNoOpCloserResponseWriter struct {
 	http.ResponseWriter
 }
 
-func (*legacyRequestNoOpCloserResponseWriter) Finish() {}
+func (*legacyRequestNoOpCloserResponseWriter) Finish() error {
+	return nil
+}
