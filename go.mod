@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/benni347/messengerutils v0.1.1
 	github.com/joho/godotenv v1.5.1
-	github.com/wailsapp/wails/v2 v2.4.1
+	github.com/wailsapp/wails/v2 v2.5.0
 )
 
 require (
@@ -35,5 +35,3 @@ require (
 	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 )
-
-// replace github.com/wailsapp/wails/v2 v2.4.1 => /home/cdrc/git/abschluss_arbeit

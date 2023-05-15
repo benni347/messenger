@@ -69,14 +69,8 @@ import "C"
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 	"unsafe"
-)
-
-var (
-	errRequestStopped   = errors.New("request has been stopped")
-	errResponseFinished = errors.New("response has been finished")
 )
 
 var _ ResponseWriter = &responseWriter{}
@@ -139,16 +133,15 @@ func (rw *responseWriter) WriteHeader(code int) {
 	C.URLSchemeTaskDidReceiveResponse(rw.r.task, C.int(code), headers, C.int(headersLen))
 }
 
-func (rw *responseWriter) Finish() error {
+func (rw *responseWriter) Finish() {
 	if !rw.wroteHeader {
 		rw.WriteHeader(http.StatusNotImplemented)
 	}
 
 	if rw.finished {
-		return nil
+		return
 	}
 	rw.finished = true
 
 	C.URLSchemeTaskDidFinish(rw.r.task)
-	return nil
 }
