@@ -3,7 +3,7 @@ module changeme
 go 1.18
 
 require (
-	github.com/benni347/messengerutils v0.0.7
+	github.com/benni347/messengerutils v0.1.1
 	github.com/pion/webrtc/v3 v3.2.1
 	github.com/wailsapp/wails/v2 v2.4.1
 )
