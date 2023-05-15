@@ -34,7 +34,7 @@ function PusherClient() {
   // TODO: Store the msg in a database
   // TODO: Add ability to send messages to a specific user
   const channel = pusher.subscribe(channelName);
-  channel.bind("msg-recive", function(data) {
+  channel.bind("msg-recive", function (data) {
     console.info(`Pusher data: ${JSON.stringify(data)}`);
     let msgParagragh = document.createElement("p");
     msgParagragh.innerHTML = `${JSON.stringify(data)}`;

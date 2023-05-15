@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chat</title>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/x-icon" href="src/assets/favicon.svg" />
+    <link href="https://unpkg.com/sanitize.css" rel="stylesheet" />
+    <link
+      href="https://unpkg.com/sanitize.css/typography.css"
+      rel="stylesheet"
+    />
+    <link href="https://unpkg.com/sanitize.css/forms.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/app.css" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/src/supabase.js" type="module"></script>
+    <script src="/src/pusher.js" type="module"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Chat</title>
-  <meta name="viewport" content="width=device-width" />
-  <link rel="icon" type="image/x-icon" href="src/assets/favicon.svg" />
-  <link href="https://unpkg.com/sanitize.css" rel="stylesheet" />
-  <link href="https://unpkg.com/sanitize.css/typography.css" rel="stylesheet" />
-  <link href="https://unpkg.com/sanitize.css/forms.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/src/app.css" />
-  <link rel="stylesheet" href="/src/style.css" />
-  <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/src/supabase.js" type="module"></script>
-  <script src="/src/pusher.js" type="module"></script>
-</head>
+  <body>
+    <div class="topbar">
+      <div class="window_name body">Messenger</div>
+    </div>
+    <div class="sidebar"></div>
 
-<body>
-  <div class="topbar">
-    <div class="window_name body">Messenger</div>
-  </div>
-  <div class="sidebar"></div>
-
-  <div id="root">
-    <div class="person">
-      <div class="person_wrapper">
-        <h3>Name of Person</h3>
+    <div id="root">
+      <div class="person">
+        <div class="person_wrapper">
+          <h3>Name of Person</h3>
+        </div>
+      </div>
+      <div id="message-log"></div>
+      <div id="publish-form-container">
+        <form id="publish-form">
+          <input name="message" id="message-input" type="text" />
+          <input value="Submit" type="submit" />
+        </form>
       </div>
     </div>
-    <div id="message-log"></div>
-    <div id="publish-form-container">
-      <form id="publish-form">
-        <input name="message" id="message-input" type="text" />
-        <input value="Submit" type="submit" />
-      </form>
-    </div>
-  </div>
-  <!--  <script type="module" src="/src/index.js"></script> -->
-</body>
-
+    <!--  <script type="module" src="/src/index.js"></script> -->
+  </body>
 </html>
