@@ -28,10 +28,12 @@ func (a *App) startup(ctx context.Context) {
 }
 
 type Config struct {
-	AppId     string `json:"appId"`
-	AppSecret string `json:"appSecret"`
-	AppKey    string `json:"appKey"`
-	ClusterId string `json:"clusterId"`
+	AppId          string `json:"appId"`
+	AppSecret      string `json:"appSecret"`
+	AppKey         string `json:"appKey"`
+	ClusterId      string `json:"clusterId"`
+	SupaBaseApiKey string `json:"supaBaseApiKey"`
+	SupaBaseUrl    string `json:"supaBaseUrl"`
 }
 
 // RetrieveEnvValues retrieves the values from the .env file
@@ -53,6 +55,8 @@ func (a *App) RetrieveEnvValues() Config {
 	a.config.AppSecret = os.Getenv("SECRET")
 	a.config.AppKey = os.Getenv("KEY")
 	a.config.ClusterId = os.Getenv("CLUSTER")
+	a.config.SupaBaseApiKey = os.Getenv("SUPABASE_API_KEY")
+	a.config.SupaBaseUrl = os.Getenv("SUPABASE_URL")
 	m.PrintInfo("The app_id is: "+a.config.AppId,
 		"The app_secret is: "+a.config.AppSecret,
 		"The app_key is: "+a.config.AppKey,
