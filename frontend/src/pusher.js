@@ -6,7 +6,7 @@ let appId;
 let appKey;
 let clusterId;
 let appSecret;
-let channelName = "my-channel";
+let channelName = "1";
 const messageLog = document.getElementById("message-log");
 
 RetrieveEnvValues().then((env) => {
@@ -34,8 +34,10 @@ function PusherClient() {
   // TODO: Store the msg in a database
   // TODO: Add ability to send messages to a specific user
   const channel = pusher.subscribe(channelName);
-  channel.bind("my-event", function (data) {
+  channel.bind("msg-recive", function(data) {
     console.info(`Pusher data: ${JSON.stringify(data)}`);
-    messageLog.append(`${JSON.stringify(data)}\n`);
+    let msgParagragh = document.createElement("p");
+    msgParagragh.innerHTML = `${JSON.stringify(data)}`;
+    messageLog.appendChild(msgParagragh);
   });
 }
