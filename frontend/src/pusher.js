@@ -33,11 +33,16 @@ function PusherClient() {
   // TODO: add Private channels
   // TODO: Store the msg in a database
   // TODO: Add ability to send messages to a specific user
+  // The format from the server should be: {"message": "message", "time": "time"}
   const channel = pusher.subscribe(channelName);
-  channel.bind("msg-recive", function (data) {
+  channel.bind("msg-recive", function(data) {
     console.info(`Pusher data: ${JSON.stringify(data)}`);
     let msgParagragh = document.createElement("p");
-    msgParagragh.innerHTML = `${JSON.stringify(data)}`;
+    let msgText = data.message;
+    let timeMsg = data.time;
+    msgParagragh.innerHTML = `${msgText}`;
+    console.info(`Message: ${msgText}`);
+    console.info(`Time: ${timeMsg}`);
     messageLog.appendChild(msgParagragh);
   });
 }
