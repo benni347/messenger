@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"os"
-	"time"
 
 	utils "github.com/benni347/messengerutils"
 	"github.com/joho/godotenv"
