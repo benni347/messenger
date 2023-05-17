@@ -2,9 +2,8 @@
 
 import { RetrieveEnvValues } from "../wailsjs/go/main/App.js";
 
-// FIXME: Uncaught SyntaxError: ambiguous indirect export: createClient
-// When using "import createClient from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'" it kind of works.
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+// Solved the fix me through importing it as a npm module
+import { createClient } from "@supabase/supabase-js";
 
 const options = {
   db: {
@@ -39,9 +38,6 @@ RetrieveEnvValues().then((env) => {
   console.info(`Supabase options: ${JSON.stringify(options)}`);
   supabase = createClient(supabaseUrl, supabaseKey, options);
 });
-
-console.info(`Supabase URL: ${supabaseUrl}`);
-console.info(`Supabase Key: ${supabaseKey}`);
 
 async function signUp(mail, password) {
   const { data, error } = await supabase.auth.signUp({
