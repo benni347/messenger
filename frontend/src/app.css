@@ -198,3 +198,11 @@ right: 0;}
 .person_wrapper {
     margin-left: 2vw;
 }
+
+.signin {
+  position: absolute;
+  right: 1vw;
+  cursor: pointer;
+  background: var(--neural-color-1);
+  color: var(--neural-color-2);
+}
