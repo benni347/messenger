@@ -1,4 +1,4 @@
-# github.com/benni347/messengerutils v0.1.1
+# github.com/benni347/messengerutils v0.2.0
 ## explicit; go 1.20
 github.com/benni347/messengerutils
 # github.com/bep/debounce v1.2.1
@@ -123,7 +123,7 @@ github.com/wailsapp/wails/v2/pkg/runtime
 ## explicit; go 1.17
 golang.org/x/crypto/acme
 golang.org/x/crypto/acme/autocert
-# golang.org/x/exp v0.0.0-20230510235704-dd950f8aeaea
+# golang.org/x/exp v0.0.0-20230515195305-f3d0a9c9a5cc
 ## explicit; go 1.20
 golang.org/x/exp/constraints
 # golang.org/x/net v0.10.0
