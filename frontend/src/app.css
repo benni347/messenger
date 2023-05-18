@@ -160,12 +160,14 @@ right: 0;}
   border: none !important; 
   -moz-appearance: none;
   -webkit-appearance: none;
+  appearance: none;
   word-break: normal;
   background-color: var(--secondary-color);
   position: absolute;
   bottom: 0;
   width: calc(100vw - var(--closed-sibar-width) - 3px);
   right: 0;
+  z-index: 0;
 }
 
 #publish-form input[type="submit"] {
@@ -173,7 +175,12 @@ right: 0;}
   background-color: black;
   border-radius: 5px;
   padding: 5px 10px;
-  border: none !important; 
+  border: none !important;
+  z-index: 1;
+position: absolute;
+bottom: 0;
+right: 0;
+aspect-ratio: 1;
 }
 
 #publish-form input[type="submit"]:hover {
@@ -205,4 +212,13 @@ right: 0;}
   cursor: pointer;
   background: var(--neural-color-1);
   color: var(--neural-color-2);
+}
+
+.chaticon {
+    aspect-ratio: 1;
+    width: var(--closed-sibar-width);
+}
+
+.chaticon > img {
+    width: inherit
 }
