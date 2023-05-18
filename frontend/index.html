@@ -1,35 +1,33 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Chat</title>
-    <meta name="viewport" content="width=device-width" />
 
-    <link rel="icon" type="image/x-icon" href="src/assets/favicon.svg" />
-    <link href="https://unpkg.com/sanitize.css" rel="stylesheet" />
-    <link
-      href="https://unpkg.com/sanitize.css/typography.css"
-      rel="stylesheet"
-    />
-    <link href="https://unpkg.com/sanitize.css/forms.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/src/app.css" />
-    <link rel="stylesheet" href="/src/style.css" />
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/src/supabase.js" type="module"></script>
-    <script src="/src/pusher.js" type="module"></script>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat</title>
+  <meta name="viewport" content="width=device-width" />
 
-  <body>
+  <link rel="icon" type="image/x-icon" href="src/assets/favicon.svg" />
+
+  <link href="https://unpkg.com/sanitize.css" rel="stylesheet" />
+  <link href="https://unpkg.com/sanitize.css/typography.css" rel="stylesheet" />
+  <link href="https://unpkg.com/sanitize.css/forms.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/app.css" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/src/supabase.js" type="module"></script>
+  <script src="/src/pusher.js" type="module"></script>
+  <script src="https://kit.fontawesome.com/67727cb6f5.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="main-window-wrappper signin-portal">
     <div class="topbar">
       <div class="window_name body">Messenger</div>
     </div>
     <div class="sidebar">
       <div class="public chaticon">
-        <img
-          src="/src/assets/images/public_chat_room.png"
-          alt="Public Chat Room"
-        />
+        <img src="/src/assets/images/public_chat_room.png" alt="Public Chat Room" />
       </div>
     </div>
 
@@ -51,10 +49,53 @@
         </form>
       </div>
     </div>
-    <!--  <script type="module" src="/src/index.js"></script> -->
-    <script
-      src="https://kit.fontawesome.com/67727cb6f5.js"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+  </div>
+
+  <!--  <script type="module" src="/src/index.js"></script> -->
+  <div class="signin-window">
+    <h3 class="sign-window-title">
+      Sign In
+      <i class="close-window fa-solid fa-xmark fa-2xs" id="close-window"></i>
+    </h3>
+    <form id="signin-form">
+      <input name="email" id="email-input" type="email" placeholder="Email"
+        pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" />
+      <input name="password" id="password-input" type="password" placeholder="Password" />
+      <div class="signin-buttons">
+        <button type="button" class="signin" id="signing">Sign in</button>
+        <a id="github-button" class="btn btn-block btn-social btn-github">
+          <i class="fa fa-github"></i> Sign in with Github
+        </a>
+      </div>
+    </form>
+    <div class="signin-misc">
+      <h5 style="grid-column: 2/-3" id="forgot-password">Forgot password</h5>
+      <h5>Don't have an account? <a id="signup">Sign up</a></h5>
+    </div>
+  </div>
+  <div class="signup-window hidden">
+    <h3 class="sign-window-title">
+      Sign Up
+      <i class="close-window fa-solid fa-xmark" id="close-window"></i>
+    </h3>
+    <form id="signin-form">
+      <input type="text" name="username" placeholder="Username" id="username" />
+      <input name="email" id="email-input" type="email" placeholder="Email"
+        pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" />
+      <input name="password" id="password-input" type="password" placeholder="Password" />
+      <div class="signin-buttons">
+        <button type="button" class="signin" id="signing">Sign up</button>
+        <a id="github-button" class="btn btn-block btn-social btn-github">
+          <i class="fa fa-github"></i> Sign up with Github
+        </a>
+      </div>
+    </form>
+    <div class="signin-misc">
+      <h5 style="grid-column: 2/-2">
+        Have an account? <a id="signin">Sign in</a>
+      </h5>
+    </div>
+  </div>
+</body>
+
 </html>
