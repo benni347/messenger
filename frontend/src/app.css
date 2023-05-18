@@ -119,7 +119,6 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 #root {
@@ -235,6 +234,8 @@ html {
 
 .chaticon {
   aspect-ratio: 1;
+  align-self: center;
+  justify-self: center;
   width: var(--closed-sibar-width);
 }
 
