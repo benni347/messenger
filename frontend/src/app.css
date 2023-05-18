@@ -8,6 +8,9 @@
   --secondary-color: #304877;
   --background-contrast: #506ea0;
   --selected-color: #204faa;
+  --dark-red: #8b0000;
+  --firebrick: #b22222;
+  --pure-red: #ff0000;
   --topbar-height: 33px;
   --closed-sibar-width: 10vw;
 }
@@ -225,11 +228,13 @@ html {
 }
 
 .signin {
-  position: absolute;
-  right: 1vw;
   cursor: pointer;
   background: var(--neural-color-1);
   color: var(--neural-color-2);
+  padding: 0.25rem;
+  outline: 0.125rem var(--accent-color) solid;
+  grid-column: 2 / -3;
+  border-radius: 5px;
 }
 
 .chaticon {
@@ -241,4 +246,74 @@ html {
 
 .chaticon > img {
   width: inherit;
+}
+
+.signin-portal {
+  filter: blur(5px);
+  z-index: 0;
+  position: relative;
+}
+
+.signin-window,
+.signup-window {
+  outline: 0.125rem var(--accent-color) solid;
+  top: 30vh;
+  left: 50vh;
+  z-index: 10000;
+  border-radius: 5px;
+  position: fixed;
+  background-color: var(--neural-color-2);
+}
+
+#signin-form {
+  display: grid;
+  --side-margin-length: 0.5rem;
+  padding-left: var(--side-margin-length);
+  padding-right: var(--side-margin-length);
+  gap: 0.5rem;
+}
+
+.signin-buttons {
+  padding: 0.25rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+#github-button {
+  outline: 0.125rem var(--accent-color) solid;
+  padding: 0.25rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.signin-misc {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+#signin,
+#signup {
+  cursor: pointer;
+  color: var(--accent-color);
+  text-decoration: wavy underline var(--neural-color-1);
+}
+
+.hidden {
+  display: none;
+}
+
+.close-window {
+  color: var(--firebrick);
+  background-color: var(--neural-color-1);
+  aspect-ratio: 1;
+  width: auto;
+  height: 0.9em;
+  text-align: center;
+  border-radius: 100%;
+}
+
+.sign-window-title {
+  margin-top: 2rem;
+  height: 2rem;
 }
