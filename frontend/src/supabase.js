@@ -14,14 +14,48 @@ const options = {
     persistSession: true,
     detectSessionInUrl: true,
   },
-  global: {
-    headers: { "x-my-custom-header": "my-app-name" },
-  },
 };
 
 let supabaseKey;
 let supabaseUrl;
 let supabase;
+
+async function signInTroughMail() {
+  const mail = document.getElementById("email-input").value;
+  const password = document.getElementById("password-input").value;
+  const user_name = document.getElementById("username").value;
+  const { data, error } = await supabase.auth.signIn({
+    email: mail,
+    password: password,
+    options: {
+      data: {
+        user_name: user_name,
+      },
+    },
+  });
+  if (error != "") {
+    console.error(`An error occured during the login: ${error}`);
+  }
+  console.info(data);
+}
+
+async function signOut() {
+  const { error } = await supabase.auth.signOut();
+  if (error != "") {
+    console.error(`An error occured during the logout: ${error}`);
+  }
+}
+
+async function signInTroughGithub() {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "github",
+  });
+  if (error != "") {
+    console.error(`An error occured during the login: ${error}`);
+  }
+  console.info(data);
+}
+
 // Solution for the error:
 // https://stackoverflow.com/a/74261887
 // -FIX-ME-: Uncaught ReferenceError: createClient is not defined
@@ -50,3 +84,22 @@ async function signUp(mail, password) {
 
   console.info(data);
 }
+
+window.addEventListener("DOMContentLoaded", () => {
+  const signInBtn = document.getElementById("signin-button");
+  if (signInBtn) {
+    signInBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      console.info("Sign in button clicked");
+      signInTroughMail();
+    });
+  }
+  const githubBtn = document.getElementById("github-button");
+  if (githubBtn) {
+    githubBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      console.info("Github button clicked");
+      signInTroughGithub();
+    });
+  }
+});
