@@ -33,7 +33,7 @@ async function signInTroughMail() {
       },
     },
   });
-  if (error != "") {
+  if (error !== "") {
     console.error(`An error occured during the login: ${error}`);
   }
   console.info(data);
@@ -41,7 +41,7 @@ async function signInTroughMail() {
 
 async function signOut() {
   const { error } = await supabase.auth.signOut();
-  if (error != "") {
+  if (error !== "") {
     console.error(`An error occured during the logout: ${error}`);
   }
 }
@@ -50,7 +50,7 @@ async function signInTroughGithub() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "github",
   });
-  if (error != "") {
+  if (error !== "") {
     console.error(`An error occured during the login: ${error}`);
   }
   console.info(data);
@@ -78,7 +78,7 @@ async function signUp(mail, password) {
     email: mail,
     password: password,
   });
-  if (error != "") {
+  if (error !== "") {
     console.error(`An error occured during the creation of the user: ${error}`);
   }
 
