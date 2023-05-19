@@ -20,22 +20,25 @@ let supabaseKey = "";
 let supabaseUrl = "";
 let supabase = "";
 
-async function signInTroughMail() {
-  const mail = document.getElementById("email-input").value;
+async function signInThroughMail() {
+  const email = document.getElementById("email-input").value;
   const password = document.getElementById("password-input").value;
   const user_name = document.getElementById("username").value;
+
   const { data, error } = await supabase.auth.signIn({
-    email: mail,
-    password: password,
+    email, // equals to email: email
+    password, // equals to password: password
     options: {
       data: {
-        user_name: user_name,
+        user_name, // equals to user_name: user_name
       },
     },
   });
-  if (error !== "") {
+
+  if (error) {
     console.error(`An error occured during the login: ${error}`);
   }
+
   console.info(data);
 }
 
@@ -91,7 +94,7 @@ window.addEventListener("DOMContentLoaded", () => {
     signInBtn.addEventListener("click", (event) => {
       event.preventDefault();
       console.info("Sign in button clicked");
-      signInTroughMail();
+      signInThroughMail();
     });
   }
   const githubBtn = document.getElementById("github-button");
