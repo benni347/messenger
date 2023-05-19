@@ -113,12 +113,8 @@ async function signInTroughGithub() {
 //  - importing it via "import { createClient } from "@supabase/supabase-js";"
 
 RetrieveEnvValues().then((env) => {
-  console.log(`Env: ${env}`);
   supabaseKey = env.supaBaseApiKey;
   supabaseUrl = env.supaBaseUrl;
-  console.info(`Supabase Key: ${supabaseKey}`);
-  console.info(`Supabase URL: ${supabaseUrl}`);
-  console.info(`Supabase options: ${JSON.stringify(options)}`);
   supabase = createClient(supabaseUrl, supabaseKey, options);
 });
 

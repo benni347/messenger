@@ -10,14 +10,10 @@ const channelName = "1";
 const messageLog = document.getElementById("message-log");
 
 RetrieveEnvValues().then((env) => {
-  console.log(`Env: ${env}`);
   appId = env.appId;
   appKey = env.appKey;
   clusterId = env.clusterId;
   appSecret = env.appSecret;
-  console.info(`App Id: ${appId}`);
-  console.info(`App Key: ${appKey}`);
-  console.info(`App Cluster: ${clusterId}`);
   PusherClient();
 });
 
