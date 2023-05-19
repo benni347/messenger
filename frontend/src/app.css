@@ -311,6 +311,18 @@ html {
   height: 0.9em;
   text-align: center;
   border-radius: 100%;
+  position: relative;
+  cursor: pointer;
+  right: 0;
+}
+
+.close-window::before {
+  position: absolute;
+  inset: 50% 0 50% 0;
+}
+
+.close-window:hover {
+  background-color: rgba(242, 242, 242, 0.9);
 }
 
 .sign-window-title {
