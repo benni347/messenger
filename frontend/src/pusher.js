@@ -35,7 +35,7 @@ function PusherClient() {
   // TODO: Add ability to send messages to a specific user
   // The format from the server should be: {"message": "message", "time": "time"}
   const channel = pusher.subscribe(channelName);
-  channel.bind("msg-recive", function (data) {
+  channel.bind("msg-recive", (data) => {
     console.info(`Pusher data: ${JSON.stringify(data)}`);
     let msgParagragh = document.createElement("p");
     let msgText = data.message;
