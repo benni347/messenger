@@ -202,6 +202,17 @@ window.addEventListener("DOMContentLoaded", () => {
       signUpWindow.classList.remove("hidden");
     });
   }
+  const signInBtnInMainContentWrapper = document.getElementById(
+    "signin-main-wrapper"
+  );
+  if (signInBtnInMainContentWrapper) {
+    signInBtnInMainContentWrapper.addEventListener("click", (event) => {
+      event.preventDefault();
+      console.info("Sign in button in main content wrapper clicked");
+      mainContentWrapper.classList.add("signin-portal");
+      signInWindow.classList.remove("hidden");
+    });
+  }
   const githubBtn = document.getElementById("github-button");
   if (githubBtn) {
     githubBtn.addEventListener("click", (event) => {
