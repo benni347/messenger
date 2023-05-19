@@ -16,9 +16,9 @@ const options = {
   },
 };
 
-let supabaseKey;
-let supabaseUrl;
-let supabase;
+let supabaseKey = "";
+let supabaseUrl = "";
+let supabase = "";
 
 async function signInTroughMail() {
   const mail = document.getElementById("email-input").value;

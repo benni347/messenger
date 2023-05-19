@@ -2,10 +2,10 @@
 
 import { RetrieveEnvValues } from "../wailsjs/go/main/App.js";
 
-let appId;
-let appKey;
-let clusterId;
-let appSecret;
+let appId = "";
+let appKey = "";
+let clusterId = "";
+let appSecret = "";
 let channelName = "1";
 const messageLog = document.getElementById("message-log");
 
