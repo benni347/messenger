@@ -49,11 +49,6 @@ function PusherClient() {
   const pusher = new Pusher(appKey, {
     cluster: clusterId,
   });
-  // TODO: Add authentication, see https://pusher.com/docs/channels/using_channels/authentication
-  // TODO: ADD the ability to send messages to the channel
-  // TODO: add Private channels
-  // TODO: Store the msg in a database
-  // TODO: Add ability to send messages to a specific user
   // The format from the server should be: {"message": "message", "time": "time"}
   const channel = pusher.subscribe(channelName);
   channel.bind("msg-recive", (data) => {
