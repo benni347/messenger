@@ -318,11 +318,18 @@ html {
 
 .close-window::before {
   position: absolute;
-  inset: 50% 0 50% 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  top: 50%;
 }
 
 .close-window:hover {
   background-color: rgba(242, 242, 242, 0.9);
+}
+
+#close-signup-button::before {
+  top: 0;
 }
 
 .sign-window-title {
