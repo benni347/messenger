@@ -20,6 +20,25 @@ let supabaseKey = "";
 let supabaseUrl = "";
 let supabase = "";
 
+/**
+ * Asynchronously signs in a user through email using Supabase authentication.
+ *
+ * This function first retrieves user input from the HTML elements with ids 'email-input',
+ * 'password-input', and 'username'. It then attempts to sign the user in via Supabase's
+ * auth.signIn method with the retrieved user input data. If an error occurs during the
+ * signIn process, the error is logged to the console. Otherwise, the data received from
+ * the signIn request is logged to the console.
+ *
+ * The function does not return anything.
+ *
+ * Note: The HTML elements used in this function must exist in the HTML document and be
+ * populated with appropriate user input data (email, password, and username) before this
+ * function is called.
+ *
+ * @async
+ * @function signInThroughMail
+ * @throws Will throw an error if the sign in process encounters any issues.
+ */
 async function signInThroughMail() {
   const email = document.getElementById("email-input").value;
   const password = document.getElementById("password-input").value;
@@ -42,6 +61,19 @@ async function signInThroughMail() {
   console.info(data);
 }
 
+/**
+ * Asynchronously signs out a user using Supabase authentication.
+ *
+ * This function attempts to sign the user out via Supabase's auth.signOut method. If an error
+ * occurs during the signOut process, the error is logged to the console. The function does
+ * not return anything.
+ *
+ * Note: A user must be signed in before this function is called.
+ *
+ * @async
+ * @function signOut
+ * @throws Will throw an error if the sign out process encounters any issues.
+ */
 async function signOut() {
   const { error } = await supabase.auth.signOut();
   if (error !== "") {
@@ -49,6 +81,20 @@ async function signOut() {
   }
 }
 
+/**
+ * Asynchronously signs in a user using GitHub as OAuth provider via Supabase authentication.
+ *
+ * This function attempts to sign the user in via Supabase's auth.signInWithOAuth method with
+ * 'github' as the OAuth provider. If an error occurs during the signIn process, the error
+ * is logged to the console. Otherwise, the data received from the signIn request is logged
+ * to the console.
+ *
+ * The function does not return anything.
+ *
+ * @async
+ * @function signInTroughGithub
+ * @throws Will throw an error if the sign in process encounters any issues.
+ */
 async function signInTroughGithub() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "github",
@@ -76,6 +122,25 @@ RetrieveEnvValues().then((env) => {
   supabase = createClient(supabaseUrl, supabaseKey, options);
 });
 
+/**
+ * Asynchronously registers a new user with Supabase authentication.
+ *
+ * This function first retrieves user input from the HTML elements with ids 'email-input',
+ * 'password-input', and 'username'. It then attempts to sign the user up via Supabase's
+ * auth.signUp method with the retrieved user input data. If an error occurs during the
+ * signUp process, the error is logged to the console. Otherwise, the data received from
+ * the signUp request is logged to the console.
+ *
+ * The function does not return anything.
+ *
+ * Note: The HTML elements used in this function must exist in the HTML document and be
+ * populated with appropriate user input data (email, password, and username) before this
+ * function is called.
+ *
+ * @async
+ * @function signUp
+ * @throws Will throw an error if the user creation process encounters any issues.
+ */
 async function signUp() {
   const email = document.getElementById("email-input").value;
   const password = document.getElementById("password-input").value;
