@@ -76,10 +76,19 @@ RetrieveEnvValues().then((env) => {
   supabase = createClient(supabaseUrl, supabaseKey, options);
 });
 
-async function signUp(mail, password) {
+async function signUp() {
+  const email = document.getElementById("email-input").value;
+  const password = document.getElementById("password-input").value;
+  const user_name = document.getElementById("username").value;
+
   const { data, error } = await supabase.auth.signUp({
-    email: mail,
-    password: password,
+    email, // equals to email: email
+    password, // equals to password: password
+    options: {
+      data: {
+        user_name, // equals to user_name: user_name
+      },
+    },
   });
   if (error !== "") {
     console.error(`An error occured during the creation of the user: ${error}`);
