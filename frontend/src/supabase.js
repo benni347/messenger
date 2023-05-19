@@ -193,6 +193,15 @@ window.addEventListener("DOMContentLoaded", () => {
       mainContentWrapper.classList.remove("signin-portal");
     });
   }
+  const signUpBtnInSignInWindow = document.getElementById("signup");
+  if (signUpBtnInSignInWindow) {
+    signUpBtnInSignInWindow.addEventListener("click", (event) => {
+      event.preventDefault();
+      console.info("Sign up button in sign in window clicked");
+      signInWindow.classList.add("hidden");
+      signUpWindow.classList.remove("hidden");
+    });
+  }
   const githubBtn = document.getElementById("github-button");
   if (githubBtn) {
     githubBtn.addEventListener("click", (event) => {
