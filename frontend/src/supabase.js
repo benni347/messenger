@@ -76,7 +76,7 @@ async function signInThroughMail() {
  */
 async function signOut() {
   const { error } = await supabase.auth.signOut();
-  if (error !== "") {
+  if (error) {
     console.error(`An error occured during the logout: ${error}`);
   }
 }
@@ -99,7 +99,7 @@ async function signInTroughGithub() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "github",
   });
-  if (error !== "") {
+  if (error) {
     console.error(`An error occured during the login: ${error}`);
   }
   console.info(data);
@@ -142,8 +142,8 @@ RetrieveEnvValues().then((env) => {
  * @throws Will throw an error if the user creation process encounters any issues.
  */
 async function signUp() {
-  const email = document.getElementById("email-input").value;
-  const password = document.getElementById("password-input").value;
+  const email = document.getElementById("email-input-signup").value;
+  const password = document.getElementById("password-signup").value;
   const user_name = document.getElementById("username").value;
 
   const { data, error } = await supabase.auth.signUp({
@@ -155,11 +155,9 @@ async function signUp() {
       },
     },
   });
-  if (error !== "") {
+  if (error) {
     console.error(`An error occured during the creation of the user: ${error}`);
   }
-
-  console.info(data);
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -172,6 +170,14 @@ window.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
       console.info("Sign in button clicked");
       signInThroughMail();
+    });
+  }
+  const signUpBtn = document.getElementById("signup-btn");
+  if (signUpBtn) {
+    signUpBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      console.info("Sign up button clicked");
+      signUp();
     });
   }
   const closeSignInBtn = document.getElementById("close-signin-button");
