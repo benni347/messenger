@@ -163,12 +163,34 @@ async function signUp() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  const signInWindow = document.getElementById("signin-window");
+  const signUpWindow = document.getElementById("signup-window");
+  const mainContentWrapper = document.getElementById("main-window-wrappper");
   const signInBtn = document.getElementById("signin-button");
   if (signInBtn) {
     signInBtn.addEventListener("click", (event) => {
       event.preventDefault();
       console.info("Sign in button clicked");
       signInThroughMail();
+    });
+  }
+  const closeSignInBtn = document.getElementById("close-signin-button");
+  if (closeSignInBtn) {
+    closeSignInBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      console.info("Close sign in button clicked");
+      signInWindow.classList.add("hidden");
+      mainContentWrapper.classList.remove("signin-portal");
+      signInWindow.classList.add("hidden");
+    });
+  }
+  const closeSignUpBtn = document.getElementById("close-signup-button");
+  if (closeSignUpBtn) {
+    closeSignUpBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      console.info("Close sign up button clicked");
+      signUpWindow.classList.add("hidden");
+      mainContentWrapper.classList.remove("signin-portal");
     });
   }
   const githubBtn = document.getElementById("github-button");
