@@ -202,6 +202,15 @@ window.addEventListener("DOMContentLoaded", () => {
       signUpWindow.classList.remove("hidden");
     });
   }
+  const signInBtnInSignUpWindow = document.getElementById("signin");
+  if (signInBtnInSignUpWindow) {
+    signInBtnInSignUpWindow.addEventListener("click", (event) => {
+      event.preventDefault();
+      console.info("Sign in button in sign up window clicked");
+      signUpWindow.classList.add("hidden");
+      signInWindow.classList.remove("hidden");
+    });
+  }
   const signInBtnInMainContentWrapper = document.getElementById(
     "signin-main-wrapper"
   );
