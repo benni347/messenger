@@ -6,7 +6,7 @@ let appId = "";
 let appKey = "";
 let clusterId = "";
 let appSecret = "";
-let channelName = "1";
+const channelName = "1";
 const messageLog = document.getElementById("message-log");
 
 RetrieveEnvValues().then((env) => {
@@ -37,9 +37,9 @@ function PusherClient() {
   const channel = pusher.subscribe(channelName);
   channel.bind("msg-recive", (data) => {
     console.info(`Pusher data: ${JSON.stringify(data)}`);
-    let msgParagragh = document.createElement("p");
-    let msgText = data.message;
-    let timeMsg = data.time;
+    const msgParagragh = document.createElement("p");
+    const msgText = data.message;
+    const timeMsg = data.time;
     msgParagragh.innerHTML = `${msgText}`;
     console.info(`Message: ${msgText}`);
     console.info(`Time: ${timeMsg}`);
