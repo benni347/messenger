@@ -97,7 +97,22 @@ type Message struct {
 	Time    string `json:"time"`
 }
 
-func (a *App) SendMessage(chatRoomId string, message string) {
+// SendMessage sends a message from a specific sender to a specified chat room.
+//
+// This function takes in the ID of the chat room (chatRoomId), the sender's identifier (sender), and the content of the message (message) as parameters.
+// It then generates a timestamp, creates a Message object with the sender, message, and timestamp, and converts this object into a JSON format.
+// Afterward, it gets the necessary Pusher credentials for this application, creates a new Pusher client using these credentials,
+// and triggers a new Pusher event with the JSON message.
+//
+// The format of the message from the server should be: {"message": "message", "sender": "sender", "time": "time"}
+//
+// If there's an error while marshalling the Message object to JSON, this function prints the error and returns immediately.
+//
+// Note that SendMessage does not return any values.
+//
+// Usage:
+// app := NewApp()
+// app.SendMessage("chatRoomId", "senderId", "Hello, world!")
 func (a *App) SendMessage(chatRoomId string, sender string, message string) {
 	// The format from the server should be: {"message": "message", "time": "time"}
 	currentTime := time.Now().UnixNano()
