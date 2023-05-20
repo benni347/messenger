@@ -56,10 +56,6 @@ func (a *App) RetrieveEnvValues() Config {
 	a.config.ClusterId = os.Getenv("CLUSTER")
 	a.config.SupaBaseApiKey = os.Getenv("SUPABASE_API_KEY")
 	a.config.SupaBaseUrl = os.Getenv("SUPABASE_URL")
-	m.PrintInfo("The app_id is: "+a.config.AppId,
-		"The app_secret is: "+a.config.AppSecret,
-		"The app_key is: "+a.config.AppKey,
-		"The cluster_id is: "+a.config.ClusterId)
 	return a.config
 }
 
