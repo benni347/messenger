@@ -62,3 +62,7 @@ func (a *App) RetrieveEnvValues() Config {
 		"The cluster_id is: "+a.config.ClusterId)
 	return a.config
 }
+
+func (a *App) ValidateEmail(email string) bool {
+	return utils.ValidateEmailRegex(email)
+}

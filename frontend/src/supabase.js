@@ -1,6 +1,6 @@
 "use strict";
 
-import { RetrieveEnvValues } from "../wailsjs/go/main/App.js";
+import { RetrieveEnvValues, ValidateEmail } from "../wailsjs/go/main/App.js";
 
 // Solved the fix me through importing it as a npm module
 import { createClient } from "@supabase/supabase-js";
@@ -41,6 +41,10 @@ let supabase = "";
  */
 async function signInThroughMail() {
   const email = document.getElementById("email-input").value;
+  if (!ValidateEmail(email)) {
+    console.error(`The email ${email} is not valid.`);
+    return;
+  }
   const password = document.getElementById("password-input").value;
   const user_name = document.getElementById("username").value;
 
@@ -142,6 +146,10 @@ async function signUp() {
   const password = document.getElementById("password-signup").value;
   const user_name = document.getElementById("username").value;
 
+  if (!ValidateEmail(email)) {
+    console.error(`The email ${email} is not valid.`);
+    return;
+  }
   const { data, error } = await supabase.auth.signUp({
     email, // equals to email: email
     password, // equals to password: password
