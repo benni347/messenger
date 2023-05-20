@@ -19,6 +19,7 @@ const options = {
 let supabaseKey = "";
 let supabaseUrl = "";
 let supabase = "";
+let authenticated = false;
 
 /**
  * Asynchronously signs in a user through email using Supabase authentication.
@@ -57,6 +58,7 @@ async function signInThroughMail() {
       },
     },
   });
+  authenticated = true;
 
   if (error) {
     console.error(`An error occured during the login: ${error}`);
@@ -83,6 +85,7 @@ async function signOut() {
   if (error) {
     console.error(`An error occured during the logout: ${error}`);
   }
+  authenticated = false;
 }
 
 /**
@@ -106,6 +109,7 @@ async function signInTroughGithub() {
   if (error) {
     console.error(`An error occured during the login: ${error}`);
   }
+  authenticated = true;
   console.info(data);
 }
 
