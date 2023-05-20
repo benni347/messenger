@@ -2,10 +2,14 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"os"
+	"strconv"
+	"time"
 
 	utils "github.com/benni347/messengerutils"
 	"github.com/joho/godotenv"
+	"github.com/pusher/pusher-http-go/v5"
 )
 
 // App struct
@@ -85,4 +89,46 @@ func (a *App) GetSupaBaseApiKey() string {
 
 func (a *App) GetSupaBaseUrl() string {
 	return a.config.SupaBaseUrl
+}
+
+type Message struct {
+	Message string `json:"message"`
+	Time    string `json:"time"`
+}
+
+func (a *App) SendMessage(chatRoomId string, message string) {
+	// The format from the server should be: {"message": "message", "time": "time"}
+	currentTime := time.Now().UnixNano()
+	currentTimeString := strconv.FormatInt(currentTime, 10)
+
+	// Create a new Message object
+	msg := Message{
+		Message: message,
+		Time:    currentTimeString,
+	}
+
+	// Convert Message object to JSON
+	msgJSON, err := json.Marshal(msg)
+	if err != nil {
+		utils.PrintError("marshalling JSON", err)
+		return
+	}
+
+	// Get the Pusher credentials
+	appId := a.GetAppId()
+	appSecret := a.GetAppSecret()
+	appKey := a.GetAppKey()
+	clusterId := a.GetClusterId()
+
+	// Create a new Pusher Client
+	pusherClient := pusher.Client{
+		AppID:   appId,
+		Key:     appKey,
+		Secret:  appSecret,
+		Cluster: clusterId,
+		Secure:  true,
+	}
+
+	// Create a new Pusher trigger
+	pusherClient.Trigger(chatRoomId, "message", string(msgJSON))
 }

@@ -22,6 +22,7 @@ require (
 	github.com/mattn/go-isatty v0.0.18 // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/pusher/pusher-http-go/v5 v5.1.1 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/samber/lo v1.38.1 // indirect
 	github.com/stretchr/testify v1.8.2 // indirect
