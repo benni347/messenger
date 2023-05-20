@@ -216,15 +216,23 @@ html {
   background-color: var(--secondary-color);
   width: calc(100vw - var(--closed-sibar-width) - 3px);
   right: 0;
-  display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: left;
   height: 66px;
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr;
 }
 
 .person_wrapper {
-  margin-left: 2vw;
+  height: max-content;
+}
+
+.person_wrapper > h3 {
+  margin: 0;
+}
+
+#signin-main-wrapper {
+    grid-column: 3 / -1;
 }
 
 .signin {
