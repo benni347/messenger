@@ -62,3 +62,27 @@ func (a *App) RetrieveEnvValues() Config {
 func (a *App) ValidateEmail(email string) bool {
 	return utils.ValidateEmailRegex(email)
 }
+
+func (a *App) GetAppId() string {
+	return a.config.AppId
+}
+
+func (a *App) GetAppSecret() string {
+	return a.config.AppSecret
+}
+
+func (a *App) GetAppKey() string {
+	return a.config.AppKey
+}
+
+func (a *App) GetClusterId() string {
+	return a.config.ClusterId
+}
+
+func (a *App) GetSupaBaseApiKey() string {
+	return a.config.SupaBaseApiKey
+}
+
+func (a *App) GetSupaBaseUrl() string {
+	return a.config.SupaBaseUrl
+}
