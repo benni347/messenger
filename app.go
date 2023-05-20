@@ -93,10 +93,12 @@ func (a *App) GetSupaBaseUrl() string {
 
 type Message struct {
 	Message string `json:"message"`
+	Sender  string `json:"sender"`
 	Time    string `json:"time"`
 }
 
 func (a *App) SendMessage(chatRoomId string, message string) {
+func (a *App) SendMessage(chatRoomId string, sender string, message string) {
 	// The format from the server should be: {"message": "message", "time": "time"}
 	currentTime := time.Now().UnixNano()
 	currentTimeString := strconv.FormatInt(currentTime, 10)
@@ -105,6 +107,7 @@ func (a *App) SendMessage(chatRoomId string, message string) {
 	msg := Message{
 		Message: message,
 		Time:    currentTimeString,
+		Sender:  sender,
 	}
 
 	// Convert Message object to JSON
