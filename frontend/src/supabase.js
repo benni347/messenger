@@ -66,7 +66,7 @@ async function signInThroughMail() {
   authenticated = true;
 
   localStorage.setItem("authenticated", authenticated);
-
+  changeButton();
   if (error) {
     console.error(`An error occured during the login: ${error}`);
   }
@@ -94,6 +94,9 @@ async function signOut() {
   }
   authenticated = false;
   localStorage.setItem("authenticated", authenticated);
+  localStorage.removeItem("username");
+  setUsername();
+  changeButton();
 }
 
 /**
@@ -119,7 +122,7 @@ async function signInTroughGithub() {
   }
   authenticated = true;
   localStorage.setItem("authenticated", authenticated);
-  console.info(data);
+  changeButton();
 }
 
 // Solution for the error:
@@ -133,12 +136,8 @@ RetrieveEnvValues().then(async (env) => {
   supabaseKey = env.supaBaseApiKey;
   supabaseUrl = env.supaBaseUrl;
   supabase = createClient(supabaseUrl, supabaseKey, options);
-  const usernameParagraph = document.createElement("p");
-  usernameParagraph.style.gridArea = "username";
-  await setUsername();
-  usernameParagraph.innerHTML = await getUsername();
-  const userNameDiv = document.getElementById("username");
-  userNameDiv.appendChild(usernameParagraph);
+
+  setUsername();
 });
 
 /**
@@ -218,6 +217,11 @@ const setUsername = async () => {
   const username = await getUsername();
   console.log(username);
   localStorage.setItem("username", username);
+  const usernameParagraph = document.createElement("p");
+  usernameParagraph.style.gridArea = "username";
+  usernameParagraph.innerHTML = username;
+  const userNameDiv = document.getElementById("username");
+  userNameDiv.appendChild(usernameParagraph);
   return username;
 };
 const getMessages = async (from, to) => {
@@ -278,17 +282,36 @@ const useMessages = () => {
   };
 };
 
+function changeButton() {
+  console.log("changeButton");
+  if (localStorage.getItem("authenticated") === true || localStorage.getItem("authenticated") == "true") {
+    document.getElementById("signin-main-wrapper").style.display = "none";
+    document.getElementById("signout-main-wrapper").style.display = "block";
+  } else {
+    document.getElementById("signin-main-wrapper").style.display = "block";
+    document.getElementById("signout-main-wrapper").style.display = "none";
+  }
+}
+
 window.addEventListener("DOMContentLoaded", () => {
+  changeButton();
   const signInWindow = document.getElementById("signin-window");
   const signUpWindow = document.getElementById("signup-window");
   const verifyEmailWindow = document.getElementById("verify-window");
   const verifyEmailBtn = document.getElementById("okay-verify-btn");
   const mainContentWrapper = document.getElementById("main-window-wrappper");
+  const signOutBtn = document.getElementById("signout-main-wrapper");
   const signInBtn = document.getElementById("signin-button");
   if (signInBtn) {
     signInBtn.addEventListener("click", (event) => {
       event.preventDefault();
       signInThroughMail();
+    });
+  }
+  if (signOutBtn) {
+    signOutBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      signOut();
     });
   }
   const signUpBtn = document.getElementById("signup-btn");
