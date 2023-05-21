@@ -287,7 +287,10 @@ const useMessages = () => {
 
 function changeButton() {
   console.log("changeButton");
-  if (localStorage.getItem("authenticated") === true || localStorage.getItem("authenticated") == "true") {
+  if (
+    localStorage.getItem("authenticated") === true ||
+    localStorage.getItem("authenticated") == "true"
+  ) {
     document.getElementById("signin-main-wrapper").style.display = "none";
     document.getElementById("signout-main-wrapper").style.display = "block";
   } else {
