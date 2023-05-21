@@ -355,9 +355,24 @@ function changeButton() {
   ) {
     document.getElementById("signin-main-wrapper").style.display = "none";
     document.getElementById("signout-main-wrapper").style.display = "block";
+    addUserIdNote();
   } else {
     document.getElementById("signin-main-wrapper").style.display = "block";
     document.getElementById("signout-main-wrapper").style.display = "none";
+  }
+}
+
+function addUserIdNote() {
+  if (localStorage.getItem("authenticated") === true || localStorage.getItem("authenticated") === "true") {
+    getId().then((id) => {
+      const noteP = document.createElement("p");
+      noteP.innerHTML =
+        "Your User ID: " + id + "<br>Copy this ID and send it to your friend to start chatting!";
+      noteP.style.gridArea = "notes";
+      const personDiv = document.querySelector(".person");
+
+      personDiv.appendChild(noteP);
+    });
   }
 }
 
@@ -437,6 +452,13 @@ window.addEventListener("DOMContentLoaded", () => {
   const githubBtn = document.getElementById("github-button");
   if (githubBtn) {
     githubBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      signInTroughGithub();
+    });
+  }
+  const githubBtnSignUp = document.getElementById("github-button-signup");
+  if (githubBtnSignUp) {
+    githubBtnSignUp.addEventListener("click", (event) => {
       event.preventDefault();
       signInTroughGithub();
     });

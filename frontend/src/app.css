@@ -280,7 +280,8 @@ html {
   gap: 1rem;
 }
 
-#github-button {
+#github-button,
+#github-button-signup {
   outline: 0.125rem var(--accent-color) solid;
   padding: 0.25rem;
   cursor: pointer;
