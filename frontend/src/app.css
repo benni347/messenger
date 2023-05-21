@@ -336,3 +336,8 @@ html {
   margin-top: 2rem;
   height: 2rem;
 }
+
+#signout-main-wrapper {
+  grid-area: signin;
+  display: none;
+}
