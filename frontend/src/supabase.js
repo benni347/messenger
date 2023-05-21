@@ -298,6 +298,11 @@ const createNewMessage = async (username, text) => {
   return data;
 };
 
+/**
+ * Manages the messages in the chat, allowing to load older messages and send new ones.
+ *
+ * @returns {Object} An object containing the current username, a reference to the messages, a function to send messages, and a function to load older messages.
+ */
 const useMessages = () => {
   const username = getUsername();
   const messages = ref([]);
@@ -333,6 +338,9 @@ const useMessages = () => {
   };
 };
 
+/**
+ * Changes the visibility of the sign-in and sign-out buttons based on the 'authenticated' flag in local storage.
+ */
 function changeButton() {
   if (
     localStorage.getItem("authenticated") === true ||
