@@ -311,6 +311,11 @@ const useMessages = () => {
   const messages = ref([]);
   const messagesCount = ref(0);
   const maxMessgesPerRequest = 50;
+  /**
+  * Loads a batch of messages from the server, updating the count of messages and appending the loaded messages to the existing ones.
+  *
+  * @async
+  */
   const loadMessagesBatch = async () => {
     const loadedMessages = await getMessages(
       messagesCount.value,
