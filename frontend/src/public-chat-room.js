@@ -27,6 +27,9 @@ function validateChatRoomId(chatRoomId) {
  * Adds a note to the 'person' div every 10 seconds. The note reminds users that the chat room is public, and that messages are stored unencrypted.
  */
 function addNote() {
+  if (!validateChatRoomId(getChatRoomId())) {
+    return;
+  }
   const noteP = document.createElement("p");
   noteP.innerHTML =
     "Note: This is a public chat room. Anyone can see your messages. The messages are stored in a database, unencrypted.";
