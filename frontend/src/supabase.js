@@ -73,6 +73,48 @@ async function signInThroughMail() {
 
   console.info(data);
 }
+/**
+ * Gets the current username. If it doesn't exist, generates a new one.
+ *
+ * @async
+ * @returns {Promise<string>} The username.
+ */
+const getUsername = async () => {
+  const previousUsername = localStorage.getItem("username");
+  const user = await supabase.auth.getUser();
+  if (
+    user &&
+    user.data &&
+    user.data.user &&
+    user.data.user.user_metadata &&
+    user.data.user.user_metadata.user_name
+  ) {
+    const username = user.data.user.user_metadata.user_name;
+    return username;
+  } else {
+    const username = previousUsername || GenerateUserName(4);
+    return username;
+  }
+};
+/**
+ * Sets the current username in local storage and updates the username field in the document.
+ *
+ * @async
+ * @returns {Promise<string>} The username.
+ */
+const setUsername = async () => {
+  const username = await getUsername();
+  localStorage.setItem("username", username);
+  const usernameParagraph = document.createElement("p");
+  usernameParagraph.style.gridArea = "username";
+  usernameParagraph.innerHTML = username;
+  const userNameDiv = document.getElementById("username");
+  if (userNameDiv.childElementCount > 0) {
+    userNameDiv.removeChild(userNameDiv.childNodes[0]);
+  }
+  userNameDiv.appendChild(usernameParagraph);
+  return username;
+};
 
 /**
  * Asynchronously signs out a user using Supabase authentication.
@@ -210,49 +252,6 @@ const getId = async () => {
   } else {
     return null;
   }
-};
-
-/**
- * Gets the current username. If it doesn't exist, generates a new one.
- *
- * @async
- * @returns {Promise<string>} The username.
- */
-const getUsername = async () => {
-  const previousUsername = localStorage.getItem("username");
-  const user = await supabase.auth.getUser();
-  if (
-    user &&
-    user.data &&
-    user.data.user &&
-    user.data.user.user_metadata &&
-    user.data.user.user_metadata.user_name
-  ) {
-    const username = user.data.user.user_metadata.user_name;
-    return username;
-  } else {
-    const username = previousUsername || GenerateUserName(4);
-    return username;
-  }
-};
-/**
- * Sets the current username in local storage and updates the username field in the document.
- *
- * @async
- * @returns {Promise<string>} The username.
- */
-const setUsername = async () => {
-  const username = await getUsername();
-  localStorage.setItem("username", username);
-  const usernameParagraph = document.createElement("p");
-  usernameParagraph.style.gridArea = "username";
-  usernameParagraph.innerHTML = username;
-  const userNameDiv = document.getElementById("username");
-  if (userNameDiv.childElementCount > 0) {
-    userNameDiv.removeChild(userNameDiv.childNodes[0]);
-  }
-  userNameDiv.appendChild(usernameParagraph);
-  return username;
 };
 
 /**
