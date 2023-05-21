@@ -175,6 +175,27 @@ async function signUp() {
   }
 }
 
+/**
+ * Asynchronously retrieves the authenticated user's ID from the Supabase database.
+ * 
+ * If the user is authenticated according to the local storage, the function
+ * attempts to retrieve the user object from Supabase. If the user object exists
+ * and it contains the `id` field in its `data.user` property, this `id` is returned.
+ * If the user is not authenticated or the user object doesn't have an `id` field,
+ * the function returns `null`.
+ * 
+ * @function
+ * @async
+ * @returns {Promise<string|null>} The authenticated user's ID as a string, or `null` if
+ * the user is not authenticated or if the user object doesn't contain an `id`.
+ * @example
+ * const userId = await getId();
+ * if (userId) {
+ *   console.log("Authenticated user ID is", userId);
+ * } else {
+ *   console.log("User is not authenticated or doesn't have an ID.");
+ * }
+ */
 const getId = async () => {
   if (localStorage.getItem("authenticated") === "true" || localStorage.getItem("authenticated") === true) {
     const user = await supabase.auth.getUser();
