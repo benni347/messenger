@@ -240,7 +240,7 @@ html {
 
 #signin-main-wrapper {
   /* grid-column: 4 / -1; */
-  grid-area: signin
+  grid-area: signin;
 }
 
 .signin {
