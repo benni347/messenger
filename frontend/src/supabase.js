@@ -171,12 +171,13 @@ async function signUp() {
 window.addEventListener("DOMContentLoaded", () => {
   const signInWindow = document.getElementById("signin-window");
   const signUpWindow = document.getElementById("signup-window");
+  const verifyEmailWindow = document.getElementById("verify-window");
+  const verifyEmailBtn = document.getElementById("okay-verify-btn");
   const mainContentWrapper = document.getElementById("main-window-wrappper");
   const signInBtn = document.getElementById("signin-button");
   if (signInBtn) {
     signInBtn.addEventListener("click", (event) => {
       event.preventDefault();
-      console.info("Sign in button clicked");
       signInThroughMail();
     });
   }
@@ -184,15 +185,15 @@ window.addEventListener("DOMContentLoaded", () => {
   if (signUpBtn) {
     signUpBtn.addEventListener("click", (event) => {
       event.preventDefault();
-      console.info("Sign up button clicked");
       signUp();
+      signUpWindow.classList.add("hidden");
+      verifyEmailWindow.classList.remove("hidden");
     });
   }
   const closeSignInBtn = document.getElementById("close-signin-button");
   if (closeSignInBtn) {
     closeSignInBtn.addEventListener("click", (event) => {
       event.preventDefault();
-      console.info("Close sign in button clicked");
       signInWindow.classList.add("hidden");
       mainContentWrapper.classList.remove("signin-portal");
       signInWindow.classList.add("hidden");
@@ -202,7 +203,6 @@ window.addEventListener("DOMContentLoaded", () => {
   if (closeSignUpBtn) {
     closeSignUpBtn.addEventListener("click", (event) => {
       event.preventDefault();
-      console.info("Close sign up button clicked");
       signUpWindow.classList.add("hidden");
       mainContentWrapper.classList.remove("signin-portal");
     });
@@ -211,7 +211,6 @@ window.addEventListener("DOMContentLoaded", () => {
   if (signUpBtnInSignInWindow) {
     signUpBtnInSignInWindow.addEventListener("click", (event) => {
       event.preventDefault();
-      console.info("Sign up button in sign in window clicked");
       signInWindow.classList.add("hidden");
       signUpWindow.classList.remove("hidden");
     });
@@ -220,7 +219,6 @@ window.addEventListener("DOMContentLoaded", () => {
   if (signInBtnInSignUpWindow) {
     signInBtnInSignUpWindow.addEventListener("click", (event) => {
       event.preventDefault();
-      console.info("Sign in button in sign up window clicked");
       signUpWindow.classList.add("hidden");
       signInWindow.classList.remove("hidden");
     });
@@ -231,7 +229,6 @@ window.addEventListener("DOMContentLoaded", () => {
   if (signInBtnInMainContentWrapper) {
     signInBtnInMainContentWrapper.addEventListener("click", (event) => {
       event.preventDefault();
-      console.info("Sign in button in main content wrapper clicked");
       mainContentWrapper.classList.add("signin-portal");
       signInWindow.classList.remove("hidden");
     });
@@ -240,8 +237,14 @@ window.addEventListener("DOMContentLoaded", () => {
   if (githubBtn) {
     githubBtn.addEventListener("click", (event) => {
       event.preventDefault();
-      console.info("Github button clicked");
       signInTroughGithub();
+    });
+  }
+  if (verifyEmailBtn) {
+    verifyEmailBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      verifyEmailWindow.classList.add("hidden");
+      mainContentWrapper.classList.remove("signin-portal");
     });
   }
 });
