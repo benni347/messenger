@@ -176,7 +176,7 @@ async function signUp() {
 }
 
 const getId = async () => {
-  if (localStorage.getItem("authenticated")) {
+  if (localStorage.getItem("authenticated") === "true" || localStorage.getItem("authenticated") === true) {
     const user = await supabase.auth.getUser();
     if (user && user.data && user.data.user && user.data.user.id) {
       return user.data.user.id;
