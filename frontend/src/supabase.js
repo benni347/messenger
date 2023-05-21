@@ -1,6 +1,10 @@
 "use strict";
 
-import { RetrieveEnvValues, ValidateEmail, GenerateUserName } from "../wailsjs/go/main/App.js";
+import {
+  RetrieveEnvValues,
+  ValidateEmail,
+  GenerateUserName,
+} from "../wailsjs/go/main/App.js";
 
 // Solved the fix me through importing it as a npm module
 import { createClient } from "@supabase/supabase-js";
@@ -20,7 +24,6 @@ let supabaseKey = "";
 let supabaseUrl = "";
 let supabase = "";
 let authenticated = false;
-
 
 const messageLog = document.getElementById("message-log");
 /**
@@ -91,7 +94,6 @@ async function signOut() {
   }
   authenticated = false;
   localStorage.setItem("authenticated", authenticated);
-
 }
 
 /**
@@ -190,15 +192,20 @@ const getId = async () => {
       return null;
     }
   } else {
-    return null
+    return null;
   }
 };
-
 
 const getUsername = async () => {
   const previousUsername = localStorage.getItem("username");
   const user = await supabase.auth.getUser();
-  if (user && user.data && user.data.user && user.data.user.user_metadata && user.data.user.user_metadata.user_name) {
+  if (
+    user &&
+    user.data &&
+    user.data.user &&
+    user.data.user.user_metadata &&
+    user.data.user.user_metadata.user_name
+  ) {
     const username = user.data.user.user_metadata.user_name;
     return username;
   } else {
@@ -209,7 +216,7 @@ const getUsername = async () => {
 
 const setUsername = async () => {
   const username = await getUsername();
-  console.log(username)
+  console.log(username);
   localStorage.setItem("username", username);
   return username;
 };
@@ -234,7 +241,7 @@ const createNewMessage = async (username, text) => {
   const { data } = await supabase.from("messages").insert({ username, text });
 
   return data;
-}
+};
 
 const useMessages = () => {
   const username = getUsername();
@@ -270,7 +277,6 @@ const useMessages = () => {
     },
   };
 };
-
 
 window.addEventListener("DOMContentLoaded", () => {
   const signInWindow = document.getElementById("signin-window");
@@ -352,5 +358,3 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
-
