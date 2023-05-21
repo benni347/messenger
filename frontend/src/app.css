@@ -342,3 +342,7 @@ html {
   grid-area: signin;
   display: none;
 }
+
+.note {
+  grid-area: notes;
+}

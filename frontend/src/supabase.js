@@ -173,6 +173,8 @@ RetrieveEnvValues().then((env) => {
   supabase = createClient(supabaseUrl, supabaseKey, options);
 
   setUsername();
+  addUserIdNote();
+
 });
 
 /**
@@ -355,7 +357,6 @@ function changeButton() {
   ) {
     document.getElementById("signin-main-wrapper").style.display = "none";
     document.getElementById("signout-main-wrapper").style.display = "block";
-    addUserIdNote();
   } else {
     document.getElementById("signin-main-wrapper").style.display = "block";
     document.getElementById("signout-main-wrapper").style.display = "none";
@@ -368,8 +369,7 @@ function addUserIdNote() {
       const noteP = document.createElement("p");
       noteP.innerHTML =
         "Your User ID: " + id + "<br>Copy this ID and send it to your friend to start chatting!";
-      noteP.style.gridArea = "notes";
-      const personDiv = document.querySelector(".person");
+      const personDiv = document.querySelector(".note");
 
       personDiv.appendChild(noteP);
     });

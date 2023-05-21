@@ -33,12 +33,11 @@ function addNote() {
   const noteP = document.createElement("p");
   noteP.innerHTML =
     "Note: This is a public chat room. Anyone can see your messages. The messages are stored in a database, unencrypted.";
-  noteP.style.gridArea = "notes";
-  const personDiv = document.querySelector(".person");
+  const personDiv = document.querySelector(".note");
 
   personDiv.appendChild(noteP);
 }
 
 addNote();
 // Add a note every 10 seconds
-setInterval(addNote, 10 * 1000);
+setInterval(addNote, 610 * 1000);
