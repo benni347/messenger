@@ -61,6 +61,8 @@ async function signInThroughMail() {
   });
   authenticated = true;
 
+  localStorage.setItem("authenticated", authenticated);
+
   if (error) {
     console.error(`An error occured during the login: ${error}`);
   }
@@ -87,6 +89,8 @@ async function signOut() {
     console.error(`An error occured during the logout: ${error}`);
   }
   authenticated = false;
+  localStorage.setItem("authenticated", authenticated);
+
 }
 
 /**
@@ -111,6 +115,7 @@ async function signInTroughGithub() {
     console.error(`An error occured during the login: ${error}`);
   }
   authenticated = true;
+  localStorage.setItem("authenticated", authenticated);
   console.info(data);
 }
 
@@ -171,7 +176,7 @@ async function signUp() {
 
 const getId = async () => {
   const user = await supabase.auth.getUser();
-  if (user) {
+  if (user && user.data && user.data.user && user.data.user.id) {
     return user.data.user.id;
   } else {
     return null;
