@@ -221,7 +221,13 @@ html {
   height: max-content;
   padding-block: 1vh;
   display: grid;
-  grid-template-columns: 2fr 3fr 1fr;
+  gap: 0.5vw;
+  grid-template-columns: 2fr 3fr 1.5fr 1fr;
+  grid-template-areas: "chat-name notes username signin";
+}
+
+.username-paragraph {
+  grid-area: username;
 }
 
 .person_wrapper {
@@ -233,7 +239,8 @@ html {
 }
 
 #signin-main-wrapper {
-  grid-column: 3 / -1;
+  /* grid-column: 4 / -1; */
+  grid-area: signin
 }
 
 .signin {
