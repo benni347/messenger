@@ -215,7 +215,6 @@ const getUsername = async () => {
 
 const setUsername = async () => {
   const username = await getUsername();
-  console.log(username);
   localStorage.setItem("username", username);
   const usernameParagraph = document.createElement("p");
   usernameParagraph.style.gridArea = "username";
@@ -286,7 +285,6 @@ const useMessages = () => {
 };
 
 function changeButton() {
-  console.log("changeButton");
   if (
     localStorage.getItem("authenticated") === true ||
     localStorage.getItem("authenticated") == "true"
