@@ -209,6 +209,12 @@ const getId = async () => {
   }
 };
 
+/**
+ * Gets the current username. If it doesn't exist, generates a new one.
+ *
+ * @async
+ * @returns {Promise<string>} The username.
+ */
 const getUsername = async () => {
   const previousUsername = localStorage.getItem("username");
   const user = await supabase.auth.getUser();
@@ -226,7 +232,12 @@ const getUsername = async () => {
     return username;
   }
 };
-
+/**
+ * Sets the current username in local storage and updates the username field in the document.
+ *
+ * @async
+ * @returns {Promise<string>} The username.
+ */
 const setUsername = async () => {
   const username = await getUsername();
   localStorage.setItem("username", username);
@@ -240,6 +251,15 @@ const setUsername = async () => {
   userNameDiv.appendChild(usernameParagraph);
   return username;
 };
+
+/**
+ * Gets a range of messages from the 'messages' database table, ordered by timestamp in descending order.
+ *
+ * @async
+ * @param {number} from - The starting index for the range of messages to retrieve.
+ * @param {number} to - The ending index for the range of messages to retrieve.
+ * @returns {Promise<Array>} The array of messages data.
+ */
 const getMessages = async (from, to) => {
   const { data } = await supabase
     .from("messages")
@@ -249,6 +269,12 @@ const getMessages = async (from, to) => {
 
   return data;
 };
+
+/**
+ * Subscribes to the 'INSERT' event on the 'messages' database table and calls the provided handler function whenever a new message is inserted.
+ *
+ * @param {function} handler - The function to call when a new message is inserted.
+ */
 const onNewMessage = (handler) => {
   supabase
     .from("messages")
@@ -257,6 +283,15 @@ const onNewMessage = (handler) => {
     })
     .subscribe();
 };
+
+/**
+ * Inserts a new message into the 'messages' database table.
+ *
+ * @async
+ * @param {string} username - The username of the sender of the message.
+ * @param {string} text - The text of the message.
+ * @returns {Promise<Object>} The data of the inserted message.
+ */
 const createNewMessage = async (username, text) => {
   const { data } = await supabase.from("messages").insert({ username, text });
 
