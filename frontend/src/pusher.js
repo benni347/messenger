@@ -13,7 +13,6 @@ RetrieveEnvValues().then((env) => {
   PusherClient();
 });
 
-
 /**
  * Initializes a new Pusher client and sets up a subscription to a specified channel.
  *
