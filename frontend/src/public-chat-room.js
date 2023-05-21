@@ -15,10 +15,11 @@ function validateChatRoomId(chatRoomId) {
 function addNote() {
   const noteP = document.createElement("p");
   noteP.innerHTML =
-    "Note: This is a public chat room. Anyone can see your messages. The messages are stored in a database, unencrypted."; 
+    "Note: This is a public chat room. Anyone can see your messages. The messages are stored in a database, unencrypted.";
+  noteP.style.gridArea = "notes";
   const personDiv = document.querySelector(".person");
 
-  personDiv.insertBefore(noteP, personDiv.querySelector(".signin"));
+  personDiv.appendChild(noteP);
 }
 
 setInterval(addNote(), 10 * 1000);
