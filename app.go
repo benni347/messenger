@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -10,6 +11,7 @@ import (
 	utils "github.com/benni347/messengerutils"
 	"github.com/joho/godotenv"
 	"github.com/pusher/pusher-http-go/v5"
+	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 // App struct
@@ -31,12 +33,15 @@ func (a *App) startup(ctx context.Context) {
 }
 
 type Config struct {
-	AppId          string `json:"appId"`
-	AppSecret      string `json:"appSecret"`
-	AppKey         string `json:"appKey"`
-	ClusterId      string `json:"clusterId"`
-	SupaBaseApiKey string `json:"supaBaseApiKey"`
-	SupaBaseUrl    string `json:"supaBaseUrl"`
+	AppId            string `json:"appId"`
+	AppSecret        string `json:"appSecret"`
+	AppKey           string `json:"appKey"`
+	ClusterId        string `json:"clusterId"`
+	SupaBaseApiKey   string `json:"supaBaseApiKey"`
+	SupaBaseUrl      string `json:"supaBaseUrl"`
+	RabbitMqAdmin    string `json:"rabbitMqAdmin"`
+	RabbitMqPassword string `json:"rabbitMqPassword"`
+	RabbitMqHost     string `json:"rabbitMqHost"`
 }
 
 // RetrieveEnvValues retrieves the values from the .env file
@@ -60,6 +65,9 @@ func (a *App) RetrieveEnvValues() Config {
 	a.config.ClusterId = os.Getenv("CLUSTER")
 	a.config.SupaBaseApiKey = os.Getenv("SUPABASE_API_KEY")
 	a.config.SupaBaseUrl = os.Getenv("SUPABASE_URL")
+	a.config.RabbitMqAdmin = os.Getenv("RABBITMQ_ADMIN")
+	a.config.RabbitMqPassword = os.Getenv("RABBITMQ_PASSWORD")
+	a.config.RabbitMqHost = os.Getenv("RABBITMQ_HOST")
 	return a.config
 }
 
@@ -89,6 +97,18 @@ func (a *App) GetSupaBaseApiKey() string {
 
 func (a *App) GetSupaBaseUrl() string {
 	return a.config.SupaBaseUrl
+}
+
+func (a *App) GetRabbitMqAdmin() string {
+	return a.config.RabbitMqAdmin
+}
+
+func (a *App) GetRabbitMqPassword() string {
+	return a.config.RabbitMqPassword
+}
+
+func (a *App) GetRabbitMqHost() string {
+	return a.config.RabbitMqHost
 }
 
 type Message struct {
@@ -149,4 +169,128 @@ func (a *App) SendMessage(chatRoomId string, sender string, message string) {
 
 	// Create a new Pusher trigger
 	pusherClient.Trigger(chatRoomId, "message", string(msgJSON))
+}
+
+func failOnError(err error, msg string) {
+	if err != nil {
+		utils.PrintError(msg, err)
+	}
+}
+
+func (a *App) Send(message string) {
+	m := &utils.MessengerUtils{
+		Verbose: a.verbose,
+	}
+	// Define the connection
+	amqpPort := "5672"
+	amqpHost := a.GetRabbitMqHost()
+	amqpUser := a.GetRabbitMqAdmin()
+	amqpPassword := a.GetRabbitMqPassword()
+	amqpUrl := fmt.Sprintf("amqp://%s:%s@%s:%s/", amqpUser, amqpPassword, amqpHost, amqpPort)
+	conn, err := amqp.Dial(amqpUrl)
+	failOnError(err, "Failed to connect to RabbitMQ")
+	defer conn.Close()
+
+	// Create a channel
+	ch, err := conn.Channel()
+	failOnError(err, "Failed to open a channel")
+	defer ch.Close()
+
+	// Declare a queue
+	queueName := "chat"
+	q, err := ch.QueueDeclare(
+		queueName, // name
+		false,     // durable
+		false,     // delete when unused
+		false,     // exclusive
+		false,     // no-wait
+		nil,       // arguments
+	)
+	failOnError(err, "Failed to declare a queue")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	body := message
+	err = ch.PublishWithContext(ctx,
+		"",     // exchange
+		q.Name, // routing key
+		false,  // mandatory
+		false,  // immediate
+		amqp.Publishing{
+			ContentType: "text/plain",
+			Body:        []byte(body),
+		})
+	failOnError(err, "Failed to publish a message")
+	m.PrintInfo(" [x] Sent", body)
+}
+
+func (a *App) Receive() <-chan string {
+	m := &utils.MessengerUtils{
+		Verbose: a.verbose,
+	}
+	// Define the connection
+	amqpPort := "5672"
+	amqpHost := a.GetRabbitMqHost()
+	amqpUser := a.GetRabbitMqAdmin()
+	amqpPassword := a.GetRabbitMqPassword()
+	amqpUrl := fmt.Sprintf("amqp://%s:%s@%s:%s/", amqpUser, amqpPassword, amqpHost, amqpPort)
+	conn, err := amqp.Dial(amqpUrl)
+	failOnError(err, "Failed to connect to RabbitMQ")
+	defer conn.Close()
+
+	// Create a channel
+	ch, err := conn.Channel()
+	failOnError(err, "Failed to open a channel")
+	defer ch.Close()
+
+	// Declare a queue
+	queueName := "chat"
+	q, err := ch.QueueDeclare(
+		queueName, // name
+		false,     // durable
+		false,     // delete when unused
+		false,     // exclusive
+		false,     // no-wait
+		nil,       // arguments
+	)
+	failOnError(err, "Failed to declare a queue")
+
+	msgs, err := ch.Consume(
+		q.Name, // queue
+		"",     // consumer
+		true,   // auto-ack
+		false,  // exclusive
+		false,  // no-local
+		false,  // no-wait
+		nil,    // args
+	)
+	failOnError(err, "Failed to register a consumer")
+
+	var forver chan struct{}
+
+	out := make(chan string)
+
+	go func() {
+		defer conn.Close()
+		defer ch.Close()
+		defer close(out)
+
+		for d := range msgs {
+			m.PrintInfo("Received a message: ", d.Body)
+			out <- string(d.Body)
+		}
+	}()
+
+	<-forver
+	return out
+}
+
+func (a *App) ReciveFormatForJs() string {
+	messages := a.Receive()
+
+	for message := range messages {
+		return message
+	}
+	return ""
 }

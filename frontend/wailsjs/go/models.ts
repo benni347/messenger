@@ -7,6 +7,9 @@ export namespace main {
 	    clusterId: string;
 	    supaBaseApiKey: string;
 	    supaBaseUrl: string;
+	    rabbitMqAdmin: string;
+	    rabbitMqPassword: string;
+	    rabbitMqHost: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new Config(source);
@@ -20,6 +23,9 @@ export namespace main {
 	        this.clusterId = source["clusterId"];
 	        this.supaBaseApiKey = source["supaBaseApiKey"];
 	        this.supaBaseUrl = source["supaBaseUrl"];
+	        this.rabbitMqAdmin = source["rabbitMqAdmin"];
+	        this.rabbitMqPassword = source["rabbitMqPassword"];
+	        this.rabbitMqHost = source["rabbitMqHost"];
 	    }
 	}
 

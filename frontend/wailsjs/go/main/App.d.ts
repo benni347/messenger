@@ -10,11 +10,23 @@ export function GetAppSecret():Promise<string>;
 
 export function GetClusterId():Promise<string>;
 
+export function GetRabbitMqAdmin():Promise<string>;
+
+export function GetRabbitMqHost():Promise<string>;
+
+export function GetRabbitMqPassword():Promise<string>;
+
 export function GetSupaBaseApiKey():Promise<string>;
 
 export function GetSupaBaseUrl():Promise<string>;
 
+export function Receive():Promise<any>;
+
+export function ReciveFormatForJs():Promise<string>;
+
 export function RetrieveEnvValues():Promise<main.Config>;
+
+export function Send(arg1:string):Promise<void>;
 
 export function SendMessage(arg1:string,arg2:string,arg3:string):Promise<void>;
 

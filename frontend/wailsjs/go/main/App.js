@@ -18,6 +18,18 @@ export function GetClusterId() {
   return window['go']['main']['App']['GetClusterId']();
 }
 
+export function GetRabbitMqAdmin() {
+  return window['go']['main']['App']['GetRabbitMqAdmin']();
+}
+
+export function GetRabbitMqHost() {
+  return window['go']['main']['App']['GetRabbitMqHost']();
+}
+
+export function GetRabbitMqPassword() {
+  return window['go']['main']['App']['GetRabbitMqPassword']();
+}
+
 export function GetSupaBaseApiKey() {
   return window['go']['main']['App']['GetSupaBaseApiKey']();
 }
@@ -26,8 +38,20 @@ export function GetSupaBaseUrl() {
   return window['go']['main']['App']['GetSupaBaseUrl']();
 }
 
+export function Receive() {
+  return window['go']['main']['App']['Receive']();
+}
+
+export function ReciveFormatForJs() {
+  return window['go']['main']['App']['ReciveFormatForJs']();
+}
+
 export function RetrieveEnvValues() {
   return window['go']['main']['App']['RetrieveEnvValues']();
+}
+
+export function Send(arg1) {
+  return window['go']['main']['App']['Send'](arg1);
 }
 
 export function SendMessage(arg1, arg2, arg3) {

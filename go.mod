@@ -6,6 +6,7 @@ require (
 	github.com/benni347/messengerutils v0.3.0
 	github.com/joho/godotenv v1.5.1
 	github.com/pusher/pusher-http-go/v5 v5.1.1
+	github.com/rabbitmq/amqp091-go v1.8.1
 	github.com/wailsapp/wails/v2 v2.5.1
 )
 
