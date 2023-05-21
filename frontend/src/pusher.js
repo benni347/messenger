@@ -2,23 +2,17 @@
 
 import { RetrieveEnvValues } from "../wailsjs/go/main/App.js";
 
-let appId = "";
 let appKey = "";
 let clusterId = "";
-let appSecret = "";
 const channelName = "1";
 const messageLog = document.getElementById("message-log");
 
 RetrieveEnvValues().then((env) => {
-  appId = env.appId;
   appKey = env.appKey;
   clusterId = env.clusterId;
-  appSecret = env.appSecret;
   PusherClient();
 });
 
-// Enable pusher logging - don't include this in production
-Pusher.logToConsole = true;
 
 /**
  * Initializes a new Pusher client and sets up a subscription to a specified channel.
