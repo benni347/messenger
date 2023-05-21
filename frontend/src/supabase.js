@@ -221,6 +221,9 @@ const setUsername = async () => {
   usernameParagraph.style.gridArea = "username";
   usernameParagraph.innerHTML = username;
   const userNameDiv = document.getElementById("username");
+  if (userNameDiv.childElementCount > 0) {
+    userNameDiv.removeChild(userNameDiv.childNodes[0]);
+  }
   userNameDiv.appendChild(usernameParagraph);
   return username;
 };
