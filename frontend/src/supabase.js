@@ -132,7 +132,7 @@ async function signInTroughGithub() {
 //  - importing the createClient function from the supabase-js module directly via the cdn in this file
 //  - importing it via "import { createClient } from "@supabase/supabase-js";"
 
-RetrieveEnvValues().then(async (env) => {
+RetrieveEnvValues().then((env) => {
   supabaseKey = env.supaBaseApiKey;
   supabaseUrl = env.supaBaseUrl;
   supabase = createClient(supabaseUrl, supabaseKey, options);
