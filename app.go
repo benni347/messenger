@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math"
+	"math/rand"
 	"os"
 	"strconv"
 	"time"
@@ -293,4 +295,56 @@ func (a *App) ReciveFormatForJs() string {
 		return message
 	}
 	return ""
+}
+
+func intToSpecificBaseToString(num, base int) string {
+	const charset = "0123456789abcdefghijklmnopqrstuvwxyz"
+	if base < 2 || base > 36 {
+		return ""
+	}
+
+	if num == 0 {
+		return "0"
+	}
+
+	result := ""
+	isNegative := num < 0
+
+	if isNegative {
+		num = -num
+	}
+
+	for num > 0 {
+		result = string(charset[num%base]) + result
+		num /= base
+	}
+
+	if isNegative {
+		result = "-" + result
+	}
+
+	return result
+}
+
+func (a *App) GenerateUserName(length int) string {
+	rand.Seed(time.Now().UnixNano())
+	const charset = "0123456789abcdefghijklmnopqrstuvwxyz"
+	basis := 36
+
+	random_number := rand.Intn(int(math.Pow(float64(basis), float64(length))))
+
+	randomNumberStringInCorrectBase := intToSpecificBaseToString(random_number, basis)
+
+	if len(randomNumberStringInCorrectBase) < length {
+		// If the random string is too short, pad it with random characters
+		for len(randomNumberStringInCorrectBase) < length {
+			randomChar := charset[rand.Intn(len(charset))]
+			randomNumberStringInCorrectBase = randomNumberStringInCorrectBase + string(randomChar)
+		}
+	}
+
+	randomStr := randomNumberStringInCorrectBase[len(randomNumberStringInCorrectBase)-length:]
+
+	user_name_string := "user_" + randomStr
+	return user_name_string
 }
