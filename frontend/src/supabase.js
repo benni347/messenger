@@ -21,6 +21,7 @@ let supabaseUrl = "";
 let supabase = "";
 let authenticated = false;
 
+
 const messageLog = document.getElementById("message-log");
 /**
  * Asynchronously signs in a user through email using Supabase authentication.
@@ -126,10 +127,16 @@ async function signInTroughGithub() {
 //  - importing the createClient function from the supabase-js module directly via the cdn in this file
 //  - importing it via "import { createClient } from "@supabase/supabase-js";"
 
-RetrieveEnvValues().then((env) => {
+RetrieveEnvValues().then(async (env) => {
   supabaseKey = env.supaBaseApiKey;
   supabaseUrl = env.supaBaseUrl;
   supabase = createClient(supabaseUrl, supabaseKey, options);
+  const usernameParagraph = document.createElement("p");
+  usernameParagraph.style.gridArea = "username";
+  await setUsername();
+  usernameParagraph.innerHTML = await getUsername();
+  const userNameDiv = document.getElementById("username");
+  userNameDiv.appendChild(usernameParagraph);
 });
 
 /**
@@ -175,11 +182,15 @@ async function signUp() {
 }
 
 const getId = async () => {
-  const user = await supabase.auth.getUser();
-  if (user && user.data && user.data.user && user.data.user.id) {
-    return user.data.user.id;
+  if (localStorage.getItem("authenticated")) {
+    const user = await supabase.auth.getUser();
+    if (user && user.data && user.data.user && user.data.user.id) {
+      return user.data.user.id;
+    } else {
+      return null;
+    }
   } else {
-    return null;
+    return null
   }
 };
 
@@ -192,10 +203,15 @@ const getUsername = async () => {
     return username;
   } else {
     const username = previousUsername || GenerateUserName(4);
-    localStorage.setItem("username", username);
-
     return username;
   }
+};
+
+const setUsername = async () => {
+  const username = await getUsername();
+  console.log(username)
+  localStorage.setItem("username", username);
+  return username;
 };
 const getMessages = async (from, to) => {
   const { data } = await supabase
@@ -336,3 +352,5 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+

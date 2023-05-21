@@ -172,10 +172,6 @@ html {
   position: relative;
 }
 
-#publish-form > * + * {
-  margin: 0 0 0 10px;
-}
-
 #publish-form input[type="text"] {
   flex-grow: 1;
   border: none !important;
@@ -191,25 +187,13 @@ html {
   z-index: 0;
 }
 
-#publish-form input[type="submit"] {
-  color: white;
-  background-color: black;
-  border-radius: 5px;
-  padding: 5px 10px;
-  border: none !important;
-  z-index: 1;
+.btn-submit {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  aspect-ratio: 1;
-}
-
-#publish-form input[type="submit"]:hover {
-  background-color: red;
-}
-
-#publish-form input[type="submit"]:active {
-  background-color: red;
+  bottom: 10.5%;
+  right: 0.5%;
+  color: var(--neural-color-1);
+  background-color: var(--neural-color-2);
+  outline: 0.125rem solid var(--accent-color);
 }
 
 .person {
