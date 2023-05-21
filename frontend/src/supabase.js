@@ -125,13 +125,6 @@ async function signInTroughGithub() {
   changeButton();
 }
 
-// Solution for the error:
-// https://stackoverflow.com/a/74261887
-// -FIX-ME-: Uncaught ReferenceError: createClient is not defined
-// Tried fixes:
-//  - importing the createClient function from the supabase-js module directly via the cdn in this file
-//  - importing it via "import { createClient } from "@supabase/supabase-js";"
-
 RetrieveEnvValues().then((env) => {
   supabaseKey = env.supaBaseApiKey;
   supabaseUrl = env.supaBaseUrl;
