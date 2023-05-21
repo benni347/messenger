@@ -1,6 +1,6 @@
 "use strict";
 
-import { RetrieveEnvValues, ValidateEmail } from "../wailsjs/go/main/App.js";
+import { RetrieveEnvValues, ValidateEmail, GenerateUserName } from "../wailsjs/go/main/App.js";
 
 // Solved the fix me through importing it as a npm module
 import { createClient } from "@supabase/supabase-js";
@@ -21,6 +21,7 @@ let supabaseUrl = "";
 let supabase = "";
 let authenticated = false;
 
+const messageLog = document.getElementById("message-log");
 /**
  * Asynchronously signs in a user through email using Supabase authentication.
  *
@@ -167,6 +168,88 @@ async function signUp() {
     console.error(`An error occured during the creation of the user: ${error}`);
   }
 }
+
+const getId = async () => {
+  const user = await supabase.auth.getUser();
+  if (user) {
+    return user.data.user.id;
+  } else {
+    return null;
+  }
+};
+
+
+const getUsername = async () => {
+  const previousUsername = localStorage.getItem("username");
+  const user = await supabase.auth.getUser();
+  if (user && user.data && user.data.user && user.data.user.user_metadata && user.data.user.user_metadata.user_name) {
+    const username = user.data.user.user_metadata.user_name;
+    return username;
+  } else {
+    const username = previousUsername || GenerateUserName(4);
+    localStorage.setItem("username", username);
+
+    return username;
+  }
+};
+const getMessages = async (from, to) => {
+  const { data } = await supabase
+    .from("messages")
+    .select()
+    .range(from, to)
+    .order("timestamp", { ascending: false });
+
+  return data;
+};
+const onNewMessage = (handler) => {
+  supabase
+    .from("messages")
+    .on("INSERT", (payload) => {
+      handler(payload.new);
+    })
+    .subscribe();
+};
+const createNewMessage = async (username, text) => {
+  const { data } = await supabase.from("messages").insert({ username, text });
+
+  return data;
+}
+
+const useMessages = () => {
+  const username = getUsername();
+  const messages = ref([]);
+  const messagesCount = ref(0);
+  const maxMessgesPerRequest = 50;
+  const loadMessagesBatch = async () => {
+    const loadedMessages = await getMessages(
+      messagesCount.value,
+      maxMessgesPerRequest - 1
+    );
+
+    messages.value = [...loadedMessages, ...messages.value];
+    messagesCount.value += loadedMessages.length;
+  };
+
+  loadMessagesBatch();
+  onNewMessage((newMessage) => {
+    messages.value = [newMessage, ...messages.value];
+    messagesCount.value += 1;
+  });
+
+  return {
+    username,
+    messages,
+    async sendMessage(text) {
+      if (text) {
+        await createNewMessage(username, text);
+      }
+    },
+    loadOlder() {
+      loadMessagesBatch();
+    },
+  };
+};
+
 
 window.addEventListener("DOMContentLoaded", () => {
   const signInWindow = document.getElementById("signin-window");
