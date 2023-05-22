@@ -1,5 +1,5 @@
-github.com/benni347/messengerutils v0.0.7 h1:yyTFe6fJJ0i+rpzpysrIAKZeBGPrOWRf4NF1Q/i+PMA=
-github.com/benni347/messengerutils v0.0.7/go.mod h1:+j6fJ2dq2EDH1vdHheL2HBhbfJ5P9WeJMlIn1xmE9aw=
+github.com/benni347/messengerutils v0.3.0 h1:4XPzTzKOBL3F3E8of54GQ5HZvFD2Yzc4McDpToFbDWA=
+github.com/benni347/messengerutils v0.3.0/go.mod h1:+j6fJ2dq2EDH1vdHheL2HBhbfJ5P9WeJMlIn1xmE9aw=
 github.com/bep/debounce v1.2.1 h1:v67fRdBA9UQu2NhLFXrSg0Brw7CexQekrBwDMM8bzeY=
 github.com/bep/debounce v1.2.1/go.mod h1:H8yggRPQKLUhUoqrJC1bO2xNya7vanpDl7xR3ISbCJ0=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
