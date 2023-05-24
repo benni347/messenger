@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import { CreateChatRoomId } from "../wailsjs/go/main/App.js";
 
