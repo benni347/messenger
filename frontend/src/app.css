@@ -168,7 +168,9 @@ html {
 
 #publish-form {
   width: 100%;
-  height: 40px;
+  height: fit-content;
+  bottom: 0;
+  display: grid;
   position: relative;
 }
 
@@ -189,7 +191,7 @@ html {
 
 .btn-submit {
   position: absolute;
-  bottom: 10.5%;
+  bottom: 0.5vh;
   right: 0.5%;
   color: var(--neural-color-1);
   background-color: var(--neural-color-2);
@@ -345,4 +347,16 @@ html {
 
 .note {
   grid-area: notes;
+}
+
+.chat-note {
+  width: calc(100vw - var(--closed-sibar-width) - 3px);
+  right: 0;
+  position: absolute;
+  background-color: var(--firebrick);
+  bottom: 4vh;
+}
+
+.chat-note > p {
+  margin: 0;
 }
