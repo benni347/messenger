@@ -139,7 +139,7 @@ async function signOut() {
   localStorage.removeItem("username");
   setUsername();
   const body = document.getElementById("body");
-  body.setAttribute("data-current-user-id", "")
+  body.setAttribute("data-current-user-id", "");
   removeUserIdNote();
   changeButton();
 }
@@ -378,7 +378,7 @@ function removeUserIdNote() {
   const noteDiv = document.querySelector(".note");
   const noteP = noteDiv.lastElementChild;
 
-  if (noteP && noteP.tagName.toLowerCase() === 'p') {
+  if (noteP && noteP.tagName.toLowerCase() === "p") {
     noteDiv.removeChild(noteP);
   }
 }
@@ -390,7 +390,7 @@ function addUserIdNote() {
   ) {
     getId().then((id) => {
       const body = document.getElementById("body");
-      body.setAttribute("data-current-user-id", id)
+      body.setAttribute("data-current-user-id", id);
       const noteP = document.createElement("p");
       noteP.innerHTML =
         "Your User ID: " +
