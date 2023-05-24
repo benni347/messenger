@@ -360,3 +360,15 @@ html {
 .chat-note > p {
   margin: 0;
 }
+
+.new_chat_room_wrapper {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.new_chat_room_wrapper > * {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
