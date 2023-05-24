@@ -348,3 +348,13 @@ func (a *App) GenerateUserName(length int) string {
 	user_name_string := "user_" + randomStr
 	return user_name_string
 }
+
+func (a *App) CreateChatRoomId(otherId, currentId string) string {
+	var chatRoomId string
+	if otherId < currentId {
+		chatRoomId = otherId + currentId
+	} else {
+		chatRoomId = currentId + otherId
+	}
+	return chatRoomId
+}
