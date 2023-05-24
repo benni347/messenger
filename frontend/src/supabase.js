@@ -174,7 +174,6 @@ RetrieveEnvValues().then((env) => {
 
   setUsername();
   addUserIdNote();
-
 });
 
 /**
@@ -364,11 +363,16 @@ function changeButton() {
 }
 
 function addUserIdNote() {
-  if (localStorage.getItem("authenticated") === true || localStorage.getItem("authenticated") === "true") {
+  if (
+    localStorage.getItem("authenticated") === true ||
+    localStorage.getItem("authenticated") === "true"
+  ) {
     getId().then((id) => {
       const noteP = document.createElement("p");
       noteP.innerHTML =
-        "Your User ID: " + id + "<br>Copy this ID and send it to your friend to start chatting!";
+        "Your User ID: " +
+        id +
+        "<br>Copy this ID and send it to your friend to start chatting!";
       const personDiv = document.querySelector(".note");
 
       personDiv.appendChild(noteP);
