@@ -138,6 +138,8 @@ async function signOut() {
   localStorage.setItem("authenticated", authenticated);
   localStorage.removeItem("username");
   setUsername();
+  const body = document.getElementById("body");
+  body.setAttribute("data-current-user-id", "")
   changeButton();
 }
 
@@ -368,6 +370,8 @@ function addUserIdNote() {
     localStorage.getItem("authenticated") === "true"
   ) {
     getId().then((id) => {
+      const body = document.getElementById("body");
+      body.setAttribute("data-current-user-id", id)
       const noteP = document.createElement("p");
       noteP.innerHTML =
         "Your User ID: " +
