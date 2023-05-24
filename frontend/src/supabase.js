@@ -140,6 +140,7 @@ async function signOut() {
   setUsername();
   const body = document.getElementById("body");
   body.setAttribute("data-current-user-id", "")
+  removeUserIdNote();
   changeButton();
 }
 
@@ -361,6 +362,24 @@ function changeButton() {
   } else {
     document.getElementById("signin-main-wrapper").style.display = "block";
     document.getElementById("signout-main-wrapper").style.display = "none";
+  }
+}
+
+/**
+ * Removes the last paragraph element from the '.note' div element.
+ *
+ * @function
+ * @name removeUserIdNote
+ * @example
+ * // Removing the note
+ * removeUserIdNote();
+ */
+function removeUserIdNote() {
+  const noteDiv = document.querySelector(".note");
+  const noteP = noteDiv.lastElementChild;
+
+  if (noteP && noteP.tagName.toLowerCase() === 'p') {
+    noteDiv.removeChild(noteP);
   }
 }
 
