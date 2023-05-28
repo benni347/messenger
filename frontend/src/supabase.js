@@ -411,7 +411,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const verifyEmailBtn = document.getElementById("okay-verify-btn");
   const mainContentWrapper = document.getElementById("main-window-wrappper");
   const signOutBtn = document.getElementById("signout-main-wrapper");
-  const signInBtn = document.getElementById("signin-button");
+  const signInBtn = document.getElementById("signing");
   if (signInBtn) {
     signInBtn.addEventListener("click", (event) => {
       event.preventDefault();
