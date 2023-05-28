@@ -54,7 +54,7 @@ async function signInThroughMail() {
   const password = document.getElementById("password-input").value;
   const user_name = document.getElementById("username").value;
 
-  const { data, error } = await supabase.auth.signIn({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email, // equals to email: email
     password, // equals to password: password
     options: {
