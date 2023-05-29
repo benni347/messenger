@@ -71,7 +71,7 @@ async function signInThroughMail() {
     console.error(`An error occured during the login: ${error}`);
   }
 
-  location.reload()
+  location.reload();
 }
 /**
  * Gets the current username. If it doesn't exist, generates a new one.
@@ -428,7 +428,9 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   const githubBtn = document.getElementById("github-button");
   const githubBtnSignUp = document.getElementById("github-button-signup");
-  const newChatRoomButtonOnMainContentWrapper = document.getElementById("new_chat_room_wrapper");
+  const newChatRoomButtonOnMainContentWrapper = document.getElementById(
+    "new_chat_room_wrapper"
+  );
   const newChatRoomWindow = document.getElementById("new_chat_room_window");
 
   // Under this line define no more consts for html elements. Only function calls.
