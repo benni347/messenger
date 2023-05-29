@@ -422,6 +422,8 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   const githubBtn = document.getElementById("github-button");
   const githubBtnSignUp = document.getElementById("github-button-signup");
+
+  // Under this line define no more consts for html elements. Only function calls.
   if (signInBtn) {
     signInBtn.addEventListener("click", (event) => {
       event.preventDefault();
