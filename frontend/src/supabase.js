@@ -365,6 +365,11 @@ function changeButton() {
   }
 }
 
+function newChatRoom() {
+  const newChatRoomWindow = document.getElementById("new_chat_room_window");
+  newChatRoomWindow.classList.remove("hidden");
+}
+
 /**
  * Removes the last paragraph element from the '.note' div element.
  *
@@ -414,6 +419,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const signInBtn = document.getElementById("signing");
   const closeSignInBtn = document.getElementById("close-signin-button");
   const closeSignUpBtn = document.getElementById("close-signup-button");
+  const closeNewChatRoomBtn = document.getElementById("close-new_chat-button");
   const signUpBtn = document.getElementById("signup-btn");
   const signUpBtnInSignInWindow = document.getElementById("signup");
   const signInBtnInSignUpWindow = document.getElementById("signin");
@@ -422,6 +428,8 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   const githubBtn = document.getElementById("github-button");
   const githubBtnSignUp = document.getElementById("github-button-signup");
+  const newChatRoomButtonOnMainContentWrapper = document.getElementById("new_chat_room_wrapper");
+  const newChatRoomWindow = document.getElementById("new_chat_room_window");
 
   // Under this line define no more consts for html elements. Only function calls.
   if (signInBtn) {
@@ -456,6 +464,13 @@ window.addEventListener("DOMContentLoaded", () => {
     closeSignUpBtn.addEventListener("click", (event) => {
       event.preventDefault();
       signUpWindow.classList.add("hidden");
+      mainContentWrapper.classList.remove("signin-portal");
+    });
+  }
+  if (closeNewChatRoomBtn) {
+    closeNewChatRoomBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      newChatRoomWindow.classList.add("hidden");
       mainContentWrapper.classList.remove("signin-portal");
     });
   }
@@ -497,6 +512,14 @@ window.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
       verifyEmailWindow.classList.add("hidden");
       mainContentWrapper.classList.remove("signin-portal");
+    });
+  }
+  if (newChatRoomButtonOnMainContentWrapper) {
+    newChatRoomButtonOnMainContentWrapper.addEventListener("click", (event) => {
+      event.preventDefault();
+      mainContentWrapper.classList.add("signin-portal");
+
+      newChatRoom();
     });
   }
 });

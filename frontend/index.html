@@ -171,43 +171,19 @@
     <div id="new_chat_room_window" class="signup-window hidden">
       <h3 class="sign-window-title">
         New Chat
-        <i class="close-window fa-solid fa-xmark" id="close-signup-button"></i>
+        <i class="close-window fa-solid fa-xmark" id="close-new_chat-button"></i>
       </h3>
       <form id="signin-form">
-        <input
+         <input
+          name="Other Persons UID"
+          id="other_persons_uid"
           type="text"
-          name="username"
-          placeholder="Username"
-          id="username"
-        />
-        <input
-          name="email"
-          id="email-input-signup"
-          type="email"
-          placeholder="Email"
-          pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
-        />
-        <input
-          name="password"
-          id="password-signup"
-          type="password"
-          placeholder="Password"
+          placeholder="Other Persons UID"
         />
         <div class="signin-buttons">
-          <button type="button" class="signin" id="signup-btn">Sign up</button>
-          <a
-            id="github-button-signup"
-            class="btn btn-block btn-social btn-github"
-          >
-            <i class="fa fa-github"></i> Sign up with Github
-          </a>
+          <button type="button" class="signin" id="new_chat-btn">New Chat</button>
         </div>
       </form>
-      <div class="signin-misc">
-        <h5 style="grid-column: 2/-2">
-          Have an account? <a id="signin">Sign in</a>
-        </h5>
-      </div>
     </div>
   </body>
 </html>
