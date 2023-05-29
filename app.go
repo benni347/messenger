@@ -21,6 +21,7 @@ type App struct {
 	ctx     context.Context
 	verbose bool
 	config  Config
+	user    User
 }
 
 // NewApp creates a new App application struct
@@ -32,6 +33,11 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+}
+
+type User struct {
+	queueName string
+	ch        *amqp.Channel
 }
 
 type Config struct {
@@ -199,7 +205,7 @@ func (a *App) Send(message string) {
 	defer ch.Close()
 
 	// Declare a queue
-	queueName := "chat"
+	queueName := a.getQueueName()
 	q, err := ch.QueueDeclare(
 		queueName, // name
 		false,     // durable
@@ -245,6 +251,8 @@ func (a *App) Receive() <-chan string {
 	ch, err := conn.Channel()
 	failOnError(err, "Failed to open a channel")
 	defer ch.Close()
+
+	a.user.ch = ch
 
 	// Declare a queue
 	queueName := "chat"
@@ -357,4 +365,12 @@ func (a *App) CreateChatRoomId(otherId, currentId string) string {
 		chatRoomId = currentId + otherId
 	}
 	return chatRoomId
+}
+
+func (a *App) SetQueuName(queueName string) {
+	a.user.queueName = queueName
+}
+
+func (a *App) getQueueName() string {
+	return a.user.queueName
 }
