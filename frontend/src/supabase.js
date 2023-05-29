@@ -71,7 +71,6 @@ async function signInThroughMail() {
     console.error(`An error occured during the login: ${error}`);
   }
 
-  console.info(data);
 }
 /**
  * Gets the current username. If it doesn't exist, generates a new one.
