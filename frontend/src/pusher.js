@@ -1,16 +1,17 @@
 "use strict";
 
 import { RetrieveEnvValues } from "../wailsjs/go/main/App.js";
+import Pusher from 'pusher-js';
 
-let appKey = "";
-let clusterId = "";
 const channelName = "1";
 const messageLog = document.getElementById("message-log");
 
 RetrieveEnvValues().then((env) => {
-  appKey = env.appKey;
-  clusterId = env.clusterId;
-  PusherClient();
+  const appKey = env.appKey;
+  const clusterId = env.clusterId;
+  console.info(`appKey: ${appKey}`);
+  console.info(`clusterId: ${clusterId}`);
+  PusherClient(appKey, clusterId);
 });
 
 /**
@@ -34,10 +35,12 @@ RetrieveEnvValues().then((env) => {
  *
  * @function PusherClient
  */
-function PusherClient() {
+
+function PusherClient(appKey, clusterId) {
   const pusher = new Pusher(appKey, {
-    cluster: clusterId,
+    cluster: clusterId
   });
+
   // The format from the server should be: {"message": "message", "time": "time"}
   const channel = pusher.subscribe(channelName);
   channel.bind("msg-recive", (data) => {
