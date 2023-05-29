@@ -412,6 +412,16 @@ window.addEventListener("DOMContentLoaded", () => {
   const mainContentWrapper = document.getElementById("main-window-wrappper");
   const signOutBtn = document.getElementById("signout-main-wrapper");
   const signInBtn = document.getElementById("signing");
+  const closeSignInBtn = document.getElementById("close-signin-button");
+  const closeSignUpBtn = document.getElementById("close-signup-button");
+  const signUpBtn = document.getElementById("signup-btn");
+  const signUpBtnInSignInWindow = document.getElementById("signup");
+  const signInBtnInSignUpWindow = document.getElementById("signin");
+  const signInBtnInMainContentWrapper = document.getElementById(
+    "signin-main-wrapper"
+  );
+  const githubBtn = document.getElementById("github-button");
+  const githubBtnSignUp = document.getElementById("github-button-signup");
   if (signInBtn) {
     signInBtn.addEventListener("click", (event) => {
       event.preventDefault();
@@ -424,7 +434,6 @@ window.addEventListener("DOMContentLoaded", () => {
       signOut();
     });
   }
-  const signUpBtn = document.getElementById("signup-btn");
   if (signUpBtn) {
     signUpBtn.addEventListener("click", (event) => {
       event.preventDefault();
@@ -433,7 +442,6 @@ window.addEventListener("DOMContentLoaded", () => {
       verifyEmailWindow.classList.remove("hidden");
     });
   }
-  const closeSignInBtn = document.getElementById("close-signin-button");
   if (closeSignInBtn) {
     closeSignInBtn.addEventListener("click", (event) => {
       event.preventDefault();
@@ -442,7 +450,6 @@ window.addEventListener("DOMContentLoaded", () => {
       signInWindow.classList.add("hidden");
     });
   }
-  const closeSignUpBtn = document.getElementById("close-signup-button");
   if (closeSignUpBtn) {
     closeSignUpBtn.addEventListener("click", (event) => {
       event.preventDefault();
@@ -450,7 +457,6 @@ window.addEventListener("DOMContentLoaded", () => {
       mainContentWrapper.classList.remove("signin-portal");
     });
   }
-  const signUpBtnInSignInWindow = document.getElementById("signup");
   if (signUpBtnInSignInWindow) {
     signUpBtnInSignInWindow.addEventListener("click", (event) => {
       event.preventDefault();
@@ -458,7 +464,6 @@ window.addEventListener("DOMContentLoaded", () => {
       signUpWindow.classList.remove("hidden");
     });
   }
-  const signInBtnInSignUpWindow = document.getElementById("signin");
   if (signInBtnInSignUpWindow) {
     signInBtnInSignUpWindow.addEventListener("click", (event) => {
       event.preventDefault();
@@ -466,9 +471,6 @@ window.addEventListener("DOMContentLoaded", () => {
       signInWindow.classList.remove("hidden");
     });
   }
-  const signInBtnInMainContentWrapper = document.getElementById(
-    "signin-main-wrapper"
-  );
   if (signInBtnInMainContentWrapper) {
     signInBtnInMainContentWrapper.addEventListener("click", (event) => {
       event.preventDefault();
@@ -476,14 +478,12 @@ window.addEventListener("DOMContentLoaded", () => {
       signInWindow.classList.remove("hidden");
     });
   }
-  const githubBtn = document.getElementById("github-button");
   if (githubBtn) {
     githubBtn.addEventListener("click", (event) => {
       event.preventDefault();
       signInTroughGithub();
     });
   }
-  const githubBtnSignUp = document.getElementById("github-button-signup");
   if (githubBtnSignUp) {
     githubBtnSignUp.addEventListener("click", (event) => {
       event.preventDefault();
