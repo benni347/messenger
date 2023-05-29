@@ -4,6 +4,7 @@ import {
   RetrieveEnvValues,
   ValidateEmail,
   GenerateUserName,
+  CreateChatRoomId,
 } from "../wailsjs/go/main/App.js";
 
 // Solved the fix me through importing it as a npm module
@@ -370,6 +371,21 @@ function newChatRoom() {
   newChatRoomWindow.classList.remove("hidden");
 }
 
+async function createNewChatRoom() {
+  const other_user_id = document.getElementById("other_persons_uid").value;
+  console.info(other_user_id);
+
+  const myId = await getId(); // Await the promise returned by getId()
+
+  console.info(myId);
+
+  const myIdWithoutDashes = myId.replace(/-/g, '');
+  const otherIdWithoutDashes = other_user_id.replace(/-/g, '');
+
+  const combindedIds = await CreateChatRoomId(myIdWithoutDashes, otherIdWithoutDashes);
+  console.info(combindedIds);
+}
+
 /**
  * Removes the last paragraph element from the '.note' div element.
  *
@@ -432,6 +448,7 @@ window.addEventListener("DOMContentLoaded", () => {
     "new_chat_room_wrapper"
   );
   const newChatRoomWindow = document.getElementById("new_chat_room_window");
+  const newChatBtnInNewChatRoomWindow = document.getElementById("new_chat-btn");
 
   // Under this line define no more consts for html elements. Only function calls.
   if (signInBtn) {
@@ -522,6 +539,14 @@ window.addEventListener("DOMContentLoaded", () => {
       mainContentWrapper.classList.add("signin-portal");
 
       newChatRoom();
+    });
+  }
+  if (newChatBtnInNewChatRoomWindow) {
+    newChatBtnInNewChatRoomWindow.addEventListener("click", (event) => {
+      event.preventDefault();
+      newChatRoomWindow.classList.add("hidden");
+      mainContentWrapper.classList.remove("signin-portal");
+      createNewChatRoom();
     });
   }
 });
