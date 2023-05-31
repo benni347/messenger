@@ -1,7 +1,7 @@
 "use strict";
 
 import { RetrieveEnvValues } from "../wailsjs/go/main/App.js";
-import Pusher from 'pusher-js';
+import Pusher from "pusher-js";
 
 const channelName = "1";
 // Retrieve the input and button elements
@@ -38,7 +38,7 @@ RetrieveEnvValues().then((env) => {
 
 function PusherClient(appKey, clusterId) {
   const pusher = new Pusher(appKey, {
-    cluster: clusterId
+    cluster: clusterId,
   });
 
   // The format from the server should be: {"message": "message", "time": "time"}
@@ -55,18 +55,17 @@ function PusherClient(appKey, clusterId) {
   });
 
   // Add event listener to the input field to listen for the 'Enter' key
-  messageInput.addEventListener('keyup', function(event) {
+  messageInput.addEventListener("keyup", function (event) {
     // Check if the 'Enter' key was pressed
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       sendMessage(channel);
     }
   });
 
   // Add event listener to the button to listen for clicks
-  submitButton.addEventListener('click', function() {
+  submitButton.addEventListener("click", function () {
     sendMessage(channel);
   });
-
 }
 
 // Function to send message
@@ -75,11 +74,11 @@ function sendMessage(channel) {
   const message = messageInput.value;
 
   // Check if the message is not empty
-  if (message.trim() !== '') {
+  if (message.trim() !== "") {
     // Trigger a 'client-msg-send' event on the channel with the message as the data
-    channel.trigger('client-msg-send', { message: message });
+    channel.trigger("client-msg-send", { message: message });
 
     // Clear the input field
-    messageInput.value = '';
+    messageInput.value = "";
   }
 }

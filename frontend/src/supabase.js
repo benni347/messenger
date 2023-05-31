@@ -379,10 +379,13 @@ async function createNewChatRoom() {
 
   console.info(myId);
 
-  const myIdWithoutDashes = myId.replace(/-/g, '');
-  const otherIdWithoutDashes = other_user_id.replace(/-/g, '');
+  const myIdWithoutDashes = myId.replace(/-/g, "");
+  const otherIdWithoutDashes = other_user_id.replace(/-/g, "");
 
-  const combindedIds = await CreateChatRoomId(myIdWithoutDashes, otherIdWithoutDashes);
+  const combindedIds = await CreateChatRoomId(
+    myIdWithoutDashes,
+    otherIdWithoutDashes
+  );
   console.info(combindedIds);
 }
 
