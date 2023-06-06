@@ -391,11 +391,7 @@ function newChatRoom() {
  */
 async function createNewChatRoom() {
   const other_user_id = document.getElementById("other_persons_uid").value;
-  console.info(other_user_id);
-
   const myId = await getId(); // Await the promise returned by getId()
-
-  console.info(myId);
 
   const myIdWithoutDashes = myId.replace(/-/g, "");
   const otherIdWithoutDashes = other_user_id.replace(/-/g, "");
