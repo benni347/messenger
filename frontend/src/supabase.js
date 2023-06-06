@@ -402,6 +402,23 @@ async function createNewChatRoom() {
     otherIdWithoutDashes
   );
   console.info(combindedIds);
+  const body = document.querySelector("body");
+  body.setAttribute("data-current-chat-room-id", combindedIds);
+  localStorage.setItem("current-chat-room-id", combindedIds);
+  addChatRoomId(combindedIds);
+}
+
+
+function addChatRoomId(newId) {
+  // get existing ids
+  let storedChatRoomIds = localStorage.getItem('all_chat_room_ids');
+  let chatRoomIds = storedChatRoomIds ? JSON.parse(storedChatRoomIds) : [];
+
+  // add new id
+  chatRoomIds.push(newId);
+
+  // store updated ids
+  localStorage.setItem('all_chat_room_ids', JSON.stringify(chatRoomIds));
 }
 
 /**
