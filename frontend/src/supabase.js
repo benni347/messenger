@@ -351,7 +351,10 @@ const useMessages = () => {
 };
 
 /**
- * Changes the visibility of the sign-in and sign-out buttons based on the 'authenticated' flag in local storage.
+ * Toggles the visibility of the sign-in and sign-out buttons.
+ * The visibility is determined based on the 'authenticated' flag stored in local storage.
+ * If the flag is 'true', the sign-in button is hidden and the sign-out button is displayed.
+ * Otherwise, the sign-out button is hidden and the sign-in button is displayed.
  */
 function changeButton() {
   if (
@@ -366,11 +369,26 @@ function changeButton() {
   }
 }
 
+/**
+ * Displays the window for creating a new chat room.
+ * This is achieved by removing the 'hidden' class from the 'new_chat_room_window' element.
+ */
 function newChatRoom() {
   const newChatRoomWindow = document.getElementById("new_chat_room_window");
   newChatRoomWindow.classList.remove("hidden");
 }
 
+/**
+ * Creates a new chat room.
+ * The function first gets the user id of the other person involved in the chat.
+ * Then, it retrieves the current user's id by awaiting the result of the 'getId' function.
+ * The retrieved ids (which may include dashes) are cleaned by removing all dashes.
+ * A chat room id is then created using the cleaned ids, and this id is printed to the console.
+ * 
+ * @async
+ * @returns {Promise<void>} This function returns a promise that resolves to undefined. 
+ * It has no return value because the created chat room id is not returned, only logged.
+ */
 async function createNewChatRoom() {
   const other_user_id = document.getElementById("other_persons_uid").value;
   console.info(other_user_id);
