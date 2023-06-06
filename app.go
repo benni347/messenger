@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	utils "github.com/benni347/messengerutils"
@@ -373,4 +374,18 @@ func (a *App) SetQueuName(queueName string) {
 
 func (a *App) getQueueName() string {
 	return a.user.queueName
+}
+
+func (a *App) GetOtherUserId(concatenatedUUIDs string, myUUID string) string {
+	// Remove dashes from the UUIDs
+	myUUID = strings.ReplaceAll(myUUID, "-", "")
+	concatenatedUUIDs = strings.ReplaceAll(concatenatedUUIDs, "-", "")
+
+	// Retrieve the other UUID
+	otherUUID := strings.Replace(concatenatedUUIDs, myUUID, "", 1)
+
+	// Add dashes back to the other UUID
+	otherUUID = otherUUID[0:8] + "-" + otherUUID[8:12] + "-" + otherUUID[12:16] + "-" + otherUUID[16:20] + "-" + otherUUID[20:]
+
+	return otherUUID
 }
