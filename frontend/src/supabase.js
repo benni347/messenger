@@ -406,6 +406,7 @@ async function createNewChatRoom() {
   body.setAttribute("data-current-chat-room-id", combindedIds);
   localStorage.setItem("current-chat-room-id", combindedIds);
   addChatRoomId(combindedIds);
+  addNote();
 }
 
 function addChatRoomId(newId) {
@@ -438,6 +439,51 @@ function removeUserIdNote() {
   }
 }
 
+/**
+ * Retrieves the current chat room id from the 'body' element's 'data-current-chat-room-id' attribute.
+ *
+ * @returns {string} The current chat room id.
+ */
+function getChatRoomId() {
+  return document.getElementById("body").attributes["data-current-chat-room-id"]
+    .value;
+}
+
+/**
+ * Validates the provided chat room id. Currently, only "00000000001" is considered valid.
+ *
+ * @param {string} chatRoomId - The id of the chat room to validate.
+ * @returns {boolean} True if the chat room id is valid, false otherwise.
+ */
+function validateChatRoomId(chatRoomId) {
+  if (chatRoomId === "00000000001") {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Adds a note to the 'person' div every 10 seconds. The note reminds users that the chat room is public, and that messages are stored unencrypted.
+ */
+function addNote() {
+  const personDiv = document.querySelector(".chat-note");
+
+  if (validateChatRoomId(getChatRoomId()) === true) {
+    const noteP = document.createElement("p");
+    noteP.innerHTML =
+      "Note: This is a public chat room. Anyone can see your messages. The messages are stored in a database, unencrypted.";
+
+    personDiv.appendChild(noteP);
+  } else {
+    const noteP = personDiv.querySelector("p");
+    if (noteP) {
+      personDiv.removeChild(noteP);
+    }
+  }
+}
+
+
+addNote();
 /**
  * Checks if the user is authenticated and if so, retrieves their user ID and adds a note on the page.
  * The authentication is based on the 'authenticated' flag stored in local storage.
