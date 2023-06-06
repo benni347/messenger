@@ -408,7 +408,6 @@ async function createNewChatRoom() {
   addChatRoomId(combindedIds);
 }
 
-
 function addChatRoomId(newId) {
   // get existing ids
   let storedChatRoomIds = localStorage.getItem('all_chat_room_ids');
