@@ -411,8 +411,8 @@ async function createNewChatRoom() {
 
 function addChatRoomId(newId) {
   // get existing ids
-  let storedChatRoomIds = localStorage.getItem("all_chat_room_ids");
-  let chatRoomIds = storedChatRoomIds ? JSON.parse(storedChatRoomIds) : [];
+  const storedChatRoomIds = localStorage.getItem("all_chat_room_ids");
+  const chatRoomIds = storedChatRoomIds ? JSON.parse(storedChatRoomIds) : [];
 
   // add new id
   chatRoomIds.push(newId);
