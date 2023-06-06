@@ -422,6 +422,14 @@ function removeUserIdNote() {
   }
 }
 
+/**
+ * Checks if the user is authenticated and if so, retrieves their user ID and adds a note on the page.
+ * The authentication is based on the 'authenticated' flag stored in local storage.
+ * If authenticated, the user ID is fetched using 'getId' function, which returns a Promise.
+ * Once the Promise is resolved, the ID is added as a data attribute to the body element.
+ * Furthermore, a paragraph element is created containing a user-friendly message which includes the user ID.
+ * This paragraph is appended to the '.note' element on the page.
+ */
 function addUserIdNote() {
   if (
     localStorage.getItem("authenticated") === true ||
