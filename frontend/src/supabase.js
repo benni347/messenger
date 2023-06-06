@@ -385,9 +385,9 @@ function newChatRoom() {
  * Then, it retrieves the current user's id by awaiting the result of the 'getId' function.
  * The retrieved ids (which may include dashes) are cleaned by removing all dashes.
  * A chat room id is then created using the cleaned ids, and this id is printed to the console.
- * 
+ *
  * @async
- * @returns {Promise<void>} This function returns a promise that resolves to undefined. 
+ * @returns {Promise<void>} This function returns a promise that resolves to undefined.
  * It has no return value because the created chat room id is not returned, only logged.
  */
 async function createNewChatRoom() {
