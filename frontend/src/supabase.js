@@ -411,14 +411,14 @@ async function createNewChatRoom() {
 
 function addChatRoomId(newId) {
   // get existing ids
-  let storedChatRoomIds = localStorage.getItem('all_chat_room_ids');
+  let storedChatRoomIds = localStorage.getItem("all_chat_room_ids");
   let chatRoomIds = storedChatRoomIds ? JSON.parse(storedChatRoomIds) : [];
 
   // add new id
   chatRoomIds.push(newId);
 
   // store updated ids
-  localStorage.setItem('all_chat_room_ids', JSON.stringify(chatRoomIds));
+  localStorage.setItem("all_chat_room_ids", JSON.stringify(chatRoomIds));
 }
 
 /**
@@ -481,7 +481,6 @@ function addNote() {
     }
   }
 }
-
 
 addNote();
 /**
