@@ -5,6 +5,7 @@ import {
   ValidateEmail,
   GenerateUserName,
   CreateChatRoomId,
+  GetOtherUserId,
 } from "../wailsjs/go/main/App.js";
 
 // Solved the fix me through importing it as a npm module

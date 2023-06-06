@@ -26,6 +26,10 @@ export function GetClusterId() {
   return window['go']['main']['App']['GetClusterId']();
 }
 
+export function GetOtherUserId(arg1, arg2) {
+  return window['go']['main']['App']['GetOtherUserId'](arg1, arg2);
+}
+
 export function GetRabbitMqAdmin() {
   return window['go']['main']['App']['GetRabbitMqAdmin']();
 }

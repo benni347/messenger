@@ -14,6 +14,8 @@ export function GetAppSecret():Promise<string>;
 
 export function GetClusterId():Promise<string>;
 
+export function GetOtherUserId(arg1:string,arg2:string):Promise<string>;
+
 export function GetRabbitMqAdmin():Promise<string>;
 
 export function GetRabbitMqHost():Promise<string>;
