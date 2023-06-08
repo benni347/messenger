@@ -412,7 +412,7 @@ function getChatRoomId() {
  * @returns {boolean} True if the chat room id is valid, false otherwise.
  */
 function validateChatRoomId(chatRoomId) {
-  return chatRoomId === "00000000001"
+  return chatRoomId === "00000000001";
 }
 
 /**
