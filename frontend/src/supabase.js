@@ -5,7 +5,8 @@ import {
   ValidateEmail,
   GenerateUserName,
   CreateChatRoomId,
-  GetOtherUserId,
+  ReciveFormatForJs,
+  Send,
 } from "../wailsjs/go/main/App.js";
 
 // Solved the fix me through importing it as a npm module
@@ -161,7 +162,7 @@ async function signOut() {
  * @throws Will throw an error if the sign in process encounters any issues.
  */
 async function signInTroughGithub() {
-  const { data, error } = await supabase.auth.signInWithOAuth({
+  const { _, error } = await supabase.auth.signInWithOAuth({
     provider: "github",
   });
   if (error) {
@@ -261,97 +262,6 @@ const getId = async () => {
 };
 
 /**
- * Gets a range of messages from the 'messages' database table, ordered by timestamp in descending order.
- *
- * @async
- * @param {number} from - The starting index for the range of messages to retrieve.
- * @param {number} to - The ending index for the range of messages to retrieve.
- * @returns {Promise<Array>} The array of messages data.
- */
-const getMessages = async (from, to) => {
-  const { data } = await supabase
-    .from("messages")
-    .select()
-    .range(from, to)
-    .order("timestamp", { ascending: false });
-
-  return data;
-};
-
-/**
- * Subscribes to the 'INSERT' event on the 'messages' database table and calls the provided handler function whenever a new message is inserted.
- *
- * @param {function} handler - The function to call when a new message is inserted.
- */
-const onNewMessage = (handler) => {
-  supabase
-    .from("messages")
-    .on("INSERT", (payload) => {
-      handler(payload.new);
-    })
-    .subscribe();
-};
-
-/**
- * Inserts a new message into the 'messages' database table.
- *
- * @async
- * @param {string} username - The username of the sender of the message.
- * @param {string} text - The text of the message.
- * @returns {Promise<Object>} The data of the inserted message.
- */
-const createNewMessage = async (username, text) => {
-  const { data } = await supabase.from("messages").insert({ username, text });
-
-  return data;
-};
-
-/**
- * Manages the messages in the chat, allowing to load older messages and send new ones.
- *
- * @returns {Object} An object containing the current username, a reference to the messages, a function to send messages, and a function to load older messages.
- */
-const useMessages = () => {
-  const username = getUsername();
-  const messages = ref([]);
-  const messagesCount = ref(0);
-  const maxMessgesPerRequest = 50;
-  /**
-   * Loads a batch of messages from the server, updating the count of messages and appending the loaded messages to the existing ones.
-   *
-   * @async
-   */
-  const loadMessagesBatch = async () => {
-    const loadedMessages = await getMessages(
-      messagesCount.value,
-      maxMessgesPerRequest - 1
-    );
-
-    messages.value = [...loadedMessages, ...messages.value];
-    messagesCount.value += loadedMessages.length;
-  };
-
-  loadMessagesBatch();
-  onNewMessage((newMessage) => {
-    messages.value = [newMessage, ...messages.value];
-    messagesCount.value += 1;
-  });
-
-  return {
-    username,
-    messages,
-    async sendMessage(text) {
-      if (text) {
-        await createNewMessage(username, text);
-      }
-    },
-    loadOlder() {
-      loadMessagesBatch();
-    },
-  };
-};
-
-/**
  * Toggles the visibility of the sign-in and sign-out buttons.
  * The visibility is determined based on the 'authenticated' flag stored in local storage.
  * If the flag is 'true', the sign-in button is hidden and the sign-out button is displayed.
@@ -370,6 +280,45 @@ function changeButton() {
   }
 }
 
+async function sendMessage() {
+  const messageInput = document.getElementById("message-input");
+  const message = messageInput.value;
+  messageInput.value = "";
+  console.info("Sending message", message);
+
+  const chatRoomId = getChatRoomId();
+  console.info("Chat room ID is", chatRoomId);
+  messageLog.appendChild(createMessageElement(message, "You"));
+  await Send(message, chatRoomId);
+}
+
+function createMessageElement(message, username) {
+  const messageElement = document.createElement("div");
+  messageElement.classList.add("message");
+
+  const usernameElement = document.createElement("div");
+  usernameElement.classList.add("username");
+  usernameElement.innerText = username;
+  messageElement.appendChild(usernameElement);
+
+  const textElement = document.createElement("div");
+  textElement.classList.add("text");
+  textElement.innerText = message;
+  messageElement.appendChild(textElement);
+
+  return messageElement;
+}
+
+// Why the fuck does everything stop when calling this function?
+// FIXME: The reamining code should continiue running and not stop when this is called.
+async function recieveMessage() {
+  const chatRoomId = getChatRoomId();
+  const message = await ReciveFormatForJs(chatRoomId);
+  console.info("Recieved message", message);
+  messageLog.appendChild(createMessageElement(message, "Other"))
+
+
+}
 /**
  * Displays the window for creating a new chat room.
  * This is achieved by removing the 'hidden' class from the 'new_chat_room_window' element.
@@ -407,6 +356,15 @@ async function createNewChatRoom() {
   localStorage.setItem("current-chat-room-id", combindedIds);
   addChatRoomId(combindedIds);
   addNote();
+  appendChatRoomIdToSidebar(other_user_id);
+}
+
+function appendChatRoomIdToSidebar(id) {
+  const sidebar = document.getElementById("sidebar");
+  const chatRoomId = id;
+  const chatRoomIdElement = document.createElement("p");
+  chatRoomIdElement.innerText = chatRoomId;
+  sidebar.appendChild(chatRoomIdElement);
 }
 
 function addChatRoomId(newId) {
@@ -536,6 +494,7 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   const newChatRoomWindow = document.getElementById("new_chat_room_window");
   const newChatBtnInNewChatRoomWindow = document.getElementById("new_chat-btn");
+  const sendBtn = document.getElementById("submit");
 
   // Under this line define no more consts for html elements. Only function calls.
   if (signInBtn) {
@@ -636,4 +595,17 @@ window.addEventListener("DOMContentLoaded", () => {
       createNewChatRoom();
     });
   }
+  if (sendBtn) {
+    sendBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      sendMessage();
+    });
+  }
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      sendMessage();
+    }
+  });
+
 });
