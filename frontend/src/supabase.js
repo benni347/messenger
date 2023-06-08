@@ -5,7 +5,6 @@ import {
   ValidateEmail,
   GenerateUserName,
   CreateChatRoomId,
-  ReciveFormatForJs,
   Send,
 } from "../wailsjs/go/main/App.js";
 
@@ -309,14 +308,6 @@ function createMessageElement(message, username) {
   return messageElement;
 }
 
-// Why the fuck does everything stop when calling this function?
-// FIXME: The reamining code should continiue running and not stop when this is called.
-async function recieveMessage() {
-  const chatRoomId = getChatRoomId();
-  const message = await ReciveFormatForJs(chatRoomId);
-  console.info("Recieved message", message);
-  messageLog.appendChild(createMessageElement(message, "Other"));
-}
 /**
  * Displays the window for creating a new chat room.
  * This is achieved by removing the 'hidden' class from the 'new_chat_room_window' element.
