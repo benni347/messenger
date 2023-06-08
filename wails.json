@@ -9,5 +9,12 @@
   "author": {
     "name": "Cedric Skwar",
     "email": "cdrc@skwar.me"
+  },
+  "Info": {
+    "productName": "Messenger Abschlussarbeit",
+    "companyName": "Cédric Skwar",
+    "productVersion": "1.0.0",
+    "copyright": "Copyright (c) 2023 Cédric Skwar",
+    "comments": "Messenger Abschlussarbeit, using go"
   }
 }
