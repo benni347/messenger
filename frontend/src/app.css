@@ -371,3 +371,24 @@ html {
   padding-bottom: 0;
   margin-bottom: 0;
 }
+
+.message {
+  display: grid;
+  grid-template-columns: 7fr 1fr;
+}
+
+.username {
+  grid-column: 2 / -1;
+  align-self: center;
+  justify-self: center;
+  font-weight: bold;
+}
+
+.text {
+  grid-column: 1 / -2;
+}
+
+.sidebar > * {
+  border-top: 0.100rem solid var(--accent-color);
+  border-bottom: 0.100rem solid var(--accent-color);
+}
