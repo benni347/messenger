@@ -315,9 +315,7 @@ async function recieveMessage() {
   const chatRoomId = getChatRoomId();
   const message = await ReciveFormatForJs(chatRoomId);
   console.info("Recieved message", message);
-  messageLog.appendChild(createMessageElement(message, "Other"))
-
-
+  messageLog.appendChild(createMessageElement(message, "Other"));
 }
 /**
  * Displays the window for creating a new chat room.
@@ -607,5 +605,4 @@ window.addEventListener("DOMContentLoaded", () => {
       sendMessage();
     }
   });
-
 });

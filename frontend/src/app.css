@@ -389,6 +389,6 @@ html {
 }
 
 .sidebar > * {
-  border-top: 0.100rem solid var(--accent-color);
-  border-bottom: 0.100rem solid var(--accent-color);
+  border-top: 0.1rem solid var(--accent-color);
+  border-bottom: 0.1rem solid var(--accent-color);
 }
