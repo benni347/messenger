@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -186,119 +187,130 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func (a *App) Send(message string) {
-	m := &utils.MessengerUtils{
-		Verbose: a.verbose,
-	}
-	// Define the connection
-	amqpPort := "5672"
-	amqpHost := a.GetRabbitMqHost()
-	amqpUser := a.GetRabbitMqAdmin()
-	amqpPassword := a.GetRabbitMqPassword()
-	amqpUrl := fmt.Sprintf("amqp://%s:%s@%s:%s/", amqpUser, amqpPassword, amqpHost, amqpPort)
+func (a *App) Send(message, chatRoomId string) {
+	var amqpHost string
+	var amqpPort string
+	var amqpUser string
+	var amqpPassword string
+
+	amqpHost = a.GetRabbitMqHost()
+	amqpPort = "5672"
+	amqpUser = a.GetRabbitMqAdmin()
+	amqpPassword = a.GetRabbitMqPassword()
+
+	amqpUrl := fmt.Sprintf(
+		"amqp://%s:%s@%s:%s/",
+		amqpUser,
+		url.QueryEscape(amqpPassword),
+		amqpHost,
+		amqpPort,
+	)
+
 	conn, err := amqp.Dial(amqpUrl)
 	failOnError(err, "Failed to connect to RabbitMQ")
-	defer conn.Close()
 
-	// Create a channel
-	ch, err := conn.Channel()
+	channel, err := conn.Channel()
 	failOnError(err, "Failed to open a channel")
-	defer ch.Close()
 
-	// Declare a queue
-	queueName := a.getQueueName()
-	q, err := ch.QueueDeclare(
-		queueName, // name
-		false,     // durable
-		false,     // delete when unused
-		false,     // exclusive
-		false,     // no-wait
-		nil,       // arguments
+	queueName := chatRoomId
+	queue, err := channel.QueueDeclare(
+		queueName,
+		true,
+		false,
+		false,
+		false,
+		nil,
 	)
 	failOnError(err, "Failed to declare a queue")
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
 	body := message
-	err = ch.PublishWithContext(ctx,
-		"",     // exchange
-		q.Name, // routing key
-		false,  // mandatory
-		false,  // immediate
+
+	err = channel.Publish(
+		"",
+		queue.Name,
+		false,
+		false,
 		amqp.Publishing{
 			ContentType: "text/plain",
 			Body:        []byte(body),
 		})
 	failOnError(err, "Failed to publish a message")
-	m.PrintInfo(" [x] Sent", body)
+
+	defer func() {
+		if err := conn.Close(); err != nil {
+			utils.PrintError("closing connection", err)
+		}
+		if err := channel.Close(); err != nil {
+			utils.PrintError("closing channel", err)
+		}
+	}()
+
+	time.Sleep(1 * time.Second)
 }
 
-func (a *App) Receive() <-chan string {
-	m := &utils.MessengerUtils{
-		Verbose: a.verbose,
-	}
-	// Define the connection
-	amqpPort := "5672"
-	amqpHost := a.GetRabbitMqHost()
-	amqpUser := a.GetRabbitMqAdmin()
-	amqpPassword := a.GetRabbitMqPassword()
-	amqpUrl := fmt.Sprintf("amqp://%s:%s@%s:%s/", amqpUser, amqpPassword, amqpHost, amqpPort)
+func (a *App) Receive(channelId string) <-chan string {
+	var amqpHost string
+	var amqpPort string
+	var amqpUser string
+	var amqpPassword string
+
+	amqpHost = a.GetRabbitMqHost()
+	amqpPort = "5672"
+	amqpUser = a.GetRabbitMqAdmin()
+	amqpPassword = a.GetRabbitMqPassword()
+
+	amqpUrl := fmt.Sprintf(
+		"amqp://%s:%s@%s:%s/",
+		amqpUser,
+		url.QueryEscape(amqpPassword),
+		amqpHost,
+		amqpPort,
+	)
+
 	conn, err := amqp.Dial(amqpUrl)
 	failOnError(err, "Failed to connect to RabbitMQ")
-	defer conn.Close()
 
-	// Create a channel
-	ch, err := conn.Channel()
+	channel, err := conn.Channel()
 	failOnError(err, "Failed to open a channel")
-	defer ch.Close()
 
-	a.user.ch = ch
-
-	// Declare a queue
-	queueName := "chat"
-	q, err := ch.QueueDeclare(
-		queueName, // name
-		false,     // durable
-		false,     // delete when unused
-		false,     // exclusive
-		false,     // no-wait
-		nil,       // arguments
+	queueName := channelId
+	queue, err := channel.QueueDeclare(
+		queueName,
+		true,
+		false,
+		false,
+		false,
+		nil,
 	)
+
 	failOnError(err, "Failed to declare a queue")
 
-	msgs, err := ch.Consume(
-		q.Name, // queue
-		"",     // consumer
-		true,   // auto-ack
-		false,  // exclusive
-		false,  // no-local
-		false,  // no-wait
-		nil,    // args
+	msgs, err := channel.Consume(
+		queue.Name,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
 	)
-	failOnError(err, "Failed to register a consumer")
 
-	var forver chan struct{}
+	failOnError(err, "Failed to register a consumer")
 
 	out := make(chan string)
 
 	go func() {
-		defer conn.Close()
-		defer ch.Close()
-		defer close(out)
-
 		for d := range msgs {
-			m.PrintInfo("Received a message: ", d.Body)
 			out <- string(d.Body)
 		}
+		close(out)
 	}()
 
-	<-forver
 	return out
 }
 
-func (a *App) ReciveFormatForJs() string {
-	messages := a.Receive()
+func (a *App) ReciveFormatForJs(chatRoomId string) string {
+	messages := a.Receive(chatRoomId)
 
 	for message := range messages {
 		return message
