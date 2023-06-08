@@ -1,9 +1,6 @@
 "use strict";
 
-
-import {
-  ReciveFormatForJs,
-} from "../wailsjs/go/main/App.js";
+import { ReciveFormatForJs } from "../wailsjs/go/main/App.js";
 
 // export class App {
 //   constructor() {
@@ -80,16 +77,15 @@ function getChatRoomId() {
     .value;
 }
 
-
 // Why the fuck do you stay stuck on fucking pending and dont resolve don't be a fucking special boy just be like eeveryone else like me. I can't recive the message from it that is a big problem, because I have to be done in 11 hours from now.
 // FIXME: The comment above explains it well.
 (function receive() {
   const channelId = getChatRoomId();
   console.info("receive");
-  const msgPromise = ReciveFormatForJs(channelId)
+  const msgPromise = ReciveFormatForJs(channelId);
   console.log(msgPromise);
   msgPromise.then((msg) => {
     console.log(msg);
-  })
+  });
   setTimeout(receive, 1000);
 })();
