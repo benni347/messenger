@@ -16,12 +16,11 @@
     <link rel="stylesheet" href="/src/app.css" />
     <link rel="stylesheet" href="/src/style.css" />
     <script src="/src/supabase.js" type="module"></script>
-    <script src="/src/pusher.js" type="module"></script>
     <script
       src="https://kit.fontawesome.com/67727cb6f5.js"
       crossorigin="anonymous"
     ></script>
-    <script src="/src/public-chat-room.js" type="module"></script>
+    <script src="/src/reciveMsg.js" type="module"></script>
   </head>
 
   <body
@@ -34,7 +33,7 @@
       <div class="topbar">
         <div class="window_name body">Messenger</div>
       </div>
-      <div class="sidebar">
+      <div id="sidebar" class="sidebar">
         <div class="public chaticon" data-chat-room-id="00000000001">
           <img
             src="/src/assets/images/public_chat_room.png"

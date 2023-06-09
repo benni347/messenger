@@ -5,7 +5,7 @@ import {
   ValidateEmail,
   GenerateUserName,
   CreateChatRoomId,
-  GetOtherUserId,
+  Send,
 } from "../wailsjs/go/main/App.js";
 
 // Solved the fix me through importing it as a npm module
@@ -161,7 +161,7 @@ async function signOut() {
  * @throws Will throw an error if the sign in process encounters any issues.
  */
 async function signInTroughGithub() {
-  const { data, error } = await supabase.auth.signInWithOAuth({
+  const { _, error } = await supabase.auth.signInWithOAuth({
     provider: "github",
   });
   if (error) {
@@ -261,97 +261,6 @@ const getId = async () => {
 };
 
 /**
- * Gets a range of messages from the 'messages' database table, ordered by timestamp in descending order.
- *
- * @async
- * @param {number} from - The starting index for the range of messages to retrieve.
- * @param {number} to - The ending index for the range of messages to retrieve.
- * @returns {Promise<Array>} The array of messages data.
- */
-const getMessages = async (from, to) => {
-  const { data } = await supabase
-    .from("messages")
-    .select()
-    .range(from, to)
-    .order("timestamp", { ascending: false });
-
-  return data;
-};
-
-/**
- * Subscribes to the 'INSERT' event on the 'messages' database table and calls the provided handler function whenever a new message is inserted.
- *
- * @param {function} handler - The function to call when a new message is inserted.
- */
-const onNewMessage = (handler) => {
-  supabase
-    .from("messages")
-    .on("INSERT", (payload) => {
-      handler(payload.new);
-    })
-    .subscribe();
-};
-
-/**
- * Inserts a new message into the 'messages' database table.
- *
- * @async
- * @param {string} username - The username of the sender of the message.
- * @param {string} text - The text of the message.
- * @returns {Promise<Object>} The data of the inserted message.
- */
-const createNewMessage = async (username, text) => {
-  const { data } = await supabase.from("messages").insert({ username, text });
-
-  return data;
-};
-
-/**
- * Manages the messages in the chat, allowing to load older messages and send new ones.
- *
- * @returns {Object} An object containing the current username, a reference to the messages, a function to send messages, and a function to load older messages.
- */
-const useMessages = () => {
-  const username = getUsername();
-  const messages = ref([]);
-  const messagesCount = ref(0);
-  const maxMessgesPerRequest = 50;
-  /**
-   * Loads a batch of messages from the server, updating the count of messages and appending the loaded messages to the existing ones.
-   *
-   * @async
-   */
-  const loadMessagesBatch = async () => {
-    const loadedMessages = await getMessages(
-      messagesCount.value,
-      maxMessgesPerRequest - 1
-    );
-
-    messages.value = [...loadedMessages, ...messages.value];
-    messagesCount.value += loadedMessages.length;
-  };
-
-  loadMessagesBatch();
-  onNewMessage((newMessage) => {
-    messages.value = [newMessage, ...messages.value];
-    messagesCount.value += 1;
-  });
-
-  return {
-    username,
-    messages,
-    async sendMessage(text) {
-      if (text) {
-        await createNewMessage(username, text);
-      }
-    },
-    loadOlder() {
-      loadMessagesBatch();
-    },
-  };
-};
-
-/**
  * Toggles the visibility of the sign-in and sign-out buttons.
  * The visibility is determined based on the 'authenticated' flag stored in local storage.
  * If the flag is 'true', the sign-in button is hidden and the sign-out button is displayed.
@@ -368,6 +277,35 @@ function changeButton() {
     document.getElementById("signin-main-wrapper").style.display = "block";
     document.getElementById("signout-main-wrapper").style.display = "none";
   }
+}
+
+async function sendMessage() {
+  const messageInput = document.getElementById("message-input");
+  const message = messageInput.value;
+  messageInput.value = "";
+  console.info("Sending message", message);
+
+  const chatRoomId = getChatRoomId();
+  console.info("Chat room ID is", chatRoomId);
+  messageLog.appendChild(createMessageElement(message, "You"));
+  await Send(message, chatRoomId);
+}
+
+function createMessageElement(message, username) {
+  const messageElement = document.createElement("div");
+  messageElement.classList.add("message");
+
+  const usernameElement = document.createElement("div");
+  usernameElement.classList.add("username");
+  usernameElement.innerText = username;
+  messageElement.appendChild(usernameElement);
+
+  const textElement = document.createElement("div");
+  textElement.classList.add("text");
+  textElement.innerText = message;
+  messageElement.appendChild(textElement);
+
+  return messageElement;
 }
 
 /**
@@ -402,6 +340,32 @@ async function createNewChatRoom() {
     otherIdWithoutDashes
   );
   console.info(combindedIds);
+  const body = document.querySelector("body");
+  body.setAttribute("data-current-chat-room-id", combindedIds);
+  localStorage.setItem("current-chat-room-id", combindedIds);
+  addChatRoomId(combindedIds);
+  addNote();
+  appendChatRoomIdToSidebar(other_user_id);
+}
+
+function appendChatRoomIdToSidebar(id) {
+  const sidebar = document.getElementById("sidebar");
+  const chatRoomId = id;
+  const chatRoomIdElement = document.createElement("p");
+  chatRoomIdElement.innerText = chatRoomId;
+  sidebar.appendChild(chatRoomIdElement);
+}
+
+function addChatRoomId(newId) {
+  // get existing ids
+  const storedChatRoomIds = localStorage.getItem("all_chat_room_ids");
+  const chatRoomIds = storedChatRoomIds ? JSON.parse(storedChatRoomIds) : [];
+
+  // add new id
+  chatRoomIds.push(newId);
+
+  // store updated ids
+  localStorage.setItem("all_chat_room_ids", JSON.stringify(chatRoomIds));
 }
 
 /**
@@ -422,6 +386,47 @@ function removeUserIdNote() {
   }
 }
 
+/**
+ * Retrieves the current chat room id from the 'body' element's 'data-current-chat-room-id' attribute.
+ *
+ * @returns {string} The current chat room id.
+ */
+function getChatRoomId() {
+  return document.getElementById("body").attributes["data-current-chat-room-id"]
+    .value;
+}
+
+/**
+ * Validates the provided chat room id. Currently, only "00000000001" is considered valid.
+ *
+ * @param {string} chatRoomId - The id of the chat room to validate.
+ * @returns {boolean} True if the chat room id is valid, false otherwise.
+ */
+function validateChatRoomId(chatRoomId) {
+  return chatRoomId === "00000000001";
+}
+
+/**
+ * Adds a note to the 'person' div every 10 seconds. The note reminds users that the chat room is public, and that messages are stored unencrypted.
+ */
+function addNote() {
+  const personDiv = document.querySelector(".chat-note");
+
+  if (validateChatRoomId(getChatRoomId()) === true) {
+    const noteP = document.createElement("p");
+    noteP.innerHTML =
+      "Note: This is a public chat room. Anyone can see your messages. The messages are stored in a database, unencrypted.";
+
+    personDiv.appendChild(noteP);
+  } else {
+    const noteP = personDiv.querySelector("p");
+    if (noteP) {
+      personDiv.removeChild(noteP);
+    }
+  }
+}
+
+addNote();
 /**
  * Checks if the user is authenticated and if so, retrieves their user ID and adds a note on the page.
  * The authentication is based on the 'authenticated' flag stored in local storage.
@@ -475,6 +480,7 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   const newChatRoomWindow = document.getElementById("new_chat_room_window");
   const newChatBtnInNewChatRoomWindow = document.getElementById("new_chat-btn");
+  const sendBtn = document.getElementById("submit");
 
   // Under this line define no more consts for html elements. Only function calls.
   if (signInBtn) {
@@ -575,4 +581,16 @@ window.addEventListener("DOMContentLoaded", () => {
       createNewChatRoom();
     });
   }
+  if (sendBtn) {
+    sendBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      sendMessage();
+    });
+  }
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      sendMessage();
+    }
+  });
 });

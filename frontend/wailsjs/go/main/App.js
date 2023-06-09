@@ -50,24 +50,20 @@ export function GetSupaBaseUrl() {
   return window['go']['main']['App']['GetSupaBaseUrl']();
 }
 
-export function Receive() {
-  return window['go']['main']['App']['Receive']();
+export function Receive(arg1) {
+  return window['go']['main']['App']['Receive'](arg1);
 }
 
-export function ReciveFormatForJs() {
-  return window['go']['main']['App']['ReciveFormatForJs']();
+export function ReciveFormatForJs(arg1) {
+  return window['go']['main']['App']['ReciveFormatForJs'](arg1);
 }
 
 export function RetrieveEnvValues() {
   return window['go']['main']['App']['RetrieveEnvValues']();
 }
 
-export function Send(arg1) {
-  return window['go']['main']['App']['Send'](arg1);
-}
-
-export function SendMessage(arg1, arg2, arg3) {
-  return window['go']['main']['App']['SendMessage'](arg1, arg2, arg3);
+export function Send(arg1, arg2) {
+  return window['go']['main']['App']['Send'](arg1, arg2);
 }
 
 export function SetQueuName(arg1) {

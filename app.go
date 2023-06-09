@@ -2,18 +2,16 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"math"
 	"math/rand"
+	"net/url"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
 	utils "github.com/benni347/messengerutils"
 	"github.com/joho/godotenv"
-	"github.com/pusher/pusher-http-go/v5"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -126,179 +124,136 @@ type Message struct {
 	Time    string `json:"time"`
 }
 
-// SendMessage sends a message from a specific sender to a specified chat room.
-//
-// This function takes in the ID of the chat room (chatRoomId), the sender's identifier (sender), and the content of the message (message) as parameters.
-// It then generates a timestamp, creates a Message object with the sender, message, and timestamp, and converts this object into a JSON format.
-// Afterward, it gets the necessary Pusher credentials for this application, creates a new Pusher client using these credentials,
-// and triggers a new Pusher event with the JSON message.
-//
-// The format of the message from the server should be: {"message": "message", "sender": "sender", "time": "time"}
-//
-// If there's an error while marshalling the Message object to JSON, this function prints the error and returns immediately.
-//
-// Note that SendMessage does not return any values.
-//
-// Usage:
-// app := NewApp()
-// app.SendMessage("chatRoomId", "senderId", "Hello, world!")
-func (a *App) SendMessage(chatRoomId string, sender string, message string) {
-	// The format from the server should be: {"message": "message", "time": "time"}
-	currentTime := time.Now().UnixNano()
-	currentTimeString := strconv.FormatInt(currentTime, 10)
-
-	// Create a new Message object
-	msg := Message{
-		Message: message,
-		Time:    currentTimeString,
-		Sender:  sender,
-	}
-
-	// Convert Message object to JSON
-	msgJSON, err := json.Marshal(msg)
-	if err != nil {
-		utils.PrintError("marshalling JSON", err)
-		return
-	}
-
-	// Get the Pusher credentials
-	appId := a.GetAppId()
-	appSecret := a.GetAppSecret()
-	appKey := a.GetAppKey()
-	clusterId := a.GetClusterId()
-
-	// Create a new Pusher Client
-	pusherClient := pusher.Client{
-		AppID:   appId,
-		Key:     appKey,
-		Secret:  appSecret,
-		Cluster: clusterId,
-		Secure:  true,
-	}
-
-	// Create a new Pusher trigger
-	pusherClient.Trigger(chatRoomId, "message", string(msgJSON))
-}
-
 func failOnError(err error, msg string) {
 	if err != nil {
 		utils.PrintError(msg, err)
 	}
 }
 
-func (a *App) Send(message string) {
-	m := &utils.MessengerUtils{
-		Verbose: a.verbose,
-	}
-	// Define the connection
-	amqpPort := "5672"
-	amqpHost := a.GetRabbitMqHost()
-	amqpUser := a.GetRabbitMqAdmin()
-	amqpPassword := a.GetRabbitMqPassword()
-	amqpUrl := fmt.Sprintf("amqp://%s:%s@%s:%s/", amqpUser, amqpPassword, amqpHost, amqpPort)
+func (a *App) Send(message, chatRoomId string) {
+	var amqpHost string
+	var amqpPort string
+	var amqpUser string
+	var amqpPassword string
+
+	amqpHost = a.GetRabbitMqHost()
+	amqpPort = "5672"
+	amqpUser = a.GetRabbitMqAdmin()
+	amqpPassword = a.GetRabbitMqPassword()
+
+	amqpUrl := fmt.Sprintf(
+		"amqp://%s:%s@%s:%s/",
+		amqpUser,
+		url.QueryEscape(amqpPassword),
+		amqpHost,
+		amqpPort,
+	)
+
 	conn, err := amqp.Dial(amqpUrl)
 	failOnError(err, "Failed to connect to RabbitMQ")
-	defer conn.Close()
 
-	// Create a channel
-	ch, err := conn.Channel()
+	channel, err := conn.Channel()
 	failOnError(err, "Failed to open a channel")
-	defer ch.Close()
 
-	// Declare a queue
-	queueName := a.getQueueName()
-	q, err := ch.QueueDeclare(
-		queueName, // name
-		false,     // durable
-		false,     // delete when unused
-		false,     // exclusive
-		false,     // no-wait
-		nil,       // arguments
+	queueName := chatRoomId
+	queue, err := channel.QueueDeclare(
+		queueName,
+		true,
+		false,
+		false,
+		false,
+		nil,
 	)
 	failOnError(err, "Failed to declare a queue")
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
 	body := message
-	err = ch.PublishWithContext(ctx,
-		"",     // exchange
-		q.Name, // routing key
-		false,  // mandatory
-		false,  // immediate
+
+	err = channel.Publish(
+		"",
+		queue.Name,
+		false,
+		false,
 		amqp.Publishing{
 			ContentType: "text/plain",
 			Body:        []byte(body),
 		})
 	failOnError(err, "Failed to publish a message")
-	m.PrintInfo(" [x] Sent", body)
+
+	defer func() {
+		if err := conn.Close(); err != nil {
+			utils.PrintError("closing connection", err)
+		}
+		if err := channel.Close(); err != nil {
+			utils.PrintError("closing channel", err)
+		}
+	}()
+
+	time.Sleep(1 * time.Second)
 }
 
-func (a *App) Receive() <-chan string {
-	m := &utils.MessengerUtils{
-		Verbose: a.verbose,
-	}
-	// Define the connection
-	amqpPort := "5672"
-	amqpHost := a.GetRabbitMqHost()
-	amqpUser := a.GetRabbitMqAdmin()
-	amqpPassword := a.GetRabbitMqPassword()
-	amqpUrl := fmt.Sprintf("amqp://%s:%s@%s:%s/", amqpUser, amqpPassword, amqpHost, amqpPort)
+func (a *App) Receive(channelId string) <-chan string {
+	var amqpHost string
+	var amqpPort string
+	var amqpUser string
+	var amqpPassword string
+
+	amqpHost = a.GetRabbitMqHost()
+	amqpPort = "5672"
+	amqpUser = a.GetRabbitMqAdmin()
+	amqpPassword = a.GetRabbitMqPassword()
+
+	amqpUrl := fmt.Sprintf(
+		"amqp://%s:%s@%s:%s/",
+		amqpUser,
+		url.QueryEscape(amqpPassword),
+		amqpHost,
+		amqpPort,
+	)
+
 	conn, err := amqp.Dial(amqpUrl)
 	failOnError(err, "Failed to connect to RabbitMQ")
-	defer conn.Close()
 
-	// Create a channel
-	ch, err := conn.Channel()
+	channel, err := conn.Channel()
 	failOnError(err, "Failed to open a channel")
-	defer ch.Close()
 
-	a.user.ch = ch
-
-	// Declare a queue
-	queueName := "chat"
-	q, err := ch.QueueDeclare(
-		queueName, // name
-		false,     // durable
-		false,     // delete when unused
-		false,     // exclusive
-		false,     // no-wait
-		nil,       // arguments
+	queueName := channelId
+	queue, err := channel.QueueDeclare(
+		queueName,
+		true,
+		false,
+		false,
+		false,
+		nil,
 	)
+
 	failOnError(err, "Failed to declare a queue")
 
-	msgs, err := ch.Consume(
-		q.Name, // queue
-		"",     // consumer
-		true,   // auto-ack
-		false,  // exclusive
-		false,  // no-local
-		false,  // no-wait
-		nil,    // args
+	msgs, err := channel.Consume(
+		queue.Name,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
 	)
-	failOnError(err, "Failed to register a consumer")
 
-	var forver chan struct{}
+	failOnError(err, "Failed to register a consumer")
 
 	out := make(chan string)
 
 	go func() {
-		defer conn.Close()
-		defer ch.Close()
-		defer close(out)
-
 		for d := range msgs {
-			m.PrintInfo("Received a message: ", d.Body)
 			out <- string(d.Body)
 		}
+		close(out)
 	}()
 
-	<-forver
 	return out
 }
 
-func (a *App) ReciveFormatForJs() string {
-	messages := a.Receive()
+func (a *App) ReciveFormatForJs(chatRoomId string) string {
+	messages := a.Receive(chatRoomId)
 
 	for message := range messages {
 		return message

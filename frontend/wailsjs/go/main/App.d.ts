@@ -26,15 +26,13 @@ export function GetSupaBaseApiKey():Promise<string>;
 
 export function GetSupaBaseUrl():Promise<string>;
 
-export function Receive():Promise<any>;
+export function Receive(arg1:string):Promise<any>;
 
-export function ReciveFormatForJs():Promise<string>;
+export function ReciveFormatForJs(arg1:string):Promise<string>;
 
 export function RetrieveEnvValues():Promise<main.Config>;
 
-export function Send(arg1:string):Promise<void>;
-
-export function SendMessage(arg1:string,arg2:string,arg3:string):Promise<void>;
+export function Send(arg1:string,arg2:string):Promise<void>;
 
 export function SetQueuName(arg1:string):Promise<void>;
 
