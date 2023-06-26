@@ -50,14 +50,6 @@ export function GetSupaBaseUrl() {
   return window['go']['main']['App']['GetSupaBaseUrl']();
 }
 
-export function Receive(arg1) {
-  return window['go']['main']['App']['Receive'](arg1);
-}
-
-export function ReciveFormatForJs(arg1) {
-  return window['go']['main']['App']['ReciveFormatForJs'](arg1);
-}
-
 export function RetrieveEnvValues() {
   return window['go']['main']['App']['RetrieveEnvValues']();
 }
