@@ -282,13 +282,15 @@ function changeButton() {
 async function sendMessage() {
   const messageInput = document.getElementById("message-input");
   const message = messageInput.value;
-  messageInput.value = "";
-  console.info("Sending message", message);
+  if (message !== "") {
+    messageInput.value = "";
+    console.info("Sending message", message);
 
-  const chatRoomId = getChatRoomId();
-  console.info("Chat room ID is", chatRoomId);
-  messageLog.appendChild(createMessageElement(message, "You"));
-  await Send(message, chatRoomId);
+    const chatRoomId = getChatRoomId();
+    console.info("Chat room ID is", chatRoomId);
+    messageLog.appendChild(createMessageElement(message, "You"));
+    await Send(message, chatRoomId);
+  }
 }
 
 function createMessageElement(message, username) {
