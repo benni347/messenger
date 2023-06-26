@@ -2,7 +2,7 @@
 
 const socket = new WebSocket("ws://s.rabbitmq.cedric.5y5.one/websocket");
 
-socket.onmessage = function(event) {
+socket.onmessage = function (event) {
   const otherMessage = event.data;
   const messageLog = document.getElementById("message-log");
   const messageDiv = document.createElement("div");
@@ -19,4 +19,3 @@ socket.onmessage = function(event) {
   messageLog.appendChild(messageDiv);
   messageLog.scrollTop = messageLog.scrollHeight;
 };
-
