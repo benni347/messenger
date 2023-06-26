@@ -26,10 +26,6 @@ export function GetSupaBaseApiKey():Promise<string>;
 
 export function GetSupaBaseUrl():Promise<string>;
 
-export function Receive(arg1:string):Promise<any>;
-
-export function ReciveFormatForJs(arg1:string):Promise<string>;
-
 export function RetrieveEnvValues():Promise<main.Config>;
 
 export function Send(arg1:string,arg2:string):Promise<void>;
