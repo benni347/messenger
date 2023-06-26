@@ -67,25 +67,25 @@ import { ReciveFormatForJs } from "../wailsjs/go/main/App.js";
 // app.receive(getChatRoomId());
 //
 //
-/**
- * Retrieves the current chat room id from the 'body' element's 'data-current-chat-room-id' attribute.
- *
- * @returns {string} The current chat room id.
- */
-function getChatRoomId() {
-  return document.getElementById("body").attributes["data-current-chat-room-id"]
-    .value;
-}
+const socket = new WebSocket("ws://s.rabbitmq.cedric.5y5.one/websocket");
 
-// Why the fuck do you stay stuck on fucking pending and dont resolve don't be a fucking special boy just be like eeveryone else like me. I can't recive the message from it that is a big problem, because I have to be done in 11 hours from now.
-// FIXME: The comment above explains it well.
-(function receive() {
-  const channelId = getChatRoomId();
-  console.info("receive");
-  const msgPromise = ReciveFormatForJs(channelId);
-  console.log(msgPromise);
-  msgPromise.then((msg) => {
-    console.log(msg);
-  });
-  setTimeout(receive, 1000);
-})();
+socket.onmessage = function(event) {
+  const otherMessage = event.data;
+  const messageLog = document.getElementById("message-log");
+  const messageDiv = document.createElement("div");
+  const messageUsernameDiv = document.createElement("div");
+  const messageTextDiv = document.createElement("div");
+  const otherUsername = "other";
+  messageUsernameDiv.innerHTML = otherUsername;
+  messageTextDiv.innerHTML = otherMessage;
+  messageTextDiv.className = "text";
+  messageUsernameDiv.className = "username";
+  messageDiv.className = "message";
+  messageDiv.appendChild(messageUsernameDiv);
+  messageDiv.appendChild(messageTextDiv);
+  messageLog.appendChild(messageDiv);
+  messageLog.scrollTop = messageLog.scrollHeight;
+  // let data = JSON.parse(event.data);
+  // console.log(`Received message from ${data.queue}: ${data.message}`);
+};
+
